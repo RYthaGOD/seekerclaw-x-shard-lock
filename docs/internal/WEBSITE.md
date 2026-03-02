@@ -1,6 +1,6 @@
 # WEBSITE.md — Website Content
 
-> Last updated: 2026-02-25 | Last deployed: _never_
+> Last updated: 2026-03-02 | Last deployed: _never_
 >
 > **Rule:** Every item must earn its screen space. Less is more.
 > Before deploying, review the Editorial Notes in each section.
@@ -38,7 +38,7 @@
 |-------|-------|---------------|
 | 150,000+ | Seeker Devices | Social proof — large addressable market |
 | 56+ | Built-in Tools | Shows depth — but consider "50+" for cleaner number |
-| 191+ | PRs Shipped | Shows velocity — but do users care about PRs? |
+| 200+ | PRs Shipped | Shows velocity — but do users care about PRs? |
 | 24/7 | Autonomous Agent | Key differentiator — always on |
 
 <!-- REVIEW: Is "PRs Shipped" the right 3rd stat? Alternatives:
@@ -90,7 +90,7 @@ and deep research on any topic — delivered to your chat.
 
 ### 6. Modular Skill System (icon: tool)
 35 built-in skills: crypto prices, calorie tracking, news briefings,
-reminders, research, and more. Add custom skills without touching code.
+reminders, research, and more. Export, import, and share skills as files.
 
 <!-- REVIEW: Card order matters. Currently: Wallet → AI → Social → Device → Web → Skills
    Should Wallet lead? Or should AI Agent lead since that's the primary value prop?
@@ -193,8 +193,9 @@ reminders, research, and more. Add custom skills without touching code.
 - Natural language cron scheduling
 - Multi-provider web search + page reading
 - MCP server support for extensible tools
-- 35 skills including CalClaw calorie tracker and Netwatch security audit
-- OpenClaw v2026.2.25 parity
+- 35 skills with export/import — CalClaw calorie tracker, Netwatch security audit, and more
+- Skill marketplace: export as .md or ZIP, import custom skills from files
+- OpenClaw v2026.2.28 parity
 - Open-source: MIT license, CI/CD, community contribution ready
 - Self-aware agent: 100% SAB score (36/36 audit points)
 

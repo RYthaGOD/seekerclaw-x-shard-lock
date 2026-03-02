@@ -138,6 +138,9 @@ SeekerClaw is an Android app built for the Solana Seeker phone (also works on an
 **Workspace skills (agent-usable examples):** crypto-prices, device-status, dictionary, exchange-rates, github, location, movie-tv, phone-call, recipe, sms, solana-dapp, solana-wallet, speak
 **Skill format:** YAML frontmatter (name, description, version, emoji, requires) — see `SKILL-FORMAT.md`
 **Skill install** — `skill_install` tool to install skills from URL or Telegram file attachment, with diagnostics via `/skills` command
+**Skill export/import** — Export individual skills as .md or bulk export user-added skills as ZIP; import from ZIP or .md file with path traversal protection, bundled skill overwrite prevention, size caps, and rollback on failure
+**Skill images & labels** — Skills support `image` URL field (loaded via Coil), grouped into "Added" and "Default" sections, SHA-256 hash comparison detects modified defaults
+**Auto-cleanup** — Empty skill directories removed automatically after file deletion
 
 ### Security
 - **Prompt injection defense** — Content Trust Policy in system prompt, `<<<EXTERNAL_UNTRUSTED_CONTENT>>>` boundary markers on all web_fetch/web_search results, 10-pattern suspicious content detection, Unicode homoglyph sanitization, zero-width space normalization
@@ -159,7 +162,7 @@ SeekerClaw is an Android app built for the Solana Seeker phone (also works on an
 - **Dashboard** — Status with pulse animation (running) + dimming (stopped), uptime, message stats, active uplinks, mini terminal, API health monitoring (green/amber/red), dismissible error/network banners, deploy button disabled state when config incomplete
 - **Logs viewer** — Color-coded, auto-scrolling monospace, stable keys for performance
 - **Settings** — Collapsible sections with animation, grouped Anthropic & Telegram settings, edit config with masked fields, required field indicators (*), model dropdown, auto-start, battery optimization, export/import (allowlist-based, size-capped, auto-backup before import), wallet copy button, MCP server management (add/edit/remove/toggle), visual escalation for danger zone, semantic action colors (green positive, red danger), accessibility content descriptions on all icons, permission revoke dialog on granted toggles
-- **Skills tab** — Installed skills list with search, skill detail view, marketplace teaser
+- **Skills tab** — Installed skills list with search, skill detail view with export button, marketplace teaser, skill images (Coil), "Added"/"Default" grouping, bulk export/import (ZIP + .md)
 - **System screen** — API usage stats, memory index status, colored accent borders on stat cards
 - **Foreground service** — START_STICKY with wake lock, boot receiver, watchdog (30s health check), heartbeat end-to-end probe
 - **Open-source ready** — MIT license, CONTRIBUTING.md, issue/PR templates, GitHub Actions CI + release workflows, Firebase Analytics build-optional, product flavors (full w/ Firebase + FOSS without)
@@ -222,14 +225,14 @@ User (Telegram) <--HTTPS--> Telegram API <--polling--> Node.js Gateway (on phone
 
 | Metric | Count |
 |--------|-------|
-| Total commits | 328 |
-| PRs merged | 199 |
+| Total commits | 386 |
+| PRs merged | 200+ |
 | Tools | 56 (9 Jupiter, 13 Android bridge, web search/fetch, memory, cron, skill_install, etc.) + MCP dynamic |
 | Skills | 35 (20 bundled + 13 workspace + 2 user-created) |
 | Android Bridge endpoints | 18+ |
 | Telegram commands | 12 |
-| Lines of JS | ~12,600 (main.js + 15 extracted modules) |
-| Lines of Kotlin | ~12,500 |
+| Lines of JS | ~14,200 (main.js + 15 extracted modules) |
+| Lines of Kotlin | ~13,200 |
 | SQL.js tables | 4 |
 | Themes | 1 (DarkOps only) |
 
@@ -264,6 +267,7 @@ User (Telegram) <--HTTPS--> Telegram API <--polling--> Node.js Gateway (on phone
 
 | Date | Feature | PR |
 |------|---------|-----|
+| 2026-03-02 | Feat: skill export/import, images, labels & hardening — ZIP/md export, import with protection, Coil images, Added/Default grouping | #220 |
 | 2026-03-01 | Docs: update README setup instructions to mention QR generator | direct |
 | 2026-03-01 | Chore: bump versionCode to 8 for dApp Store resubmission | direct |
 | 2026-02-28 | Docs: SAB-AUDIT-v7 — fix stale MCP rate limits in DIAGNOSTICS.md | direct |
