@@ -595,24 +595,6 @@ fun DashboardScreen(onNavigateToSystem: () -> Unit = {}, onNavigateToSettings: (
             )
         }
 
-        // API stats mini row (BAT-32)
-        if (isRunning && apiRequests > 0) {
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
-                    .padding(horizontal = 16.dp, vertical = 14.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                StatMini(small = true, label = "API", value = "$apiRequests req")
-                StatMini(small = true, label = "LATENCY", value = "${apiAvgLatency}ms")
-                StatMini(small = true, label = "CACHE", value = "${apiCacheHits}%")
-            }
-        }
-
         Spacer(modifier = Modifier.height(28.dp))
 
         // Action button — disabled when config incomplete (unless already running)
@@ -657,6 +639,24 @@ fun DashboardScreen(onNavigateToSystem: () -> Unit = {}, onNavigateToSettings: (
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
+        }
+
+        // API stats mini row (BAT-32)
+        if (isRunning && apiRequests > 0) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(SeekerClawColors.Surface, shape)
+                    .padding(horizontal = 16.dp, vertical = 14.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                StatMini(small = true, label = "API", value = "$apiRequests req")
+                StatMini(small = true, label = "LATENCY", value = "${apiAvgLatency}ms")
+                StatMini(small = true, label = "CACHE", value = "${apiCacheHits}%")
+            }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
