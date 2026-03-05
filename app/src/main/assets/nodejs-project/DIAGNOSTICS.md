@@ -27,7 +27,7 @@ grep -i "429\|Too Many Requests\|rate.limit" node_debug.log | tail -10
 
 ---
 
-## Claude API
+## LLM API (Claude / OpenAI)
 
 ### Transport Timeout (Stream Drops)
 **Symptoms:** Responses cut off mid-stream, `[Trace]` entries in logs showing high latency, user sees partial or no response.
