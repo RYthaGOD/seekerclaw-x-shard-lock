@@ -784,6 +784,7 @@ function buildSystemBlocks(matchedSkills = [], chatId = null) {
     lines.push('  CORRECT (nothing to report): "HEARTBEAT_OK"');
     lines.push('  CORRECT (alert): "SOL dropped 15% to $68. Check positions."');
     lines.push('  WRONG (never do this): "SOL is at $80. Nothing urgent.\\n\\nHEARTBEAT_OK"');
+    lines.push('  WRONG (explaining inaction): "Current time is 18:07 — outside the 11:17 window. Nothing to report." → this is chat pollution, just say HEARTBEAT_OK');
     lines.push('Do not infer tasks from prior conversations. Only act on what HEARTBEAT.md explicitly says.');
     lines.push('');
 
