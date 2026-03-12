@@ -1,6 +1,6 @@
 # WEBSITE.md — Website Content
 
-> Last updated: 2026-03-04 | Last deployed: _never_
+> Last updated: 2026-03-13 | Last deployed: _never_
 >
 > **Rule:** Every item must earn its screen space. Less is more.
 > Before deploying, review the Editorial Notes in each section.
@@ -38,7 +38,7 @@
 |-------|-------|---------------|
 | 150,000+ | Seeker Devices | Social proof — large addressable market |
 | 56+ | Built-in Tools | Shows depth — but consider "50+" for cleaner number |
-| 220+ | PRs Shipped | Shows velocity — but do users care about PRs? |
+| 255+ | PRs Shipped | Shows velocity — but do users care about PRs? |
 | 24/7 | Autonomous Agent | Key differentiator — always on |
 
 <!-- REVIEW: Is "PRs Shipped" the right 3rd stat? Alternatives:
@@ -71,8 +71,8 @@ Check SOL & SPL token balances, send transactions, swap tokens via Jupiter,
 create limit orders and DCA positions — all secured by Seed Vault hardware.
 
 ### 2. Autonomous AI Agent (icon: brain)
-Powered by Claude (Opus / Sonnet / Haiku) with persistent memory,
-customizable personality, and scheduled automation running 24/7.
+Powered by Claude or OpenAI (multi-provider) with persistent memory,
+session continuity, customizable personality, and scheduled AI turns running 24/7.
 Self-aware — knows its own capabilities, diagnoses its own issues,
 and tells you what went wrong instead of failing silently.
 
@@ -135,21 +135,17 @@ reminders, research, and more. Export, import, and share skills as files.
 - "Remind me about the Jupiter airdrop claim on March 15th"
 - "Every Friday at 6pm, show me my weekly portfolio performance"
 
-### Shell & DevOps (icon: terminal)
-- "Check disk space and clean up old files"
-- "Curl this API endpoint and summarize the JSON response"
+### Smart Home (icon: home)
+- "Turn off the outdoor lights"
+- "Set heating to 23 degrees"
+- Home Assistant integration — lights, climate, fan, vacuum, alarm, media, scenes
 
 ### Web Research (icon: globe)
 - "Search the web for the latest Solana Mobile news"
 - "Fetch this article and give me a 3-bullet summary"
 
-<!-- REVIEW: "Shell & DevOps" — does a Seeker owner care about this?
-   This is a developer use case on a consumer device.
-   Consider replacing with:
-   - "Health & Fitness" — "Track my calories from a food photo" (CalClaw!)
-   - "Daily Briefing" — "Every morning, send me crypto news + portfolio update"
-   - "Smart Home" — future, but aspirational
-   CalClaw is a strong candidate — food photo → calories is very visual and relatable -->
+<!-- Smart Home is now live via Home Assistant partner skill.
+   Consider also adding: "Health & Fitness" (CalClaw calorie tracker) -->
 
 ---
 
@@ -161,7 +157,7 @@ reminders, research, and more. Export, import, and share skills as files.
 | Runs on device | Cloud only | ✓ Native on Seeker |
 | Wallet access | ✗ | ✓ Via Seed Vault |
 | Persistent memory | ✗ | ✓ Learns and remembers |
-| Shell access | ✗ | ✓ 22 Unix commands + curl |
+| Shell access | ✗ | ✓ 33 Unix commands + curl |
 | Messaging + reactions | ✗ | ✓ Telegram with full formatting |
 | Crypto-native | ✗ | ✓ Solana-first |
 | Cron scheduling | ✗ | ✓ Natural language + recurring |
@@ -195,7 +191,11 @@ reminders, research, and more. Export, import, and share skills as files.
 - MCP server support for extensible tools
 - 35 skills with export/import — CalClaw calorie tracker, Netwatch security audit, and more
 - Skill marketplace: export as .md or ZIP, import custom skills from files
-- OpenClaw v2026.2.28 parity
+- NFT holdings viewer (Helius DAS API — regular + compressed NFTs)
+- Cron agent turns — scheduled jobs run full AI conversations
+- Session memory — agent remembers context across restarts
+- Multi-provider support (Claude + OpenAI)
+- OpenClaw v2026.3.8 parity
 - Open-source: MIT license, CI/CD, community contribution ready
 - Self-aware agent: 100% SAB score (36/36 audit points)
 
@@ -232,9 +232,9 @@ reminders, research, and more. Export, import, and share skills as files.
 <!-- These require index.html edits, not config.js -->
 
 **JSON-LD featureList** (index.html ~line 34-79):
-- Remove: "NFT tracking" (not implemented)
+- "NFT tracking" — now implemented (solana_nft_holdings via Helius DAS API)
 - Remove: "DeFi automation" (overpromise)
-- Add: "AI calorie tracking", "MCP extensibility"
+- Add: "AI calorie tracking", "MCP extensibility", "Smart home control"
 
 **OG/Twitter meta descriptions:**
 - Update to: "Turn your Seeker phone into an autonomous AI agent. Monitor wallets, trade on Jupiter, get Telegram alerts — 24/7 on-device."
