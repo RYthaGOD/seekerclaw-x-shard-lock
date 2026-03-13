@@ -114,6 +114,9 @@ fun SettingsScreen(
     var autoStartOnBoot by remember {
         mutableStateOf(ConfigManager.getAutoStartOnBoot(context))
     }
+    var analyticsEnabled by remember {
+        mutableStateOf(Analytics.isEnabled(context))
+    }
     var keepScreenOn by remember {
         mutableStateOf(ConfigManager.getKeepScreenOn(context))
     }
@@ -505,6 +508,15 @@ fun SettingsScreen(
                         ConfigManager.setAutoStartOnBoot(context, it)
                     },
                     info = SettingsHelpTexts.AUTO_START,
+                )
+                SettingRow(
+                    label = "Usage analytics",
+                    checked = analyticsEnabled,
+                    onCheckedChange = {
+                        analyticsEnabled = it
+                        Analytics.setEnabled(context, it)
+                    },
+                    info = SettingsHelpTexts.ANALYTICS,
                 )
                 PermissionRow(
                     label = "Battery unrestricted",
