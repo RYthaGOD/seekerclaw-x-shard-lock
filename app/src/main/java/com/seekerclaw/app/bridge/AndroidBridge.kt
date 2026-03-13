@@ -56,6 +56,7 @@ class AndroidBridge(
         "/call" to Pair(3, 60_000L),
         "/camera/capture" to Pair(10, 60_000L),
         "/contacts/search" to Pair(20, 60_000L),
+        "/contacts/add" to Pair(10, 60_000L),
         "/location" to Pair(10, 60_000L),
     )
 
