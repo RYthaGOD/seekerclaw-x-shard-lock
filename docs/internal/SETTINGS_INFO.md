@@ -24,8 +24,9 @@
 | # | Setting | Constant | Status | Text |
 |---|---------|----------|--------|------|
 | 9 | Auto-start on boot | `AUTO_START` | ✅ Good | When enabled, the agent starts automatically every time your phone boots up. You won't need to open the app and press Deploy manually. Turn this on if you want your agent always available. |
-| 10 | Battery unrestricted | `BATTERY_UNRESTRICTED` | ✅ Good | Android may kill background apps to save battery. Enabling this prevents the system from stopping your agent while it's running. Highly recommended — without this, your agent may randomly go offline. |
-| 11 | Server mode | `SERVER_MODE` | ✅ Good | Keeps the display awake while the agent runs. Useful when using camera automation on a dedicated device. Higher battery usage and lower physical privacy/security. |
+| 10 | Usage analytics | `ANALYTICS` | ✅ Good | Send anonymous usage data (service starts, model selection, feature usage) to help improve SeekerClaw. No personal data, messages, or API keys are ever collected. You can turn this off at any time. |
+| 11 | Battery unrestricted | `BATTERY_UNRESTRICTED` | ✅ Good | Android may kill background apps to save battery. Enabling this prevents the system from stopping your agent while it's running. Highly recommended — without this, your agent may randomly go offline. |
+| 12 | Server mode | `SERVER_MODE` | ✅ Good | Keeps the display awake while the agent runs. Useful when using camera automation on a dedicated device. Higher battery usage and lower physical privacy/security. |
 
 ## Permissions
 

@@ -9,7 +9,7 @@ object Analytics {
     private const val TAG = "Analytics"
     private const val PREF_KEY = "analytics_enabled"
     private var fb: FirebaseAnalytics? = null
-    private var enabled = true // default ON
+    @Volatile private var enabled = true // default ON
 
     fun init(context: Context) {
         try {
@@ -59,6 +59,7 @@ object Analytics {
     }
 
     fun setUserProperty(key: String, value: String?) {
+        if (!enabled) return
         fb?.setUserProperty(key, value)
     }
 
