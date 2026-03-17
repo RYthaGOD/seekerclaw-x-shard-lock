@@ -33,7 +33,7 @@ SeekerClaw is an Android app built for the Solana Seeker phone (also works on an
 | AI Provider | Anthropic Claude API + OpenAI Responses API | Claude Opus 4.6 default; OpenAI via adapter |
 | Messaging | Telegram Bot API (grammy) | — |
 | Database | SQL.js (WASM SQLite) | 1.12.0 |
-| OpenClaw Parity | OpenClaw gateway (ported) | 2026.3.1 |
+| OpenClaw Parity | OpenClaw gateway (ported) | 2026.3.8 |
 | Web Search | Brave Search + Perplexity Sonar | — |
 | Wallet | Solana Web3.js + Jupiter API | — |
 | Build | Gradle (Kotlin DSL) | — |
@@ -45,6 +45,7 @@ SeekerClaw is an Android app built for the Solana Seeker phone (also works on an
 - **Multi-provider architecture** — Provider adapter pattern (claude/openai) with unified internal message format. OpenAI Responses API support (`/v1/responses`) with SSE streaming, function_call items, vision. Provider-agnostic DB logging and usage tracking. Safe defaults — unknown provider falls back to Claude. Credential hygiene — only active provider's key written to config.json.
 - **Multi-turn task execution** — Reliable P2 multi-turn: tool budget management with validation-aware restore, silent turn stop prevention on budget exhaustion, MAX_TOOL_USES=25 for complex tasks
 - **API timeout hardening** — Configurable timeouts (replacing hardcoded 60s), bounded retry with backoff for timeout paths, turn-level tracing instrumentation, sanitized user-visible error messages, 429 retry jitter
+- **Context token estimation + adaptive trimming** — Token-aware conversation management that estimates context size and trims oldest messages to stay within limits, preventing API failures from oversized contexts
 - **Streaming + payload optimization** — Eliminates API transport timeouts via streaming responses, response field whitelisting to prevent payload bloat (_inputJson leak fix), MAX_HISTORY bumped 20→35 for richer context
 - **Telegram owner gate** — Service refuses to start without valid TELEGRAM_OWNER_ID; unauthorized users get reaction + comment warning; all gate events logged at WARN level
 - **MCP support** — Remote MCP (Model Context Protocol) servers via Streamable HTTP. Users add server URLs in Settings; agent discovers and uses tools at startup. Description sanitization, SHA-256 rug-pull detection, untrusted content wrapping, per-server + global rate limiting.
@@ -226,14 +227,14 @@ User (Telegram) <--HTTPS--> Telegram API <--polling--> Node.js Gateway (on phone
 
 | Metric | Count |
 |--------|-------|
-| Total commits | 343 |
-| PRs merged | 241+ |
+| Total commits | 381 |
+| PRs merged | 259+ |
 | Tools | 56 (9 Jupiter, 13 Android bridge, web search/fetch, memory, cron, skill_install, etc.) + MCP dynamic |
 | Skills | 35 (20 bundled + 13 workspace + 2 user-created) |
 | Android Bridge endpoints | 18+ |
 | Telegram commands | 12 |
-| Lines of JS | ~14,000 (main.js + 15 modules + 3 provider adapters) |
-| Lines of Kotlin | ~13,200 |
+| Lines of JS | ~14,800 (main.js + 15 modules + 3 provider adapters) |
+| Lines of Kotlin | ~14,000 |
 | SQL.js tables | 4 |
 | Themes | 1 (DarkOps only) |
 
@@ -268,6 +269,14 @@ User (Telegram) <--HTTPS--> Telegram API <--polling--> Node.js Gateway (on phone
 
 | Date | Feature | PR |
 |------|---------|-----|
+| 2026-03-14 | Feat: context token estimation + adaptive trimming (BAT-449) | #259 |
+| 2026-03-14 | Fix: empty system prompt block breaks session summary + vision (BAT-448) | #258 |
+| 2026-03-13 | Feat: Telegram Bot API 9.4 button styling — destructive/primary colors (BAT-439) | #257 |
+| 2026-03-12 | Feat: analytics opt-out toggle in Settings | direct |
+| 2026-03-12 | Security: JSON injection fix + bridge rate limiting | #255 |
+| 2026-03-10 | Chore: bump v1.6.0 (code 12) + v1.6.1 (code 13) | direct |
+| 2026-03-09 | Docs: SAB-AUDIT-v12 — first v2 audit, 3 gaps fixed (BAT-360) | direct |
+| 2026-03-09 | Feat: OpenClaw 2026.3.8 parity — 4 ports (BAT-359) | #253 |
 | 2026-03-05 | Feat: multi-provider architecture — Claude/OpenAI adapter pattern, OpenAI Responses API streaming, provider-agnostic DB logging, credential hygiene (BAT-315) | #241 |
 | 2026-03-04 | Fix: secrets hardening — 7 surgical security fixes (task-store atomic writes, security.js audit trail, secrets blocklist expansion) | #223 (BAT-305) |
 | 2026-03-04 | Fix: teach agent to trust [Skill just installed.] context prefix | direct |
