@@ -3,6 +3,21 @@
 All notable changes to SeekerClaw are documented in this file.
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.7.0] - 2026-03-19
+
+### Added
+- **OpenRouter provider** — access 100+ models through a single endpoint with prompt caching, model fallbacks, and freeform model input (BAT-447)
+- **Cron reliability improvements** — ported from OpenClaw: zombie detection, missed job recovery, atomic file writes (BAT-461)
+
+### Fixed
+- Setup token now works with Sonnet 4.6 and Opus 4.6 — billing attribution fix (BAT-460)
+- Dashboard metrics relabeled as "Device Memory" / "Device Storage" for honesty (BAT-463)
+- Added "Last message: Xm ago" to Telegram connection status (BAT-463)
+- Added App Storage breakdown: Workspace, Database, Logs, Runtime (BAT-463)
+- API Limits no longer shows bogus "100% left" when usage data is unavailable (BAT-464)
+- System screen Material Design polish: M3 spacing tokens, removed decorative accent bars (BAT-464)
+- Settings screen: merged Preferences + Permissions sections, renamed to "AI Configuration", collapsible state preserved across tabs (BAT-459)
+
 ## [1.6.1] - 2026-03-14
 
 ### Added
