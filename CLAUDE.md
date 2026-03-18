@@ -576,16 +576,22 @@ cd openclaw-reference && git pull
 
 ### SKILL.md Format
 
-**OpenClaw Format (target):**
+> **Full spec:** See `SKILL-FORMAT.md` — Claude uses this as the reference when creating skills.
+
+**SeekerClaw Format (current):**
 ```yaml
 ---
 name: skill-name
-description: "What the skill does - AI reads this to decide when to use"
-metadata:
-  openclaw:
-    emoji: "🔧"
-    requires:
-      bins: ["curl"]
+description: "What the skill does — AI reads this to decide when to use"
+version: "1.0.0"
+emoji: "🔧"
+image: "https://seekerclaw.xyz/assets/partner-skills/skill-name.jpg"
+requires:
+  bins: []
+  env: []
+allowed-tools:
+  - tool1
+  - tool2
 ---
 
 # Skill Name
@@ -593,18 +599,12 @@ metadata:
 Instructions...
 ```
 
-**Current SeekerClaw Format:**
-```markdown
-# Skill Name
+**Key fields:**
+- `image:` — Absolute HTTPS URL to skill logo. Displayed in Skills screen via Coil. Falls back to emoji → ⚡. **Partner skills** host images at `https://seekerclaw.xyz/assets/partner-skills/{skill-id}.{ext}`, with image files in the `SeekerClaw_Web` repo under `assets/partner-skills/`.
+- `allowed-tools:` — Restricts which tools the skill can use (important for partner skills).
+- OpenClaw's nested `metadata.openclaw` format is also supported; top-level fields take precedence.
 
-Trigger: keyword1, keyword2
-
-## Description
-...
-
-## Instructions
-...
-```
+**Legacy format** (`Trigger: keyword1, keyword2`) is deprecated — still parsed but logs warnings.
 
 ### SOUL.md Template
 
