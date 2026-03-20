@@ -81,6 +81,7 @@ import com.seekerclaw.app.config.AppConfig
 import com.seekerclaw.app.config.ConfigClaimImporter
 import com.seekerclaw.app.config.ConfigManager
 import com.seekerclaw.app.config.availableModels
+import com.seekerclaw.app.config.modelsForProvider
 import com.seekerclaw.app.qr.QrScannerActivity
 import com.seekerclaw.app.service.OpenClawService
 import com.seekerclaw.app.util.Analytics
@@ -97,15 +98,27 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
     // Pre-fill from existing config (for "Run Setup Again" flow)
     val existingConfig = remember { ConfigManager.loadConfig(context) }
 
-    var apiKey by remember { mutableStateOf(existingConfig?.activeCredential ?: "") }
+    var apiKey by remember {
+        mutableStateOf(
+            when (existingConfig?.provider) {
+                "openai" -> existingConfig.openaiApiKey
+                "openrouter" -> existingConfig.openrouterApiKey
+                else -> existingConfig?.activeCredential ?: ""
+            }
+        )
+    }
     var authType by remember { mutableStateOf(existingConfig?.authType ?: "api_key") }
+    var scannedProvider by remember { mutableStateOf(existingConfig?.provider ?: "claude") }
     var botToken by remember { mutableStateOf(existingConfig?.telegramBotToken ?: "") }
     var ownerId by remember { mutableStateOf(existingConfig?.telegramOwnerId ?: "") }
+    val existingProvider = existingConfig?.provider ?: "claude"
     var selectedModel by remember {
         mutableStateOf(
-            existingConfig?.model?.takeIf { model ->
-                availableModels.any { it.id == model }
-            } ?: availableModels[0].id
+            existingConfig?.model?.let { model ->
+                val models = modelsForProvider(existingProvider)
+                if (models.isEmpty() || models.any { it.id == model }) model
+                else models[0].id
+            } ?: modelsForProvider(existingProvider).firstOrNull()?.id ?: availableModels[0].id
         )
     }
     var agentName by remember { mutableStateOf(existingConfig?.agentName ?: "SeekerClaw") }
@@ -141,18 +154,22 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
             ConfigClaimImporter.fetchFromQr(qrText)
                 .onSuccess { imported ->
                     val cfg = imported.config
-                    if (cfg.authType == "setup_token") {
-                        authType = "setup_token"
-                        apiKey = cfg.setupToken
-                    } else {
-                        authType = "api_key"
-                        apiKey = cfg.anthropicApiKey
+                    scannedProvider = cfg.provider
+                    authType = cfg.authType
+                    apiKey = when (cfg.provider) {
+                        "openai" -> cfg.openaiApiKey
+                        "openrouter" -> cfg.openrouterApiKey
+                        else -> if (cfg.authType == "setup_token") cfg.setupToken else cfg.anthropicApiKey
                     }
                     botToken = cfg.telegramBotToken
                     ownerId = cfg.telegramOwnerId
-                    selectedModel = cfg.model.takeIf { m ->
-                        availableModels.any { it.id == m }
-                    } ?: availableModels[0].id
+                    val providerModels = modelsForProvider(cfg.provider)
+                    selectedModel = if (providerModels.isEmpty()) {
+                        cfg.model // OpenRouter: accept freeform model as-is
+                    } else {
+                        cfg.model.takeIf { m -> providerModels.any { it.id == m } }
+                            ?: providerModels[0].id
+                    }
                     agentName = cfg.agentName
                     isQrImporting = false
                     errorMessage = null
@@ -188,13 +205,22 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
 
     fun saveAndStart() {
         if (isStarting) return
+        // Non-Claude providers only support api_key auth
+        val effectiveAuthType = if (scannedProvider != "claude") "api_key" else authType
+
         if (apiKey.isBlank()) {
             apiKeyError = "Required"
-            errorMessage = "Anthropic credential is required"
+            errorMessage = "AI credential is required"
             currentStep = 1
             return
         }
-        val credentialError = ConfigManager.validateCredential(apiKey.trim(), authType)
+        if (scannedProvider != "claude" && apiKey.trim().startsWith("sk-ant-oat")) {
+            apiKeyError = "Setup tokens are only valid for Anthropic"
+            errorMessage = apiKeyError
+            currentStep = 1
+            return
+        }
+        val credentialError = ConfigManager.validateCredential(apiKey.trim(), effectiveAuthType)
         if (credentialError != null) {
             apiKeyError = credentialError
             errorMessage = credentialError
@@ -212,20 +238,45 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
         isStarting = true
         try {
             val trimmedKey = apiKey.trim()
-            // Setup flow is Anthropic-only — force provider back to the Anthropic provider id ("claude").
-            // OpenAI is configured separately in Settings > Provider.
             val existing = ConfigManager.loadConfig(context)
-            val config = AppConfig(
-                anthropicApiKey = if (authType == "api_key") trimmedKey else "",
-                openaiApiKey = existing?.openaiApiKey ?: "",
-                provider = "claude",
-                setupToken = if (authType == "setup_token") trimmedKey else "",
-                authType = authType,
-                telegramBotToken = botToken.trim(),
-                telegramOwnerId = ownerId.trim(),
-                model = selectedModel,
-                agentName = agentName.trim().ifBlank { "SeekerClaw" },
-            )
+            val config = when (scannedProvider) {
+                "openai" -> AppConfig(
+                    anthropicApiKey = existing?.anthropicApiKey ?: "",
+                    setupToken = existing?.setupToken ?: "",
+                    openaiApiKey = trimmedKey,
+                    openrouterApiKey = existing?.openrouterApiKey ?: "",
+                    provider = "openai",
+                    authType = "api_key",
+                    telegramBotToken = botToken.trim(),
+                    telegramOwnerId = ownerId.trim(),
+                    model = selectedModel,
+                    agentName = agentName.trim().ifBlank { "SeekerClaw" },
+                )
+                "openrouter" -> AppConfig(
+                    anthropicApiKey = existing?.anthropicApiKey ?: "",
+                    setupToken = existing?.setupToken ?: "",
+                    openaiApiKey = existing?.openaiApiKey ?: "",
+                    openrouterApiKey = trimmedKey,
+                    provider = "openrouter",
+                    authType = "api_key",
+                    telegramBotToken = botToken.trim(),
+                    telegramOwnerId = ownerId.trim(),
+                    model = selectedModel,
+                    agentName = agentName.trim().ifBlank { "SeekerClaw" },
+                )
+                else -> AppConfig(
+                    anthropicApiKey = if (effectiveAuthType == "api_key") trimmedKey else "",
+                    openaiApiKey = existing?.openaiApiKey ?: "",
+                    openrouterApiKey = existing?.openrouterApiKey ?: "",
+                    provider = "claude",
+                    setupToken = if (effectiveAuthType == "setup_token") trimmedKey else "",
+                    authType = effectiveAuthType,
+                    telegramBotToken = botToken.trim(),
+                    telegramOwnerId = ownerId.trim(),
+                    model = selectedModel,
+                    agentName = agentName.trim().ifBlank { "SeekerClaw" },
+                )
+            }
             ConfigManager.saveConfig(context, config)
             ConfigManager.seedWorkspace(context)
             OpenClawService.start(context)
@@ -379,6 +430,7 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                 isStarting = isStarting,
                 onStartAgent = ::saveAndStart,
                 onBack = { currentStep = 2 },
+                provider = scannedProvider,
             )
             4 -> SetupSuccessStep(
                 agentName = agentName.ifBlank { "SeekerClaw" },
@@ -889,6 +941,7 @@ private fun OptionsStep(
     isStarting: Boolean,
     onStartAgent: () -> Unit,
     onBack: () -> Unit,
+    provider: String = "claude",
 ) {
     val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
 
@@ -914,39 +967,54 @@ private fun OptionsStep(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            ExposedDropdownMenuBox(
-                expanded = modelDropdownExpanded,
-                onExpandedChange = onModelDropdownExpandedChange,
-            ) {
+            val setupModels = modelsForProvider(provider)
+            if (setupModels.isEmpty()) {
+                // Freeform model (e.g. OpenRouter) — editable text field
                 OutlinedTextField(
-                    value = availableModels.first { it.id == selectedModel }.let { "${it.displayName} (${it.description})" },
-                    onValueChange = {},
-                    readOnly = true,
-                    label = { Text("Model", fontSize = 12.sp) },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = modelDropdownExpanded) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                    value = selectedModel,
+                    onValueChange = onModelChange,
+                    singleLine = true,
+                    label = { Text("Model ID", fontSize = 12.sp) },
+                    placeholder = { Text("e.g. anthropic/claude-sonnet-4-6", fontSize = 14.sp, color = SeekerClawColors.TextDim) },
+                    modifier = Modifier.fillMaxWidth(),
                     colors = fieldColors,
                     shape = shape,
                 )
-                ExposedDropdownMenu(
+            } else {
+                ExposedDropdownMenuBox(
                     expanded = modelDropdownExpanded,
-                    onDismissRequest = { onModelDropdownExpandedChange(false) },
+                    onExpandedChange = onModelDropdownExpandedChange,
                 ) {
-                    availableModels.forEach { model ->
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    "${model.displayName} (${model.description})",
-                                    color = SeekerClawColors.TextPrimary,
-                                )
-                            },
-                            onClick = {
-                                onModelChange(model.id)
-                                onModelDropdownExpandedChange(false)
-                            },
-                        )
+                    OutlinedTextField(
+                        value = setupModels.firstOrNull { it.id == selectedModel }?.let { "${it.displayName} (${it.description})" } ?: selectedModel,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Model", fontSize = 12.sp) },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = modelDropdownExpanded) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                        colors = fieldColors,
+                        shape = shape,
+                    )
+                    ExposedDropdownMenu(
+                        expanded = modelDropdownExpanded,
+                        onDismissRequest = { onModelDropdownExpandedChange(false) },
+                    ) {
+                        setupModels.forEach { model ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        "${model.displayName} (${model.description})",
+                                        color = SeekerClawColors.TextPrimary,
+                                    )
+                                },
+                                onClick = {
+                                    onModelChange(model.id)
+                                    onModelDropdownExpandedChange(false)
+                                },
+                            )
+                        }
                     }
                 }
             }
