@@ -993,8 +993,8 @@ Phase 2 (Ship together, after Phase 1 is stable):
   [5] Deferred Tool Loading (P1) ← Per-provider: OpenAI/OpenRouter only, Claude unchanged
   [3] Clarification Tool (P1) ← No dependencies, but changes message interception
 
-Phase 3 (After real usage data):
-  [2] Context Summarization (P2) ← Already have adaptiveTrim, build when users report context loss
+Phase 3 (After Phase 2 is stable):
+  [2] Context Summarization (P1) ← Prevents amnesia in heavy tool-use sessions (35+ msgs in 10min)
 ```
 
 ### Dependency Graph
@@ -1030,7 +1030,7 @@ Deferred Tool Loading ─┬─ tool_search requires all tools accessible
 | 4 | Memory Session Scrubbing | P1 | Small | Low | ~40 | ~10 | 1 (`tools/memory.js`) | YES |
 | 5 | Deferred Tool Loading | P1 | Medium | Medium | ~100 | ~30 | 3 (`tools/system.js`, `claude.js`, `config.js`) | YES (OpenAI/OpenRouter only) |
 | 3 | Clarification Tool | P1 | Medium | Medium | ~100 | ~25 | 4 (`tools/system.js`, `tools/index.js`, `main.js`, `claude.js`) | YES |
-| 2 | Context Summarization | P2 | Medium | Medium | ~80 | ~15 | 2 (`claude.js`, `config.js`) | DEFER (build on user demand) |
+| 2 | Context Summarization | P1 | Medium | Medium | ~80 | ~15 | 2 (`claude.js`, `config.js`) | YES (prevents amnesia in heavy sessions) |
 
 **Total recommended effort:** ~300 new lines + ~80 modified lines across 7 files.
 
