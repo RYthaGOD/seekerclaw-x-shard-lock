@@ -1034,13 +1034,23 @@ async function poll() {
                 log(`[Telegram] getUpdates error: ${result.error_code} ${result.description || ''}`, 'WARN');
             }
         } catch (error) {
+            // Check for timeout BEFORE incrementing pollErrors
+            const isTimeout = /timeout|ETIMEDOUT|ESOCKETTIMEDOUT/i.test(error.message);
+            const isDns = error.code === 'ENOTFOUND' || error.code === 'EAI_AGAIN';
+
+            if (isTimeout && !isDns) {
+                // Telegram long-polling timeouts are normal (~every 30s when idle)
+                // Don't increment pollErrors, don't backoff, just reconnect
+                log('Poll timeout — reconnecting', 'DEBUG');
+                continue;
+            }
+
             pollErrors++;
             if (pollErrors >= 20 && !_prolongedOutageLogged) {
                 log('[Network] Prolonged outage — 20+ consecutive poll failures', 'ERROR');
                 _prolongedOutageLogged = true;
             }
 
-            const isDns = error.code === 'ENOTFOUND' || error.code === 'EAI_AGAIN';
             if (isDns) {
                 dnsFailCount++;
                 // Single clear message after 3 consecutive DNS failures, then silence
