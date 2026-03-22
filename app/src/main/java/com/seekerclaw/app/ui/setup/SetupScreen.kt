@@ -404,10 +404,15 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                 provider = scannedProvider,
                 onProviderChange = { newProvider ->
                     scannedProvider = newProvider
-                    apiKey = ""
+                    // Load existing key for new provider (preserves credentials on switch)
+                    apiKey = when (newProvider) {
+                        "openai" -> existingConfig?.openaiApiKey ?: ""
+                        "openrouter" -> existingConfig?.openrouterApiKey ?: ""
+                        else -> existingConfig?.activeCredential ?: ""
+                    }
                     apiKeyError = null
                     errorMessage = null
-                    authType = "api_key"
+                    authType = if (newProvider == "claude") existingConfig?.authType ?: "api_key" else "api_key"
                     // Reset model to first available for new provider
                     val models = modelsForProvider(newProvider)
                     selectedModel = models.firstOrNull()?.id ?: OPENROUTER_DEFAULT_MODEL
