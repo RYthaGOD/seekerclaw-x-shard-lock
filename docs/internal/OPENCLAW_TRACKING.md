@@ -516,6 +516,6 @@ TODO: Create a script that:
 
 ## Contact & Resources
 
-- **OpenClaw Repository:** https://github.com/niccolobocook/OpenClaw
+- **OpenClaw Repository:** https://github.com/openclaw/openclaw
 - **SeekerClaw Repository:** (this repo)
-- **nodejs-mobile:** https://github.com/niccolobocook/nodejs-mobile
+- **nodejs-mobile:** https://github.com/nodejs-mobile/nodejs-mobile

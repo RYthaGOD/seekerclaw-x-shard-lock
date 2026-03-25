@@ -30,7 +30,7 @@
 
 **Project:** `nodejs-mobile` — a full port of Node.js to mobile platforms (Android + iOS).
 
-- **Community fork (recommended):** https://github.com/niccolobocook/nodejs-mobile — pin to latest stable release at development start
+- **Community fork (recommended):** https://github.com/nodejs-mobile/nodejs-mobile — pin to latest stable release at development start
 - **npm:** `nodejs-mobile-react-native` — React Native plugin that embeds a Node.js runtime
 
 **Node.js Version Support:**
@@ -840,7 +840,7 @@ Solana Mobile's SKR token is the ecosystem token for Seeker:
 - **Jupiter API Docs:** https://station.jup.ag/docs
 - **Android Foreground Services:** https://developer.android.com/develop/background-work/services/foreground-services
 - **Android Keystore:** https://developer.android.com/training/articles/keystore
-- **nodejs-mobile (community fork):** https://github.com/niccolobocook/nodejs-mobile
+- **nodejs-mobile (community fork):** https://github.com/nodejs-mobile/nodejs-mobile
 - **Solana Mobile Discord:** https://discord.gg/solanamobile
 
 ---
