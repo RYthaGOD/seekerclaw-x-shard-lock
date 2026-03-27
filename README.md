@@ -50,11 +50,11 @@ SeekerClaw embeds a Node.js AI agent inside an Android app, running 24/7 as a fo
 ```mermaid
 graph LR
     You["You (Telegram)"] -->|messages| Agent["SeekerClaw Agent"]
-    Agent -->|reasoning| Claude["Claude API"]
+    Agent -->|reasoning| AI["AI Provider (Claude / OpenAI / OpenRouter)"]
     Agent -->|swaps, balance| Solana["Solana / Jupiter"]
     Agent -->|device access| Bridge["Android Bridge"]
     Agent -->|search, fetch| Web["Web APIs"]
-    Claude -->|tool calls| Agent
+    AI -->|tool calls| Agent
 ```
 
 **On-device stack:**
