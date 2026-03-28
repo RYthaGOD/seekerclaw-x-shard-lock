@@ -8,6 +8,7 @@
     <img src="https://img.shields.io/badge/OpenAI-Powered-412991?logo=openai&logoColor=white" alt="OpenAI">
     <img src="https://img.shields.io/badge/OpenRouter-Powered-6467F2?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQyIDAtOC0zLjU4LTgtOHMzLjU4LTggOC04IDggMy41OCA4IDgtMy41OCA4LTggOHoiLz48L3N2Zz4=&logoColor=white" alt="OpenRouter">
     <img src="https://img.shields.io/badge/Solana-Seeker-9945FF?logo=solana&logoColor=white" alt="Solana">
+    <img src="https://img.shields.io/badge/Shard--Lock-DePIN-FF6B35?logo=rust&logoColor=white" alt="Shard-Lock">
     <img src="https://img.shields.io/badge/Telegram-Bot-26A5E4?logo=telegram&logoColor=white" alt="Telegram">
     <img src="https://img.shields.io/badge/License-MIT-blue" alt="MIT License">
   </p>
@@ -18,7 +19,7 @@
 
 ---
 
-SeekerClaw embeds a Node.js AI agent inside an Android app, running 24/7 as a foreground service. You interact through Telegram — ask questions, control your phone, trade crypto, schedule tasks. **56 tools, 35 skills, Solana wallet, multi-provider AI (Claude + OpenAI + OpenRouter)**, all running locally on your device. Built for the Solana Seeker, runs on any Android 14+ phone.
+SeekerClaw embeds a Node.js AI agent inside an Android app, running 24/7 as a foreground service. You interact through Telegram — ask questions, control your phone, trade crypto, shard data, schedule tasks. **60 tools, 36 skills, Solana wallet, Shard-Lock storage, multi-provider AI (Claude + OpenAI + OpenRouter)**, all running locally on your device. Built for the Solana Seeker, runs on any Android 14+ phone.
 
 <div align="center">
   <img src="design/screenshots/01-first-launch.png" width="130">
@@ -36,11 +37,12 @@ SeekerClaw embeds a Node.js AI agent inside an Android app, running 24/7 as a fo
 | :robot: | **AI Engine** | Claude, OpenAI, or OpenRouter (multi-provider) with multi-turn tool use |
 | :speech_balloon: | **Telegram** | Full bot — reactions, file sharing, inline keyboards, 12 commands |
 | :link: | **Solana Wallet** | Swaps, limit orders, DCA, transfers via Jupiter + MWA |
+| :lock: | **Shard-Lock** | Erasure-coded storage, Merkle proofs, Ed25519 heartbeats via Rust JNI |
 | :iphone: | **Device Control** | Battery, GPS, camera, SMS, calls, clipboard, TTS |
 | :brain: | **Memory** | Persistent personality, daily notes, ranked keyword search |
 | :alarm_clock: | **Scheduling** | Cron jobs with natural language ("remind me in 30 min") |
 | :globe_with_meridians: | **Web Intel** | Search (Brave / Perplexity / Exa / Tavily / Firecrawl), fetch, caching |
-| :electric_plug: | **Extensible** | 35 skills + custom skills + MCP remote tools |
+| :electric_plug: | **Extensible** | 36 skills + custom skills + MCP remote tools |
 
 <details>
 <summary><strong>Architecture</strong></summary>
@@ -53,6 +55,7 @@ graph LR
     Agent -->|reasoning| AI["AI Provider (Claude / OpenAI / OpenRouter)"]
     Agent -->|swaps, balance| Solana["Solana / Jupiter"]
     Agent -->|device access| Bridge["Android Bridge"]
+    Agent -->|shard, prove| ShardLock["Shard-Lock (Rust JNI)"]
     Agent -->|search, fetch| Web["Web APIs"]
     AI -->|tool calls| Agent
 ```
@@ -61,12 +64,15 @@ graph LR
 
 ```
 Android App (Kotlin, Jetpack Compose)
+ ├─ Rust-Core (JNI)      — Reed-Solomon erasure, SHA-256 Merkle, Ed25519 signing
+ ├─ StorageManager        — On-device shard persistence
  └─ Foreground Service
      └─ Node.js Runtime (nodejs-mobile)
          ├─ claude.js      — AI provider API, system prompt, conversations
-         ├─ tools/         — 56 tool handlers across 12 modules
+         ├─ tools/         — 60 tool handlers across 13 modules
          ├─ task-store.js  — Persistent task checkpoints
          ├─ solana.js      — Jupiter swaps, DCA, limit orders
+         ├─ shardlock.js   — Shard-Lock storage tools (encode, heartbeat, status, clear)
          ├─ telegram.js    — Bot, formatting, commands
          ├─ memory.js      — Persistent memory + ranked search
          ├─ skills.js      — Skill loading + semantic routing
@@ -84,11 +90,15 @@ Android App (Kotlin, Jetpack Compose)
 
 ## Quick Start
 
-**Prerequisites:** Android Studio, JDK 17, Android SDK 35
+**Prerequisites:** Android Studio, JDK 17, Android SDK 35, Android NDK, Rust + `cargo-ndk` (for Shard-Lock)
 
 ```bash
-git clone https://github.com/sepivip/SeekerClaw.git
-cd SeekerClaw
+git clone https://github.com/RYthaGOD/seekerclaw-x-shard-lock.git
+cd seekerclaw-x-shard-lock
+
+# Build Rust-Core JNI (requires WSL/Linux with cargo-ndk installed)
+bash scripts/build-rust-core.sh
+
 ./gradlew assembleDappStoreDebug
 adb install app/build/outputs/apk/dappStore/debug/app-dappStore-debug.apk
 ```
@@ -98,6 +108,25 @@ Open the app → pick your AI provider (Claude, OpenAI, or OpenRouter) → enter
 > **Step-by-step setup guide:** [How to set up SeekerClaw](https://x.com/SeekerClaw/status/2029197829068005849)
 
 > **Beta** — SeekerClaw is under active development. Expect rough edges and breaking changes. Issues and PRs welcome.
+
+## Shard-Lock Integration
+
+This fork integrates the [Shard-Lock](https://github.com/RYthaGOD/seeker-storage) decentralized storage protocol, giving the AI agent the ability to erasure-encode data, generate Merkle proofs, and sign Ed25519 heartbeats — all powered by a Rust JNI core running natively on ARM64.
+
+| Tool | Description |
+|---|---|
+| `shardlock_store` | Erasure-encode data into resilient shards stored on-device |
+| `shardlock_heartbeat` | Generate a signed Ed25519 storage proof |
+| `shardlock_status` | Query shard count, storage usage, Merkle roots, thermal status |
+| `shardlock_clear` | Clear shards for a specific Merkle root |
+
+The Rust-Core JNI provides:
+- **Reed-Solomon erasure coding** — split data into data + parity shards for fault tolerance
+- **SHA-256 Merkle tree** — compute a unique root hash over all shards
+- **Ed25519 signing** — cryptographically prove the device is storing data
+- **Thermal Delta Engine** — ambient-aware throttling to protect device hardware
+
+> Shard-Lock tools are available in Telegram via natural language — try "store this data using shard-lock" or "generate a storage proof".
 
 ## Partner Skills
 
