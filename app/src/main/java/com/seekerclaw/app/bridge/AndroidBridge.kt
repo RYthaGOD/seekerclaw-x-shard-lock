@@ -23,6 +23,8 @@ import com.seekerclaw.app.camera.CameraCaptureActivity
 import com.seekerclaw.app.config.ConfigManager
 import com.seekerclaw.app.util.Analytics
 import com.seekerclaw.app.util.ServiceState
+import com.seekerclaw.app.storage.RustCore
+import com.seekerclaw.app.storage.StorageManager
 import fi.iki.elonen.NanoHTTPD
 import org.json.JSONArray
 import org.json.JSONObject
@@ -48,6 +50,8 @@ class AndroidBridge(
 
     private var tts: TextToSpeech? = null
     private var ttsReady = false
+    private val rustCore = RustCore()
+    private val storageManager = StorageManager(context)
 
     // Per-endpoint rate limiting (thread-safe for NanoHTTPD's thread pool)
     private val rateLimiter = ConcurrentHashMap<String, MutableList<Long>>()
@@ -144,6 +148,10 @@ class AndroidBridge(
                 "/solana/send" -> handleSolanaSend(params)
                 "/config/save-owner" -> handleConfigSaveOwner(params)
                 "/stats/db-summary" -> proxyToNodeStats()
+                "/shardlock/encode" -> handleShardlockEncode(params)
+                "/shardlock/heartbeat" -> handleShardlockHeartbeat(params)
+                "/shardlock/status" -> handleShardlockStatus()
+                "/shardlock/clear" -> handleShardlockClear(params)
                 "/ping" -> jsonResponse(200, mapOf("status" to "ok", "bridge" to "AndroidBridge"))
                 else -> jsonResponse(404, mapOf("error" to "Unknown endpoint: $uri"))
             }
@@ -658,6 +666,116 @@ class AndroidBridge(
     }
 
     // ==================== Helpers ====================
+
+    // ==================== Shard-Lock ====================
+
+    private fun handleShardlockEncode(params: JSONObject): Response {
+        if (!RustCore.isAvailable()) {
+            return jsonResponse(503, mapOf("error" to "Rust-Core not available (librust_core.so not loaded)"))
+        }
+
+        val data = params.optString("data", "")
+        if (data.isBlank()) {
+            return jsonResponse(400, mapOf("error" to "data is required"))
+        }
+
+        val dataShards = params.optInt("dataShards", 4)
+        val parityShards = params.optInt("parityShards", 2)
+
+        return try {
+            val dataBytes = data.toByteArray()
+            val shards = rustCore.encode(dataBytes, dataShards, parityShards)
+            val merkleRoot = rustCore.computeMerkleRoot(shards)
+            val merkleRootHex = merkleRoot.joinToString("") { "%02x".format(it) }
+
+            // Save shards to local storage
+            storageManager.saveShards(merkleRootHex, shards)
+
+            val totalBytes = shards.sumOf { it.size.toLong() }
+            jsonResponse(200, mapOf(
+                "merkleRoot" to merkleRootHex,
+                "shardCount" to shards.size,
+                "totalShards" to shards.size,
+                "dataShards" to dataShards,
+                "parityShards" to parityShards,
+                "bytesStored" to totalBytes,
+            ))
+        } catch (e: Exception) {
+            Log.e(TAG, "ShardLock encode error", e)
+            jsonResponse(500, mapOf("error" to "Encode failed: ${e.message}"))
+        }
+    }
+
+    private fun handleShardlockHeartbeat(params: JSONObject): Response {
+        if (!RustCore.isAvailable()) {
+            return jsonResponse(503, mapOf("error" to "Rust-Core not available"))
+        }
+
+        val stats = storageManager.getStats()
+        @Suppress("UNCHECKED_CAST")
+        val roots = stats["merkleRoots"] as? List<String> ?: emptyList()
+
+        val requestedRoot = params.optString("merkleRoot", "")
+        val targetRoot = if (requestedRoot.isNotBlank()) requestedRoot else roots.lastOrNull()
+
+        if (targetRoot.isNullOrBlank()) {
+            return jsonResponse(400, mapOf("error" to "No shards stored. Store data first with /shardlock/encode."))
+        }
+
+        return try {
+            // Decode hex root to bytes
+            val rootBytes = targetRoot.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+            val shardCount = stats["shardCount"] as? Int ?: 0
+
+            // Generate a deterministic key for demo (in production, use Seed Vault TEE key)
+            val demoKey = ByteArray(32) { (it + 1).toByte() }
+            val signature = rustCore.generateHeartbeat(rootBytes, shardCount, demoKey)
+            val sigHex = signature.joinToString("") { "%02x".format(it) }
+
+            jsonResponse(200, mapOf(
+                "merkleRoot" to targetRoot,
+                "shardCount" to shardCount,
+                "signature" to sigHex,
+                "signatureLength" to signature.size,
+                "timestamp" to System.currentTimeMillis(),
+            ))
+        } catch (e: Exception) {
+            Log.e(TAG, "ShardLock heartbeat error", e)
+            jsonResponse(500, mapOf("error" to "Heartbeat failed: ${e.message}"))
+        }
+    }
+
+    private fun handleShardlockStatus(): Response {
+        val stats = storageManager.getStats()
+        val thermalStatus = if (RustCore.isAvailable()) {
+            // Approximate thermal reading (real values come from device sensors)
+            rustCore.getThermalStatus(40, 25)
+        } else -1
+
+        return jsonResponse(200, mapOf(
+            "shardCount" to stats["shardCount"],
+            "totalBytes" to stats["totalBytes"],
+            "totalFormatted" to stats["totalFormatted"],
+            "merkleRoots" to stats["merkleRoots"],
+            "rootCount" to stats["rootCount"],
+            "rustCoreAvailable" to RustCore.isAvailable(),
+            "thermalStatus" to thermalStatus,
+        ))
+    }
+
+    private fun handleShardlockClear(params: JSONObject): Response {
+        val merkleRoot = params.optString("merkleRoot", "")
+        if (merkleRoot.isBlank()) {
+            return jsonResponse(400, mapOf("error" to "merkleRoot is required"))
+        }
+
+        val deleted = storageManager.clearShards(merkleRoot)
+        return jsonResponse(200, mapOf(
+            "success" to true,
+            "merkleRoot" to merkleRoot,
+            "deletedCount" to deleted,
+        ))
+    }
 
     // Proxy /stats/db-summary to Node.js internal stats server (BAT-31)
     private fun proxyToNodeStats(): Response {

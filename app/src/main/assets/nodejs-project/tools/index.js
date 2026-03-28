@@ -16,6 +16,7 @@ const androidMod  = require('./android');
 const solanaMod   = require('./solana');
 const telegramMod = require('./telegram');
 const systemMod   = require('./system');
+const shardlockMod = require('./shardlock');
 
 // ── Merged TOOLS array ───────────────────────────────────────────────────────
 
@@ -30,6 +31,7 @@ const TOOLS = [
     ...solanaMod.tools,
     ...telegramMod.tools,
     ...systemMod.tools,
+    ...shardlockMod.tools,
 ];
 
 // ── Handler dispatch map ─────────────────────────────────────────────────────
@@ -45,6 +47,7 @@ const handlerMap = Object.assign({},
     solanaMod.handlers,
     telegramMod.handlers,
     systemMod.handlers,
+    shardlockMod.handlers,
 );
 
 // ── Shared state ─────────────────────────────────────────────────────────────

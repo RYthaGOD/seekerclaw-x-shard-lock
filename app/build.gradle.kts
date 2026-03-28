@@ -126,7 +126,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            jniLibs.srcDirs("libnode/bin/")
+            jniLibs.srcDirs("libnode/bin/", "src/main/jniLibs")
         }
     }
 }
