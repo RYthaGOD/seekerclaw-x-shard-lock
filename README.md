@@ -19,7 +19,7 @@
 
 ---
 
-SeekerClaw embeds a Node.js AI agent inside an Android app, running 24/7 as a foreground service. You interact through Telegram — ask questions, control your phone, trade crypto, shard data, schedule tasks. **60 tools, 36 skills, Solana wallet, Shard-Lock storage, multi-provider AI (Claude + OpenAI + OpenRouter)**, all running locally on your device. Built for the Solana Seeker, runs on any Android 14+ phone.
+SeekerClaw embeds a Node.js AI agent inside an Android app, running 24/7 as a foreground service. You interact through Telegram — ask questions, control your phone, trade crypto, shard data, schedule tasks. **61 tools, 36 skills, Solana wallet, Shard-Lock storage, multi-provider AI (Claude + OpenAI + OpenRouter)**, all running locally on your device. Built for the Solana Seeker, runs on any Android 14+ phone.
 
 <div align="center">
   <img src="design/screenshots/01-first-launch.png" width="130">
@@ -69,7 +69,7 @@ Android App (Kotlin, Jetpack Compose)
  └─ Foreground Service
      └─ Node.js Runtime (nodejs-mobile)
          ├─ claude.js      — AI provider API, system prompt, conversations
-         ├─ tools/         — 60 tool handlers across 13 modules
+         ├─ tools/         — 61 tool handlers across 13 modules
          ├─ task-store.js  — Persistent task checkpoints
          ├─ solana.js      — Jupiter swaps, DCA, limit orders
          ├─ shardlock.js   — Shard-Lock storage tools (encode, heartbeat, status, clear)
@@ -117,8 +117,9 @@ This fork integrates the [Shard-Lock](https://github.com/RYthaGOD/seeker-storage
 |---|---|
 | `shardlock_store` | Erasure-encode data into resilient shards stored on-device |
 | `shardlock_heartbeat` | Generate a signed Ed25519 storage proof |
-| `shardlock_status` | Query shard count, storage usage, Merkle roots, thermal status |
+| `shardlock_status` | Query shard count, storage usage, Merkle roots, thermal status, SQLite registry |
 | `shardlock_clear` | Clear shards for a specific Merkle root |
+| `shardlock_anchor` | Anchor a heartbeat proof on Solana via Memo transaction |
 
 The Rust-Core JNI provides:
 - **Reed-Solomon erasure coding** — split data into data + parity shards for fault tolerance
@@ -126,7 +127,13 @@ The Rust-Core JNI provides:
 - **Ed25519 signing** — cryptographically prove the device is storing data
 - **Thermal Delta Engine** — ambient-aware throttling to protect device hardware
 
-> Shard-Lock tools are available in Telegram via natural language — try "store this data using shard-lock" or "generate a storage proof".
+**Local Shard Discovery** — All shard metadata is persisted in a local SQLite registry (`shards` table) for instant querying without a server.
+
+**On-Chain Heartbeat Anchoring** — Heartbeat proofs can be anchored on Solana via a Memo transaction (~0.000005 SOL). The memo contains a versioned, pipe-delimited payload:
+```
+SHARDLOCK|v1|<merkleRoot>|<ed25519Signature>|<shardCount>|<timestamp>|<walletPubkey>
+```
+Anyone can verify the proof by checking the Ed25519 signature against the Merkle root and shard count.
 
 ## Partner Skills
 

@@ -1,38 +1,57 @@
 ---
-name: shardlock
-description: Manage decentralized storage on your Seeker using the Shard-Lock protocol. Encode data into erasure-coded shards, generate signed storage proofs (heartbeats), and monitor your node's storage state.
-version: 1.0.0
-emoji: 🔒
+name: shard-lock
+description: "Decentralized storage primitives — erasure coding, Merkle proofs, Ed25519 heartbeats, and on-chain anchoring via Solana Memo"
+version: "2.0.0"
 triggers:
-  - shard
-  - shardlock
   - shard-lock
-  - storage proof
+  - shardlock
+  - shard lock
   - erasure
   - merkle
-  - heartbeat proof
-  - encode shards
+  - heartbeat
+  - storage proof
+  - anchor heartbeat
+  - anchor proof
+  - on-chain proof
+  - depin storage
+emoji: "🔒"
 ---
 
-# Shard-Lock Storage
+## Description
+Shard-Lock gives SeekerClaw hardware-accelerated decentralized storage.
+Data is split via Reed-Solomon erasure coding, hashed into a SHA-256 Merkle tree,
+and signed with Ed25519 to produce verifiable storage proofs (heartbeats).
+Heartbeats can be anchored on the Solana blockchain via Memo transactions for
+publicly verifiable, timestamped proof of storage.
 
-You can help the user manage decentralized storage using the Shard-Lock protocol.
+## Instructions
 
-## Capabilities
+### Store data
+Use `shardlock_store` with `data` (required), optional `dataShards` (default 4),
+`parityShards` (default 2), and `label`. Returns the `merkleRoot` as the unique
+identifier for this shard set.
 
-- **Store data**: Use `shardlock_store` to erasure-encode data into resilient shards stored on-device.
-- **Generate proofs**: Use `shardlock_heartbeat` to create Ed25519-signed storage proofs (heartbeats).
-- **Check status**: Use `shardlock_status` to show shard count, storage usage, and Merkle roots.
-- **Clear shards**: Use `shardlock_clear` to remove shards for a specific Merkle root.
+### Generate a heartbeat
+Use `shardlock_heartbeat` with optional `merkleRoot`. Produces a 64-byte Ed25519
+signature proving the device actively holds the shards.
 
-## How It Works
+### Check status
+Use `shardlock_status` — returns live stats from the device plus the full shard
+registry from SQLite (labels, timestamps, anchor tx, last heartbeat).
 
-1. Data is split into **data shards** and **parity shards** using Reed-Solomon erasure coding.
-2. A **SHA-256 Merkle tree** is computed over all shards, producing a unique root hash.
-3. The Merkle root can be signed with an Ed25519 key to produce a **heartbeat** — a cryptographic proof that the device is actively storing data.
+### Clear shards
+Use `shardlock_clear` with the `merkleRoot` to delete. Removes from both
+filesystem and SQLite.
 
-## Tips
+### Anchor on-chain
+Use `shardlock_anchor` to submit a heartbeat proof to the Solana blockchain as a
+Memo transaction. This creates a permanent, publicly verifiable record. The user
+must approve the transaction in their wallet. Costs ~0.000005 SOL (tx fee only).
+Memo format: `SHARDLOCK|v1|<merkleRoot>|<ed25519Sig>|<shardCount>|<timestamp>|<wallet>`
 
-- Default: 4 data shards + 2 parity shards (can recover from up to 2 lost shards).
-- The Merkle root is the unique identifier for each stored dataset.
-- Heartbeats are 64-byte Ed25519 signatures — the building block for on-chain storage proofs.
+## Tools
+- shardlock_store: Erasure-encode and persist data
+- shardlock_heartbeat: Sign a storage proof
+- shardlock_status: Query shard registry and device stats
+- shardlock_clear: Remove shards by Merkle root
+- shardlock_anchor: Anchor heartbeat on Solana (Memo tx)

@@ -164,6 +164,53 @@ function buildSolTransferTx(fromBase58, toBase58, lamports, recentBlockhashBase5
     ]);
 }
 
+// Memo Program ID: MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr
+const MEMO_PROGRAM_ID = base58Decode('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr');
+
+// Build an unsigned Memo transaction (legacy format)
+// memoText: UTF-8 string to write on-chain as a verifiable memo
+function buildMemoTx(signerBase58, recentBlockhashBase58, memoText) {
+    const signer = base58Decode(signerBase58);
+    const blockhash = base58Decode(recentBlockhashBase58);
+    const memoData = Buffer.from(memoText, 'utf8');
+
+    if (memoData.length > 566) {
+        throw new Error(`Memo too long (${memoData.length} bytes, max 566)`);
+    }
+
+    // Compact-u16 encoding for memo data length
+    let lenBytes;
+    if (memoData.length < 128) {
+        lenBytes = Buffer.from([memoData.length]);
+    } else {
+        lenBytes = Buffer.from([
+            (memoData.length & 0x7F) | 0x80,
+            (memoData.length >> 7) & 0x7F,
+        ]);
+    }
+
+    // Message: header + account keys + blockhash + instructions
+    const message = Buffer.concat([
+        Buffer.from([1, 0, 1]),          // num_required_sigs=1, readonly_signed=0, readonly_unsigned=1
+        Buffer.from([2]),                // compact-u16: 2 account keys
+        signer,                          // index 0: signer (writable, signer)
+        MEMO_PROGRAM_ID,                 // index 1: Memo Program (readonly)
+        blockhash,                       // recent blockhash
+        Buffer.from([1]),                // compact-u16: 1 instruction
+        Buffer.from([1]),                // program_id_index = 1 (Memo Program)
+        Buffer.from([1, 0]),             // compact-u16 num_accounts=1, index [0] (signer)
+        lenBytes,                        // compact-u16 data_length
+        memoData,                        // memo payload
+    ]);
+
+    // Full transaction: signature count + empty signature + message
+    return Buffer.concat([
+        Buffer.from([1]),                // compact-u16: 1 signature
+        Buffer.alloc(64),               // empty signature placeholder
+        message,
+    ]);
+}
+
 // ============================================================================
 // JUPITER DEX (Token resolution, quotes, swaps, prices)
 // ============================================================================
@@ -951,6 +998,7 @@ module.exports = {
     solanaRpc,
     base58Encode,
     buildSolTransferTx,
+    buildMemoTx,
     refreshJupiterProgramLabels,
     jupiterRequest,
     isValidSolanaAddress,

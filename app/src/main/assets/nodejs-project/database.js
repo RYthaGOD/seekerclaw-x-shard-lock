@@ -133,6 +133,21 @@ async function initDatabase() {
         )`);
         db.run(`CREATE INDEX IF NOT EXISTS idx_sessions_ended ON sessions(ended_at)`);
 
+        // Shard-Lock local shard registry
+        db.run(`CREATE TABLE IF NOT EXISTS shards (
+            merkle_root TEXT PRIMARY KEY,
+            shard_count INTEGER NOT NULL,
+            data_shards INTEGER NOT NULL,
+            parity_shards INTEGER NOT NULL,
+            total_bytes INTEGER NOT NULL,
+            original_size INTEGER DEFAULT 0,
+            label TEXT,
+            created_at TEXT NOT NULL,
+            last_heartbeat TEXT,
+            anchor_tx TEXT
+        )`);
+        db.run(`CREATE INDEX IF NOT EXISTS idx_shards_created ON shards(created_at)`);
+
         // Persist immediately so the file exists on disk right away
         saveDatabase();
 
