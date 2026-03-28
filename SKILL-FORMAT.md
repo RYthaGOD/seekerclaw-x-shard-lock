@@ -127,6 +127,20 @@ Skills can include an `image:` field with a full HTTPS URL to a logo/avatar. Thi
 - Minor (1.x.0): Add new capabilities, new API endpoints
 - Major (x.0.0): Breaking changes to skill behavior
 
+## SeekerClaw Tokenization & Bags Hackathon
+
+SeekerClaw will **tokenize** and join the **Bags Hackathon** at [https://bags.fm/hackathon](https://bags.fm/hackathon).
+
+### Token Details
+
+| Field    | Value                                           |
+|----------|-------------------------------------------------|
+| Name     | SeekerClaw                                      |
+| Symbol   | SKC                                             |
+| Supply   | 1,000,000,000 (1B)                              |
+| Platform | [Bags](https://bags.fm)                         |
+| Hackathon| [Bags Hackathon](https://bags.fm/hackathon)     |
+
 ## Examples
 
 ### Simple skill (flat file)
