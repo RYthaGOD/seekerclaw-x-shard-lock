@@ -3,8 +3,7 @@
 // Part of the Seeker Sentinel Protocol Phase 2.
 
 const { androidBridgeCall } = require('./bridge');
-const { getShardRegistry, updateHeartbeat, getDb } = require('./tools/shardlock');
-const { exportDatabase } = require('./database');
+const { getShardRegistry, updateHeartbeat } = require('./tools/shardlock');
 const { log } = require('./config');
 
 let isSentinelRunning = false;
@@ -104,6 +103,7 @@ async function runSentinel() {
 
     // 4. Sentinel MVP: Create "State-of-Mind" Snapshot (Aether Index) if due
     try {
+        const { getDb } = require('./database');
         const db = getDb();
         const metaRows = db ? db.exec(`SELECT value FROM meta WHERE key = 'last_aether_snapshot'`) : [];
         const lastSnapshot = (metaRows.length > 0 && metaRows[0].values.length > 0) ? new Date(metaRows[0].values[0][0]).getTime() : 0;
@@ -125,6 +125,7 @@ async function runSentinel() {
     
     // Update internal meta for health dashboard
     try {
+        const { getDb } = require('./database');
         const db = getDb();
         if (db) {
             db.run(`INSERT OR REPLACE INTO meta (key, value) VALUES ('last_sentinel_run', ?)`, [new Date().toISOString()]);
@@ -136,7 +137,8 @@ async function runSentinel() {
  * Captures the current Aether Index (database) and stores it via Shard-Lock.
  */
 async function createStateSnapshot() {
-    const { handleShardlockStore } = require('./tools/shardlock');
+    const { handlers } = require('./tools/shardlock');
+    const { exportDatabase } = require('./database');
     
     const dbBuffer = exportDatabase();
     if (!dbBuffer) {
@@ -149,7 +151,7 @@ async function createStateSnapshot() {
 
     log(`[Sentinel] Storing Aether State (${dbBuffer.length} bytes) in Shard-Lock...`, 'INFO');
     
-    const result = await handleShardlockStore({
+    const result = await handlers.shardlock_store({
         data: base64Data,
         label: label,
         dataShards: 4,
@@ -161,6 +163,7 @@ async function createStateSnapshot() {
     } else {
         log(`[Sentinel] Aether Index Snapshot secured: ${result.merkleRoot}`, 'INFO');
         // Record successful snapshot time
+        const { getDb } = require('./database');
         const db = getDb();
         if (db) {
             db.run(`INSERT OR REPLACE INTO meta (key, value) VALUES ('last_aether_snapshot', ?)`, [new Date().toISOString()]);
