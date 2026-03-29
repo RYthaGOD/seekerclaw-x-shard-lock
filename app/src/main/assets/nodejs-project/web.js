@@ -1,4 +1,4 @@
-// SeekerClaw — web.js
+// shardclaw — web.js
 // Web cache, HTML-to-markdown, search providers, web fetch.
 // Depends on: config.js, http.js
 
@@ -135,8 +135,8 @@ async function searchPerplexity(query, freshness) {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${apiKey}`,
-            'HTTP-Referer': 'https://seekerclaw.com',
-            'X-Title': 'SeekerClaw Web Search'
+            'HTTP-Referer': 'https://shardclaw.com',
+            'X-Title': 'shardclaw Web Search'
         }
     }, body);
 

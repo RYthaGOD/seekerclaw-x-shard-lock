@@ -1,4 +1,4 @@
-# SAB-AUDIT-v14 — SeekerClaw Agent Self-Knowledge Audit
+# SAB-AUDIT-v14 — shardclaw Agent Self-Knowledge Audit
 
 > **Date:** 2026-03-22
 > **Scope:** Re-audit after DeerFlow Phase 1 (BAT-474: loop detection, memory scrubbing), DeerFlow Phase 2 (BAT-475: context summarization, deferred tool loading), js_eval sandbox hardening (BAT-466), emulator IP gate (BAT-467), tools/ refactor (BAT-470), multi-provider QR import (BAT-471), v1.7.0 release.
@@ -30,7 +30,7 @@ Scoring: ✅ = 3 pts, ⚠️ = 1 pt, ❌ = 0 pts.
 | MAX_HISTORY | 35 (claude.js:173) | "35 messages per chat" (line 922) | ✅ |
 | max_tokens | 4096 (claude.js:1914) | "4096 tokens per response" (line 924) | ✅ |
 | SHELL_ALLOWLIST | 34 commands (config.js:253-260) | 34 commands listed (line 714) | ✅ |
-| SECRETS_BLOCKED | config.js, config.json, config.yaml, seekerclaw.db (config.js:244) | seekerclaw.db listed as BLOCKED (line 629) | ✅ |
+| SECRETS_BLOCKED | config.js, config.json, config.yaml, shardclaw.db (config.js:244) | shardclaw.db listed as BLOCKED (line 629) | ✅ |
 | BLOCKED_MODULES | 7 modules (tools/system.js:261) | Lists all 7 (line 468) | ✅ |
 | js_eval code limit | 10,000 chars (tools/system.js) | "10,000-character code limit" (line 715) | ✅ |
 | CONFIRM_REQUIRED | 8 tools (config.js:268-277) | 8 tools listed (line 562) | ✅ |

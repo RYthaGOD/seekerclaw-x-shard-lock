@@ -1,12 +1,12 @@
-# SeekerClaw Ideas Vault
+# shardclaw Ideas Vault
 
 ## 2026-02-20 — Seeker Shield (Sysadmin + Network Security Skill)
 
-Build a powerful SeekerClaw security skill for host/network auditing and guided hardening.
+Build a powerful shardclaw security skill for host/network auditing and guided hardening.
 
 ### Concept
 - Name: seeker-shield (alt: secops-guardian, host-sentinel)
-- Focus: sysadmin + network security copilot for SeekerClaw hosts
+- Focus: sysadmin + network security copilot for shardclaw hosts
 - Default mode: read-only audits
 - Changes only with explicit confirmation + rollback commands
 

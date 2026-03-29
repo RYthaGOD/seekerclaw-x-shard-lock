@@ -1,4 +1,4 @@
-# Log Audit — SeekerClaw Node.js Agent
+# Log Audit — shardclaw Node.js Agent
 
 **Date:** 2026-02-19
 **Scope:** All 14 JS modules + Android log pipeline (LogCollector, OpenClawService, LogsScreen)
@@ -15,12 +15,12 @@ function log(msg) {
     const safe = _redactFn ? _redactFn(msg) : msg;
     const line = `[${localTimestamp()}] ${safe}\n`;       // → node_debug.log
     try { fs.appendFileSync(debugLog, line); } catch (_) {}
-    console.log('[SeekerClaw] ' + safe);                  // → stdout (unused)
+    console.log('[shardclaw] ' + safe);                  // → stdout (unused)
 }
 ```
 
 - **One level** — everything is flat `log()`. No DEBUG/INFO/WARN/ERROR distinction.
-- **Dual output** — writes to `node_debug.log` (with ISO timestamp) AND stdout (with `[SeekerClaw]` prefix).
+- **Dual output** — writes to `node_debug.log` (with ISO timestamp) AND stdout (with `[shardclaw]` prefix).
 - `stdout` goes nowhere useful — Android reads the file, not stdout.
 
 ### Android side
@@ -46,7 +46,7 @@ LogsScreen.kt
 Every log line displays **two timestamps**:
 
 ```
-[10:30:00] [Node] [2026-02-19T10:30:00+03:00] Starting SeekerClaw AI Agent...
+[10:30:00] [Node] [2026-02-19T10:30:00+03:00] Starting shardclaw AI Agent...
  ↑ Android UI          ↑ Already in node_debug.log from localTimestamp()
 ```
 
@@ -82,8 +82,8 @@ This means:
 
 | Line | Android | Proposed | Freq | Message Pattern |
 |------|---------|----------|------|-----------------|
-| 74 | INFO | — | R | `[SeekerClaw] ...` (stdout, unused — remove) |
-| 77 | INFO | INFO | 1 | `Starting SeekerClaw AI Agent...` |
+| 74 | INFO | — | R | `[shardclaw] ...` (stdout, unused — remove) |
+| 77 | INFO | INFO | 1 | `Starting shardclaw AI Agent...` |
 | 78 | INFO | INFO | 1 | `Node.js ${version} on ${platform} ${arch}` |
 | 79 | INFO | INFO | 1 | `Workspace: ${workDir}` |
 | 87 | **ERROR** | ERROR | 1 | `ERROR: config.json not found` |
@@ -419,8 +419,8 @@ function log(msg, level = 'INFO') {
 
 ### Wire format change: `node_debug.log`
 
-**Before:** `[2026-02-19T10:30:00+03:00] Starting SeekerClaw AI Agent...\n`
-**After:** `INFO|Starting SeekerClaw AI Agent...\n`
+**Before:** `[2026-02-19T10:30:00+03:00] Starting shardclaw AI Agent...\n`
+**After:** `INFO|Starting shardclaw AI Agent...\n`
 
 - **Drop the timestamp from the Node side** — Android already adds one. Fixes the double-timestamp bug.
 - **Prefix with level** — Android can parse `LEVEL|message` instead of using fragile substring matching.
@@ -492,7 +492,7 @@ Replace 34 individual "Loaded skill: X" lines with one summary:
 
 Replace 10+ startup config lines with a condensed banner:
 ```
-SeekerClaw v1.3.0 | Claude sonnet | @botname | 34 skills | 2 MCP servers | 3 cron jobs
+shardclaw v1.3.0 | Claude sonnet | @botname | 34 skills | 2 MCP servers | 3 cron jobs
 ```
 
 ---

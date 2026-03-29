@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.skills
+package com.shardclaw.app.ui.skills
 
 import android.util.Log
 import java.io.File

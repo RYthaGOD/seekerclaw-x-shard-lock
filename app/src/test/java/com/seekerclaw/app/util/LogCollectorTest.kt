@@ -1,4 +1,4 @@
-package com.seekerclaw.app.util
+package com.shardclaw.app.util
 
 import org.junit.After
 import org.junit.Assert.assertEquals

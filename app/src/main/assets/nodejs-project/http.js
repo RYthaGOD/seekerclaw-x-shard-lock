@@ -1,4 +1,4 @@
-// SeekerClaw — http.js
+// shardclaw — http.js
 // HTTP transport layer: plain requests + SSE streaming for Claude/OpenAI/ChatCompletions APIs.
 // Depends on: config.js
 

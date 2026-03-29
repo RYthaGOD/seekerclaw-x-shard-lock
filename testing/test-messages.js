@@ -96,7 +96,7 @@ async function testModel(model, apiKey, authType) {
 // ── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
-    console.log('🧪 SeekerClaw Messages Test');
+    console.log('🧪 shardclaw Messages Test');
     console.log(`   Time: ${new Date().toISOString()}`);
 
     const apiKey = process.env.ANTHROPIC_API_KEY;

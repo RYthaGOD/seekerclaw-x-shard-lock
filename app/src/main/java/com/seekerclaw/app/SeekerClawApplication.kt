@@ -1,14 +1,14 @@
-package com.seekerclaw.app
+package com.shardclaw.app
 
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.util.Analytics
-import com.seekerclaw.app.util.LogCollector
-import com.seekerclaw.app.util.ServiceState
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.util.Analytics
+import com.shardclaw.app.util.LogCollector
+import com.shardclaw.app.util.ServiceState
 
-class SeekerClawApplication : Application() {
+class shardclawApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -39,7 +39,7 @@ class SeekerClawApplication : Application() {
         // Silent low-priority channel for the always-on foreground service notification.
         val serviceChannel = NotificationChannel(
             CHANNEL_ID,
-            "SeekerClaw Service",
+            "shardclaw Service",
             NotificationManager.IMPORTANCE_LOW
         ).apply {
             description = "Keeps the AI agent running in the background"
@@ -51,7 +51,7 @@ class SeekerClawApplication : Application() {
         // Uses default sound so the user is clearly alerted to an issue.
         val errorChannel = NotificationChannel(
             ERROR_CHANNEL_ID,
-            "SeekerClaw Alerts",
+            "shardclaw Alerts",
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
             description = "Important alerts that require user action"
@@ -61,7 +61,7 @@ class SeekerClawApplication : Application() {
     }
 
     companion object {
-        const val CHANNEL_ID = "seekerclaw_service"
-        const val ERROR_CHANNEL_ID = "seekerclaw_errors"
+        const val CHANNEL_ID = "shardclaw_service"
+        const val ERROR_CHANNEL_ID = "shardclaw_errors"
     }
 }

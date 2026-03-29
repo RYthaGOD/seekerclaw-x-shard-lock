@@ -1,4 +1,4 @@
-package com.seekerclaw.app.qr
+package com.shardclaw.app.qr
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -45,7 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.ui.theme.SeekerClawColors
+import com.shardclaw.app.ui.theme.shardclawColors
 
 // ============================================================================
 // SCANNER OVERLAY — Themed QR scanner UI composables
@@ -125,11 +125,11 @@ private fun ScannerOverlayCanvas(
     val crosshairArm = with(density) { 20.dp.toPx() }
     val glowOffset = with(density) { 4.dp.toPx() }
 
-    val vignetteColor = SeekerClawColors.Background.copy(alpha = 0.7f)
-    val bracketColor = SeekerClawColors.Primary
-    val scanLineColor = SeekerClawColors.Primary.copy(alpha = 0.6f)
-    val scanGlowColor = SeekerClawColors.Primary.copy(alpha = 0.15f)
-    val crosshairColor = SeekerClawColors.TextDim.copy(alpha = 0.4f)
+    val vignetteColor = shardclawColors.Background.copy(alpha = 0.7f)
+    val bracketColor = shardclawColors.Primary
+    val scanLineColor = shardclawColors.Primary.copy(alpha = 0.6f)
+    val scanGlowColor = shardclawColors.Primary.copy(alpha = 0.15f)
+    val crosshairColor = shardclawColors.TextDim.copy(alpha = 0.4f)
 
     Canvas(
         modifier = Modifier
@@ -198,7 +198,7 @@ private fun ScannerTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(SeekerClawColors.Background.copy(alpha = 0.85f))
+            .background(shardclawColors.Background.copy(alpha = 0.85f))
             .statusBarsPadding()
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -209,7 +209,7 @@ private fun ScannerTopBar(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
-                tint = SeekerClawColors.TextPrimary,
+                tint = shardclawColors.TextPrimary,
             )
         }
 
@@ -219,7 +219,7 @@ private fun ScannerTopBar(
             fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
-            color = SeekerClawColors.Primary,
+            color = shardclawColors.Primary,
             letterSpacing = 2.sp,
         )
 
@@ -229,7 +229,7 @@ private fun ScannerTopBar(
                 Icon(
                     imageVector = if (torchEnabled) Icons.Filled.FlashOn else Icons.Filled.FlashOff,
                     contentDescription = if (torchEnabled) "Torch on" else "Torch off",
-                    tint = if (torchEnabled) SeekerClawColors.Warning else SeekerClawColors.TextDim,
+                    tint = if (torchEnabled) shardclawColors.Warning else shardclawColors.TextDim,
                 )
             }
         } else {
@@ -251,7 +251,7 @@ private fun ScannerBottomStatus(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(SeekerClawColors.Background.copy(alpha = 0.85f))
+            .background(shardclawColors.Background.copy(alpha = 0.85f))
             .navigationBarsPadding()
             .padding(horizontal = 16.dp, vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -260,15 +260,15 @@ private fun ScannerBottomStatus(
             text = if (isDetected) "QR Detected" else "Align QR code in frame",
             fontFamily = FontFamily.Monospace,
             fontSize = 13.sp,
-            color = if (isDetected) SeekerClawColors.Accent else SeekerClawColors.TextSecondary,
+            color = if (isDetected) shardclawColors.Accent else shardclawColors.TextSecondary,
             letterSpacing = 1.sp,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "seekerclaw.xyz/setup",
+            text = "shardclaw.xyz/setup",
             fontFamily = FontFamily.Monospace,
             fontSize = 11.sp,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
         )
     }
 }

@@ -1,11 +1,11 @@
-package com.seekerclaw.app.receiver
+package com.shardclaw.app.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.service.OpenClawService
-import com.seekerclaw.app.util.LogCollector
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.service.OpenClawService
+import com.shardclaw.app.util.LogCollector
 
 class BootReceiver : BroadcastReceiver() {
 

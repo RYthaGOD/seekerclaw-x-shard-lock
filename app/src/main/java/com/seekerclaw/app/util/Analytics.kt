@@ -1,4 +1,4 @@
-package com.seekerclaw.app.util
+package com.shardclaw.app.util
 
 import android.content.Context
 import android.os.Bundle
@@ -14,7 +14,7 @@ object Analytics {
     fun init(context: Context) {
         try {
             fb = FirebaseAnalytics.getInstance(context)
-            val prefs = context.getSharedPreferences("seekerclaw_prefs", Context.MODE_PRIVATE)
+            val prefs = context.getSharedPreferences("shardclaw_prefs", Context.MODE_PRIVATE)
             enabled = prefs.getBoolean(PREF_KEY, true) // default ON
             fb?.setAnalyticsCollectionEnabled(enabled)
         } catch (e: IllegalStateException) {
@@ -27,13 +27,13 @@ object Analytics {
     }
 
     fun isEnabled(context: Context): Boolean {
-        return context.getSharedPreferences("seekerclaw_prefs", Context.MODE_PRIVATE)
+        return context.getSharedPreferences("shardclaw_prefs", Context.MODE_PRIVATE)
             .getBoolean(PREF_KEY, true)
     }
 
     fun setEnabled(context: Context, enable: Boolean) {
         enabled = enable
-        context.getSharedPreferences("seekerclaw_prefs", Context.MODE_PRIVATE)
+        context.getSharedPreferences("shardclaw_prefs", Context.MODE_PRIVATE)
             .edit().putBoolean(PREF_KEY, enable).apply()
         fb?.setAnalyticsCollectionEnabled(enable)
     }

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to SeekerClaw are documented in this file.
+All notable changes to ShardClaw are documented in this file.
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [1.8.0] - 2026-03-28

@@ -1,6 +1,6 @@
 # Open Source Preparation Plan
 
-> **Goal:** Prepare SeekerClaw for public release on GitHub.
+> **Goal:** Prepare shardclaw for public release on GitHub.
 > **Status:** Ready to execute
 > **Date:** 2026-02-23 (reviewed & updated)
 
@@ -136,16 +136,16 @@ Transform from internal team guide → public contributor guide. (~625 lines →
 
 ### ~~6A: `LICENSE`~~ DONE
 
-> Created in `12b8d0d`. MIT, `Copyright (c) 2025-2026 SeekerClaw Contributors`.
+> Created in `12b8d0d`. MIT, `Copyright (c) 2025-2026 shardclaw Contributors`.
 
 ### 6B: `README.md`
 
 Structure:
 ```
-# SeekerClaw
+# shardclaw
 Turn your Solana Seeker into a 24/7 personal AI agent.
 
-## What is SeekerClaw?        (2-3 paragraphs)
+## What is shardclaw?        (2-3 paragraphs)
 ## Features                    (bullet list)
 ## Requirements                (Android 14+, 4GB RAM, API keys)
 ## Quick Start                 (APK install + setup wizard)
@@ -173,7 +173,7 @@ Turn your Solana Seeker into a 24/7 personal AI agent.
 
 ### ~~6E: `SECURITY.md`~~ DONE
 
-> Created in `12b8d0d`. Disclosure process (security@seekerclaw.xyz) + security model overview.
+> Created in `12b8d0d`. Disclosure process (security@shardclaw.xyz) + security model overview.
 
 ### ~~6F: `NOTICES`~~ DONE
 
@@ -209,7 +209,7 @@ Turn your Solana Seeker into a 24/7 personal AI agent.
 - [x] **Visibility:** Private → Public
 - [x] **Description:** "Turn your Solana Seeker into a 24/7 personal AI agent"
 - [x] **Topics:** `nodejs`, `android`, `kotlin`, `telegram-bot`, `claude`, `solana`, `jetpack-compose`, `ai-agent`, `anthropic`, `openclaw`
-- [x] **Website:** `seekerclaw.xyz`
+- [x] **Website:** `shardclaw.xyz`
 - [x] **Branch protection on `main`** — 1 review, status checks, no force push
 - [ ] **Enable GitHub Discussions** (optional)
 - [ ] **Disable wiki** (optional)

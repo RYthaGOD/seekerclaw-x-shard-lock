@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.navigation
+package com.shardclaw.app.ui.navigation
 
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import com.seekerclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.RethinkSans
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,16 +31,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.ui.dashboard.DashboardScreen
-import com.seekerclaw.app.ui.logs.LogsScreen
-import com.seekerclaw.app.ui.settings.SettingsScreen
-import com.seekerclaw.app.ui.setup.SetupScreen
-import com.seekerclaw.app.ui.skills.SkillsScreen
-import com.seekerclaw.app.ui.system.SystemScreen
-import com.seekerclaw.app.R
-import com.seekerclaw.app.ui.theme.SeekerClawColors
-import com.seekerclaw.app.util.Analytics
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.ui.dashboard.DashboardScreen
+import com.shardclaw.app.ui.logs.LogsScreen
+import com.shardclaw.app.ui.settings.SettingsScreen
+import com.shardclaw.app.ui.setup.SetupScreen
+import com.shardclaw.app.ui.skills.SkillsScreen
+import com.shardclaw.app.ui.system.SystemScreen
+import com.shardclaw.app.R
+import com.shardclaw.app.ui.theme.shardclawColors
+import com.shardclaw.app.util.Analytics
 import kotlinx.serialization.Serializable
 
 // Route definitions
@@ -68,7 +68,7 @@ val bottomNavItems = listOf(
 )
 
 @Composable
-fun SeekerClawNavHost() {
+fun shardclawNavHost() {
     val context = LocalContext.current
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -106,16 +106,16 @@ fun SeekerClawNavHost() {
     } ?: false
 
     Scaffold(
-        containerColor = SeekerClawColors.Background,
+        containerColor = shardclawColors.Background,
         bottomBar = {
             if (showBottomBar) {
                 Column {
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = SeekerClawColors.CardBorder,
+                        color = shardclawColors.CardBorder,
                     )
                     NavigationBar(
-                        containerColor = SeekerClawColors.Background,
+                        containerColor = shardclawColors.Background,
                         tonalElevation = 0.dp,
                     ) {
                         bottomNavItems.forEach { item ->
@@ -148,10 +148,10 @@ fun SeekerClawNavHost() {
                                     )
                                 },
                                 colors = NavigationBarItemDefaults.colors(
-                                    selectedIconColor = SeekerClawColors.Primary,
-                                    selectedTextColor = SeekerClawColors.Primary,
-                                    unselectedIconColor = SeekerClawColors.TextDim,
-                                    unselectedTextColor = SeekerClawColors.TextDim,
+                                    selectedIconColor = shardclawColors.Primary,
+                                    selectedTextColor = shardclawColors.Primary,
+                                    unselectedIconColor = shardclawColors.TextDim,
+                                    unselectedTextColor = shardclawColors.TextDim,
                                     indicatorColor = Color.Transparent,
                                 ),
                             )
@@ -235,17 +235,17 @@ fun SeekerClawNavHost() {
                 )
             }
             composable<ProviderConfigRoute> {
-                com.seekerclaw.app.ui.settings.ProviderConfigScreen(
+                com.shardclaw.app.ui.settings.ProviderConfigScreen(
                     onBack = { navController.popBackStack() }
                 )
             }
             composable<TelegramConfigRoute> {
-                com.seekerclaw.app.ui.settings.TelegramConfigScreen(
+                com.shardclaw.app.ui.settings.TelegramConfigScreen(
                     onBack = { navController.popBackStack() }
                 )
             }
             composable<SearchConfigRoute> {
-                com.seekerclaw.app.ui.settings.SearchProviderConfigScreen(
+                com.shardclaw.app.ui.settings.SearchProviderConfigScreen(
                     onBack = { navController.popBackStack() }
                 )
             }

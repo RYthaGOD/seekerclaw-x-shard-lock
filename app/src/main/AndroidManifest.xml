@@ -33,17 +33,17 @@
     </queries>
 
     <application
-        android:name=".SeekerClawApplication"
+        android:name=".shardclawApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SeekerClaw">
+        android:theme="@style/Theme.shardclaw">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.SeekerClaw">
+            android:theme="@style/Theme.shardclaw">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -63,7 +63,7 @@
 
         <activity
             android:name=".camera.CameraCaptureActivity"
-            android:theme="@style/Theme.SeekerClaw"
+            android:theme="@style/Theme.shardclaw"
             android:excludeFromRecents="true"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
@@ -71,7 +71,7 @@
 
         <activity
             android:name=".qr.QrScannerActivity"
-            android:theme="@style/Theme.SeekerClaw"
+            android:theme="@style/Theme.shardclaw"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:exported="false" />

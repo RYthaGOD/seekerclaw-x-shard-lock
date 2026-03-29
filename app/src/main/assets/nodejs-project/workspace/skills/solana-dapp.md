@@ -205,7 +205,7 @@ The Solana Seeker is purpose-built for crypto:
 - **Seed Vault:** Hardware-level key security. Private keys are stored in a secure execution environment isolated from Android. Even if the OS is compromised, keys remain safe.
 - **dApp Store pre-installed:** Browse and install Solana dApps without Google Play restrictions on crypto.
 - **MWA native support:** All MWA-compatible dApps work seamlessly. No browser extensions or workarounds needed.
-- **Stock Android:** No OEM bloat that kills background services. Ideal for running SeekerClaw 24/7.
+- **Stock Android:** No OEM bloat that kills background services. Ideal for running shardclaw 24/7.
 - **Snapdragon 6 Gen 1 + 8GB RAM:** Handles DeFi dApps, NFT rendering, and Node.js runtime simultaneously.
 
 ## Response Format

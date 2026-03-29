@@ -1,8 +1,8 @@
-# DeerFlow v2.0 Deep Audit — What SeekerClaw Can Borrow
+# DeerFlow v2.0 Deep Audit — What shardclaw Can Borrow
 
 > **Date:** 2026-03-21 | **Repo:** https://github.com/bytedance/deer-flow
 > **DeerFlow:** 32,400 stars, MIT, Python 3.12+, LangGraph/LangChain, Next.js frontend
-> **SeekerClaw:** Production Android app, Node.js 18, Telegram-only, 4,700+ users
+> **shardclaw:** Production Android app, Node.js 18, Telegram-only, 4,700+ users
 
 ---
 
@@ -46,7 +46,7 @@ DeerFlow (Deep Exploration and Efficient Research Flow) is ByteDance's open-sour
 
 ### Built-in Tools (6)
 
-| Tool | Purpose | SeekerClaw Equivalent |
+| Tool | Purpose | shardclaw Equivalent |
 |------|---------|----------------------|
 | `task` | Spawn subagents (general-purpose or bash). Async with polling. Max 3 concurrent, 15min timeout. | **None** — we're single-agent |
 | `ask_clarification` | Human-in-the-loop pause. 5 types: missing_info, ambiguous_requirement, approach_choice, risk_confirmation, suggestion. | **None** — agent just guesses |
@@ -57,7 +57,7 @@ DeerFlow (Deep Exploration and Efficient Research Flow) is ByteDance's open-sour
 
 ### Sandbox Tools (6)
 
-| Tool | Purpose | SeekerClaw Equivalent |
+| Tool | Purpose | shardclaw Equivalent |
 |------|---------|----------------------|
 | `bash` | Shell in isolated Docker container | `shell_exec` (Android toybox, not isolated) |
 | `ls` | Directory listing (2 levels, tree format) | `list_dir` |
@@ -68,7 +68,7 @@ DeerFlow (Deep Exploration and Efficient Research Flow) is ByteDance's open-sour
 
 ### Community/Search Tools (6)
 
-| Tool | Provider | SeekerClaw Equivalent |
+| Tool | Provider | shardclaw Equivalent |
 |------|----------|----------------------|
 | `web_search` | Tavily or InfoQuest | `web_search` (Brave) |
 | `web_fetch` | Jina AI or InfoQuest | `web_fetch` |
@@ -87,7 +87,7 @@ Tools organized into named groups: `web`, `file:read`, `file:write`, `bash`. Gro
 
 DeerFlow's killer feature is a **strictly ordered middleware chain** that wraps every agent turn. Each middleware can inspect, modify, or short-circuit the message flow.
 
-| # | Middleware | What It Does | SeekerClaw Status |
+| # | Middleware | What It Does | shardclaw Status |
 |---|-----------|-------------|-------------------|
 | 1 | ToolErrorHandling | Converts tool exceptions to ToolMessages | We do this inline |
 | 2 | Summarization | Compresses old context when thresholds hit | **MISSING — P1** |
@@ -124,7 +124,7 @@ Already planned in [DEERFLOW_FEATURES_PLAN.md](DEERFLOW_FEATURES_PLAN.md). Imple
 - TODO middleware re-injects task list if summarization drops it
 
 **What we should do:**
-This is critical for SeekerClaw. Long conversations (common with 24/7 agents) eventually blow the context window. Current behavior: `adaptiveTrim()` fires at 90% and removes oldest messages. This is **lossy** — important context is silently dropped.
+This is critical for shardclaw. Long conversations (common with 24/7 agents) eventually blow the context window. Current behavior: `adaptiveTrim()` fires at 90% and removes oldest messages. This is **lossy** — important context is silently dropped.
 
 **Better approach inspired by DeerFlow:**
 1. At 80% context, summarize old messages into a `[Context Summary]` system message
@@ -150,7 +150,7 @@ This is critical for SeekerClaw. Long conversations (common with 24/7 agents) ev
 **What we should do:**
 Add an `ask_user` tool that pauses the tool loop and sends a Telegram message asking for clarification. When user replies, resume the tool loop with the answer injected.
 
-**This is high-value for SeekerClaw** because:
+**This is high-value for shardclaw** because:
 - Our agent runs 24/7 — wrong guesses waste time and money
 - Telegram is async — users expect to be asked, not surprised
 - The `risk_confirmation` type is perfect for Solana swap confirmations (we already have this pattern!)
@@ -200,8 +200,8 @@ This is already in our plan. Critical as MCP adoption grows. Strategy:
 - Top 15 facts + context injected via `<memory>` tags
 - Upload mentions stripped (session-scoped files don't persist)
 
-**Comparison with SeekerClaw:**
-| Feature | DeerFlow | SeekerClaw |
+**Comparison with shardclaw:**
+| Feature | DeerFlow | shardclaw |
 |---------|----------|------------|
 | Storage | JSON (structured) | Markdown files (MEMORY.md + daily) |
 | Extraction | LLM-powered with confidence scores | Agent writes directly |
@@ -220,14 +220,14 @@ This is already in our plan. Critical as MCP adoption grows. Strategy:
 
 **DeerFlow approach:**
 - 17 built-in public skills (research, PPT, podcast, charts, consulting, video, image gen)
-- SKILL.md with YAML frontmatter (same format as SeekerClaw!)
+- SKILL.md with YAML frontmatter (same format as shardclaw!)
 - Progressive loading — only inject when relevant (saves tokens)
 - `.skill` archive installation via Gateway API
 - `find-skills` skill for discovering from open ecosystem (skills.sh)
 - `skill-creator` skill for collaborative skill development
 
 **Comparison:**
-| Feature | DeerFlow | SeekerClaw |
+| Feature | DeerFlow | shardclaw |
 |---------|----------|------------|
 | Format | SKILL.md + YAML | SKILL.md + YAML ✅ |
 | Loading | Progressive (on-demand) | All at startup ✅ |
@@ -250,7 +250,7 @@ This is already in our plan. Critical as MCP adoption grows. Strategy:
 ### 3.9 Sandbox Execution
 
 **DeerFlow:** Full Docker containers with isolated filesystem, bash, file ops.
-**SeekerClaw:** `shell_exec` runs on Android's toybox shell. No isolation.
+**shardclaw:** `shell_exec` runs on Android's toybox shell. No isolation.
 
 **Gap analysis:**
 - DeerFlow's Docker sandbox is their biggest architectural advantage
@@ -266,7 +266,7 @@ This is already in our plan. Critical as MCP adoption grows. Strategy:
 
 **DeerFlow:** Telegram, Slack, Feishu/Lark. Per-user session config. Commands: `/new`, `/status`, `/models`, `/memory`, `/help`.
 
-**SeekerClaw:** Telegram only (by design).
+**shardclaw:** Telegram only (by design).
 
 **What we could borrow:**
 - `/new` command to start fresh conversation (clear context)
@@ -280,7 +280,7 @@ This is already in our plan. Critical as MCP adoption grows. Strategy:
 
 ## 4. Architecture Comparison
 
-| Dimension | DeerFlow v2.0 | SeekerClaw v1.7.0 |
+| Dimension | DeerFlow v2.0 | shardclaw v1.7.0 |
 |-----------|--------------|-------------------|
 | **Runtime** | Python 3.12+ (server) | Node.js 18 (Android) |
 | **Framework** | LangGraph + LangChain | Raw API calls |
@@ -311,7 +311,7 @@ This is already in our plan. Critical as MCP adoption grows. Strategy:
 | **DuckDB** | We already have SQL.js. No need for another embedded DB. |
 | **Checkpointer (Postgres)** | Overkill for single-user on-device. File-based is fine. |
 | **OAuth MCP** | Nice-to-have but no immediate user demand. |
-| **Multi-user sessions** | SeekerClaw is personal (owner-only by design). |
+| **Multi-user sessions** | shardclaw is personal (owner-only by design). |
 
 ---
 
@@ -416,7 +416,7 @@ This is already in our plan. Critical as MCP adoption grows. Strategy:
 
 ## 9. Competitive Positioning
 
-| Feature | DeerFlow | SeekerClaw | Claude Code | OpenClaw |
+| Feature | DeerFlow | shardclaw | Claude Code | OpenClaw |
 |---------|----------|------------|-------------|----------|
 | Runs on phone | ❌ | ✅ | ❌ | ❌ |
 | 24/7 background | ❌ (needs server) | ✅ | ❌ | ✅ (server) |
@@ -432,9 +432,9 @@ This is already in our plan. Critical as MCP adoption grows. Strategy:
 | Memory | ✅ (LLM-extracted) | ✅ (agent-written) | ❌ | ✅ |
 | Open source | ✅ | ✅ | ✅ | ✅ |
 
-**SeekerClaw's moat:** Only mobile-native 24/7 AI agent with crypto capabilities. DeerFlow can't touch this.
+**shardclaw's moat:** Only mobile-native 24/7 AI agent with crypto capabilities. DeerFlow can't touch this.
 
-**SeekerClaw's gap:** Context engineering (summarization, loop detection, clarification). DeerFlow is ahead here. **Close this gap in Phase 1-2.**
+**shardclaw's gap:** Context engineering (summarization, loop detection, clarification). DeerFlow is ahead here. **Close this gap in Phase 1-2.**
 
 ---
 
@@ -451,4 +451,4 @@ This is already in our plan. Critical as MCP adoption grows. Strategy:
 ---
 
 *Generated from deep audit of https://github.com/bytedance/deer-flow (32,400 stars, v2.0)*
-*Cross-referenced with SeekerClaw v1.7.0 codebase and existing DEERFLOW_FEATURES_PLAN.md*
+*Cross-referenced with shardclaw v1.7.0 codebase and existing DEERFLOW_FEATURES_PLAN.md*

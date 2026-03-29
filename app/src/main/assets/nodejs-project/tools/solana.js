@@ -52,7 +52,7 @@ const tools = [
     },
     {
         name: 'solana_address',
-        description: 'Get the connected Solana wallet address from the SeekerClaw app.',
+        description: 'Get the connected Solana wallet address from the shardclaw app.',
         input_schema: {
             type: 'object',
             properties: {}
@@ -249,7 +249,7 @@ const handlers = {
                 return { error: 'Failed to read wallet config' };
             }
         }
-        return { error: 'No wallet connected. Connect a wallet in the SeekerClaw app Settings.' };
+        return { error: 'No wallet connected. Connect a wallet in the shardclaw app Settings.' };
     },
 
     async solana_balance(input, chatId) {
@@ -677,7 +677,7 @@ const handlers = {
         if (!config.jupiterApiKey) {
             return {
                 error: 'Jupiter API key required',
-                guide: 'Get a free API key at portal.jup.ag, then add it in SeekerClaw Settings > Configuration > Jupiter API Key'
+                guide: 'Get a free API key at portal.jup.ag, then add it in shardclaw Settings > Configuration > Jupiter API Key'
             };
         }
 
@@ -894,7 +894,7 @@ const handlers = {
         if (!config.jupiterApiKey) {
             return {
                 error: 'Jupiter API key required',
-                guide: 'Get a free API key at portal.jup.ag, then add it in SeekerClaw Settings > Configuration > Jupiter API Key'
+                guide: 'Get a free API key at portal.jup.ag, then add it in shardclaw Settings > Configuration > Jupiter API Key'
             };
         }
 
@@ -977,7 +977,7 @@ const handlers = {
         if (!config.jupiterApiKey) {
             return {
                 error: 'Jupiter API key required',
-                guide: 'Get a free API key at portal.jup.ag, then add it in SeekerClaw Settings > Configuration > Jupiter API Key'
+                guide: 'Get a free API key at portal.jup.ag, then add it in shardclaw Settings > Configuration > Jupiter API Key'
             };
         }
 
@@ -1059,7 +1059,7 @@ const handlers = {
         if (!config.jupiterApiKey) {
             return {
                 error: 'Jupiter API key required',
-                guide: 'Get a free API key at portal.jup.ag, then add it in SeekerClaw Settings > Configuration > Jupiter API Key'
+                guide: 'Get a free API key at portal.jup.ag, then add it in shardclaw Settings > Configuration > Jupiter API Key'
             };
         }
 
@@ -1282,7 +1282,7 @@ const handlers = {
         if (!config.jupiterApiKey) {
             return {
                 error: 'Jupiter API key required',
-                guide: 'Get a free API key at portal.jup.ag, then add it in SeekerClaw Settings > Configuration > Jupiter API Key'
+                guide: 'Get a free API key at portal.jup.ag, then add it in shardclaw Settings > Configuration > Jupiter API Key'
             };
         }
 
@@ -1377,7 +1377,7 @@ const handlers = {
         if (!config.jupiterApiKey) {
             return {
                 error: 'Jupiter API key required',
-                guide: 'Get a free API key at portal.jup.ag, then add it in SeekerClaw Settings > Configuration > Jupiter API Key'
+                guide: 'Get a free API key at portal.jup.ag, then add it in shardclaw Settings > Configuration > Jupiter API Key'
             };
         }
 
@@ -1459,7 +1459,7 @@ const handlers = {
         if (!config.jupiterApiKey) {
             return {
                 error: 'Jupiter API key required',
-                guide: 'Get a free API key at portal.jup.ag, then add it in SeekerClaw Settings > Configuration > Jupiter API Key'
+                guide: 'Get a free API key at portal.jup.ag, then add it in shardclaw Settings > Configuration > Jupiter API Key'
             };
         }
 
@@ -1542,7 +1542,7 @@ const handlers = {
         if (!config.jupiterApiKey) {
             return {
                 error: 'Jupiter API key required',
-                guide: 'Get a free API key at portal.jup.ag, then add it in SeekerClaw Settings > Configuration > Jupiter API Key'
+                guide: 'Get a free API key at portal.jup.ag, then add it in shardclaw Settings > Configuration > Jupiter API Key'
             };
         }
 
@@ -1631,7 +1631,7 @@ const handlers = {
         if (!config.jupiterApiKey) {
             return {
                 error: 'Jupiter API key required',
-                guide: 'Get a free API key at portal.jup.ag, then add it in SeekerClaw Settings > Configuration > Jupiter API Key'
+                guide: 'Get a free API key at portal.jup.ag, then add it in shardclaw Settings > Configuration > Jupiter API Key'
             };
         }
 
@@ -1696,7 +1696,7 @@ const handlers = {
         if (!config.heliusApiKey) {
             return {
                 error: 'Helius API key required',
-                guide: 'Get a free API key at helius.dev (50k requests/day free tier), then add it in SeekerClaw Settings > Solana Wallet > Helius API Key'
+                guide: 'Get a free API key at helius.dev (50k requests/day free tier), then add it in shardclaw Settings > Solana Wallet > Helius API Key'
             };
         }
 

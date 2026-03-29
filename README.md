@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="design/banner.png" alt="SeekerClaw" width="100%">
+  <img src="design/shard_claw_banner.png" alt="ShardClaw" width="100%">
   <br><br>
   <p>
     <img src="https://img.shields.io/badge/Android-14+-3DDC84?logo=android&logoColor=white" alt="Android 14+">
@@ -13,13 +13,13 @@
     <img src="https://img.shields.io/badge/License-MIT-blue" alt="MIT License">
   </p>
   <p>
-    <a href="https://www.producthunt.com/products/seekerclaw"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=seekerclaw&theme=dark" alt="SeekerClaw on Product Hunt" width="250" height="54"></a>
+    <a href="https://www.producthunt.com/products/shardclaw"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=shardclaw&theme=dark" alt="ShardClaw on Product Hunt" width="250" height="54"></a>
   </p>
 </div>
 
 ---
 
-SeekerClaw embeds a Node.js AI agent inside an Android app, running 24/7 as a foreground service. You interact through Telegram — ask questions, control your phone, trade crypto, shard data, schedule tasks. **61 tools, 36 skills, Solana wallet, Shard-Lock storage, multi-provider AI (Claude + OpenAI + OpenRouter)**, all running locally on your device. Built for the Solana Seeker, runs on any Android 14+ phone.
+ShardClaw embeds a Node.js AI agent inside an Android app, running 24/7 as a foreground service. You interact through Telegram — ask questions, control your phone, trade crypto, shard data, schedule tasks. **61 tools, 36 skills, Solana wallet, Shard-Lock storage, multi-provider AI (Claude + OpenAI + OpenRouter)**, all running locally on your device. Built for the Solana Seeker, runs on any Android 14+ phone.
 
 <div align="center">
   <img src="design/screenshots/01-first-launch.png" width="130">
@@ -49,9 +49,13 @@ SeekerClaw embeds a Node.js AI agent inside an Android app, running 24/7 as a fo
 
 <br>
 
+<div align="center">
+  <img src="design/shard_claw_arch.png" alt="ShardClaw Architecture" width="80%">
+</div>
+
 ```mermaid
 graph LR
-    You["You (Telegram)"] -->|messages| Agent["SeekerClaw Agent"]
+    You["You (Telegram)"] -->|messages| Agent["ShardClaw Agent"]
     Agent -->|reasoning| AI["AI Provider (Claude / OpenAI / OpenRouter)"]
     Agent -->|swaps, balance| Solana["Solana / Jupiter"]
     Agent -->|device access| Bridge["Android Bridge"]
@@ -93,8 +97,8 @@ Android App (Kotlin, Jetpack Compose)
 **Prerequisites:** Android Studio, JDK 17, Android SDK 35, Android NDK, Rust + `cargo-ndk` (for Shard-Lock)
 
 ```bash
-git clone https://github.com/RYthaGOD/seekerclaw-x-shard-lock.git
-cd seekerclaw-x-shard-lock
+git clone https://github.com/RYthaGOD/shardclaw-x-shard-lock.git
+cd shardclaw-x-shard-lock
 
 # Build Rust-Core JNI (requires WSL/Linux with cargo-ndk installed)
 bash scripts/build-rust-core.sh
@@ -103,19 +107,19 @@ bash scripts/build-rust-core.sh
 adb install app/build/outputs/apk/dappStore/debug/app-dappStore-debug.apk
 ```
 
-Open the app → pick your AI provider (Claude, OpenAI, or OpenRouter) → enter your API key + [Telegram bot token](https://t.me/BotFather) + choose a model + name your agent — or generate a QR code at [seekerclaw.xyz/setup](https://seekerclaw.xyz/setup) and scan it. Done.
+Open the app → pick your AI provider (Claude, OpenAI, or OpenRouter) → enter your API key + [Telegram bot token](https://t.me/BotFather) + choose a model + name your agent — or generate a QR code at [shardclaw.xyz/setup](https://shardclaw.xyz/setup) and scan it. Done.
 
-> **Step-by-step setup guide:** [How to set up SeekerClaw](https://x.com/SeekerClaw/status/2029197829068005849)
+> **Step-by-step setup guide:** [How to set up ShardClaw](https://x.com/ShardClaw/status/2029197829068005849)
 
-> **Beta** — SeekerClaw is under active development. Expect rough edges and breaking changes. Issues and PRs welcome.
+> **Beta** — ShardClaw is under active development. Expect rough edges and breaking changes. Issues and PRs welcome.
 
 ## Shard-Lock Integration
 
 This fork integrates the [Shard-Lock](https://github.com/RYthaGOD/seeker-storage) decentralized storage protocol, giving the AI agent the ability to erasure-encode data, generate Merkle proofs, sign Ed25519 heartbeats, and anchor storage proofs on the Solana blockchain — all powered by a Rust JNI core running natively on ARM64.
 
-### How Shard-Lock Improves SeekerClaw
+### How Shard-Lock Improves ShardClaw
 
-SeekerClaw is already a powerful AI agent running on your phone. Shard-Lock transforms it from a **consumer of cloud services** into a **self-sovereign data node** — a device that doesn't just ask the network for things, but contributes verifiable storage capacity back to it.
+ShardClaw is already a powerful AI agent running on your phone. Shard-Lock transforms it from a **consumer of cloud services** into a **self-sovereign data node** — a device that doesn't just ask the network for things, but contributes verifiable storage capacity back to it.
 
 <details>
 <summary><strong>🔒 Data Resilience — Your agent's data survives hardware failure</strong></summary>
@@ -128,7 +132,7 @@ With Shard-Lock, any piece of data can be **erasure-encoded** into `N` data shar
 
 ```mermaid
 graph LR
-    subgraph "📱 SeekerClaw Agent"
+    subgraph "📱 ShardClaw Agent"
         A["Raw Data<br/>(wallet backup, memory, config)"] --> B["Rust-Core JNI"]
     end
     subgraph "🔧 Reed-Solomon Erasure Coding"
@@ -318,21 +322,21 @@ Install via Telegram: send your agent the install link and it handles the rest.
 
 | | Skill | What it does | Install |
 |---|---|---|---|
-| :paw_prints: | **ClawPump** | Launch tokens on Solana via pump.fun — gasless launches | [Install](https://seekerclaw.xyz/partner-skills/clawpump.md) |
-| :crystal_ball: | **Dune Analytics** | Query onchain data — DEX trades, token stats, wallet activity | [Install](https://seekerclaw.xyz/partner-skills/dune-analytics.md) |
-| :house: | **Home Assistant** | Control smart home — lights, climate, vacuum, alarm, media | [Install](https://seekerclaw.xyz/partner-skills/home-assistant.md) |
+| :paw_prints: | **ClawPump** | Launch tokens on Solana via pump.fun — gasless launches | [Install](https://shardclaw.xyz/partner-skills/clawpump.md) |
+| :crystal_ball: | **Dune Analytics** | Query onchain data — DEX trades, token stats, wallet activity | [Install](https://shardclaw.xyz/partner-skills/dune-analytics.md) |
+| :house: | **Home Assistant** | Control smart home — lights, climate, vacuum, alarm, media | [Install](https://shardclaw.xyz/partner-skills/home-assistant.md) |
 
 > **Build your own:** Skills are Markdown files with YAML frontmatter. See [SKILL-FORMAT.md](SKILL-FORMAT.md) for the spec.
 
 ## Important Safety Notice
 
-SeekerClaw gives an AI agent real capabilities on your phone — including wallet transactions, messaging, and device control. Please be aware:
+ShardClaw gives an AI agent real capabilities on your phone — including wallet transactions, messaging, and device control. Please be aware:
 
 - **AI can make mistakes.** Large language models hallucinate, misinterpret instructions, and occasionally take unintended actions. Always verify before trusting critical outputs.
-- **Prompt injection is a real risk.** Malicious content from websites, messages, or files could manipulate the agent. SeekerClaw includes defenses, but no system is bulletproof.
+- **Prompt injection is a real risk.** Malicious content from websites, messages, or files could manipulate the agent. ShardClaw includes defenses, but no system is bulletproof.
 - **Wallet transactions are irreversible.** Swaps, transfers, and DCA orders on Solana cannot be undone. The agent requires confirmation for financial actions — read the details before approving.
 - **Start with small amounts.** Don't connect a wallet with significant funds until you're comfortable with how the agent behaves.
-- **You are responsible for your agent's actions.** SeekerClaw is a tool, not financial advice. The developers are not liable for any losses.
+- **You are responsible for your agent's actions.** ShardClaw is a tool, not financial advice. The developers are not liable for any losses.
 
 > **TL;DR:** Treat your agent like a capable but imperfect assistant. Verify important actions, secure your wallet, and don't trust it with more than you can afford to lose.
 
@@ -347,7 +351,7 @@ Thanks to all contributors:
 
 ## Links
 
-**Website:** [seekerclaw.xyz](https://seekerclaw.xyz) · **Product Hunt:** [SeekerClaw](https://www.producthunt.com/products/seekerclaw) · **Twitter:** [@SeekerClaw](https://x.com/SeekerClaw) · **Telegram:** [t.me/seekerclaw](https://t.me/seekerclaw)
+**Website:** [shardclaw.xyz](https://shardclaw.xyz) · **Product Hunt:** [ShardClaw](https://www.producthunt.com/products/shardclaw) · **Twitter:** [@ShardClaw](https://x.com/ShardClaw) · **Telegram:** [t.me/shardclaw](https://t.me/shardclaw)
 
 ---
 

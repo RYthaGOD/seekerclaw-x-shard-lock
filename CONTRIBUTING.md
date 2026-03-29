@@ -1,11 +1,11 @@
-# Contributing to SeekerClaw
+# Contributing to ShardClaw
 
 Thanks for your interest in contributing! This guide will help you get started.
 
 ## Reporting Bugs & Requesting Features
 
-- **Bugs:** Open an issue using the [Bug Report template](https://github.com/sepivip/SeekerClaw/issues/new?template=bug_report.md)
-- **Features:** Open an issue using the [Feature Request template](https://github.com/sepivip/SeekerClaw/issues/new?template=feature_request.md)
+- **Bugs:** Open an issue using the [Bug Report template](https://github.com/sepivip/ShardClaw/issues/new?template=bug_report.md)
+- **Features:** Open an issue using the [Feature Request template](https://github.com/sepivip/ShardClaw/issues/new?template=feature_request.md)
 - **Security:** See [SECURITY.md](SECURITY.md) for responsible disclosure
 
 ## Development Setup
@@ -20,8 +20,8 @@ Thanks for your interest in contributing! This guide will help you get started.
 ### Clone & Build
 
 ```bash
-git clone https://github.com/sepivip/SeekerClaw.git
-cd SeekerClaw
+git clone https://github.com/sepivip/ShardClaw.git
+cd ShardClaw
 ./gradlew assembleDebug
 ```
 
@@ -83,6 +83,6 @@ All version numbers live in one place: `app/build.gradle.kts`. The UI reads from
 
 ## Questions?
 
-- Open a [Discussion](https://github.com/sepivip/SeekerClaw/discussions) for general questions
+- Open a [Discussion](https://github.com/sepivip/ShardClaw/discussions) for general questions
 - Check [CLAUDE.md](CLAUDE.md) for architecture details
 - Check [SKILL-FORMAT.md](SKILL-FORMAT.md) for writing custom skills

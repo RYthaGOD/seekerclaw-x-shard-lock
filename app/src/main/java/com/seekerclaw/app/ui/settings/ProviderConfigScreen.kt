@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.settings
+package com.shardclaw.app.ui.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,15 +45,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.config.availableModels
-import com.seekerclaw.app.config.availableProviders
-import com.seekerclaw.app.config.modelsForProvider
-import com.seekerclaw.app.config.openaiModels
-import com.seekerclaw.app.config.providerById
-import com.seekerclaw.app.util.Analytics
-import com.seekerclaw.app.ui.theme.RethinkSans
-import com.seekerclaw.app.ui.theme.SeekerClawColors
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.config.availableModels
+import com.shardclaw.app.config.availableProviders
+import com.shardclaw.app.config.modelsForProvider
+import com.shardclaw.app.config.openaiModels
+import com.shardclaw.app.config.providerById
+import com.shardclaw.app.util.Analytics
+import com.shardclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.shardclawColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -86,7 +86,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
     var testMessage by remember { mutableStateOf("") }
     var showRestartDialog by remember { mutableStateOf(false) }
 
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     fun saveField(field: String, value: String, needsRestart: Boolean = false) {
         ConfigManager.updateConfigField(context, field, value)
@@ -105,7 +105,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
         val currentModel = config?.model ?: ""
 
         // Remember the current model for the old provider before switching
-        val prefs = context.getSharedPreferences("seekerclaw_prefs", android.content.Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("shardclaw_prefs", android.content.Context.MODE_PRIVATE)
         prefs.edit().putString("lastModel_$oldProviderId", currentModel).apply()
 
         saveField("provider", newProviderId, needsRestart = true)
@@ -139,7 +139,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                         fontFamily = RethinkSans,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.TextPrimary,
+                        color = shardclawColors.TextPrimary,
                     )
                 },
                 navigationIcon = {
@@ -147,16 +147,16 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = SeekerClawColors.TextPrimary,
+                            tint = shardclawColors.TextPrimary,
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = SeekerClawColors.Background,
+                    containerColor = shardclawColors.Background,
                 ),
             )
         },
-        containerColor = SeekerClawColors.Background,
+        containerColor = shardclawColors.Background,
     ) { padding ->
         Column(
             modifier = Modifier
@@ -172,7 +172,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape),
+                    .background(shardclawColors.Surface, shape),
             ) {
                 availableProviders.forEachIndexed { index, provider ->
                     val isActive = provider.id == activeProvider
@@ -190,7 +190,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                                 fontFamily = RethinkSans,
                                 fontSize = 14.sp,
                                 fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal,
-                                color = SeekerClawColors.TextPrimary,
+                                color = shardclawColors.TextPrimary,
                             )
                         }
                         if (isActive) {
@@ -199,13 +199,13 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                                 fontFamily = RethinkSans,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
-                                color = SeekerClawColors.Accent,
+                                color = shardclawColors.Accent,
                             )
                         }
                     }
                     if (index < availableProviders.size - 1) {
                         HorizontalDivider(
-                            color = SeekerClawColors.TextDim.copy(alpha = 0.1f),
+                            color = shardclawColors.TextDim.copy(alpha = 0.1f),
                             modifier = Modifier.padding(horizontal = 16.dp),
                         )
                     }
@@ -220,7 +220,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape),
+                    .background(shardclawColors.Surface, shape),
             ) {
                 when (activeProvider) {
                     "claude" -> {
@@ -334,14 +334,14 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(16.dp),
             ) {
                 Text(
                     text = "Verify your credentials are valid and the API is reachable.",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -378,7 +378,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = SeekerClawColors.ActionPrimary,
+                        containerColor = shardclawColors.ActionPrimary,
                         contentColor = Color.White,
                     ),
                 ) {
@@ -401,7 +401,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                         text = testMessage,
                         fontFamily = RethinkSans,
                         fontSize = 13.sp,
-                        color = if (testStatus == "Success") SeekerClawColors.ActionPrimary else SeekerClawColors.Error,
+                        color = if (testStatus == "Success") shardclawColors.ActionPrimary else shardclawColors.Error,
                     )
                 }
             }
@@ -494,7 +494,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                     "Select Model",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
             },
             text = {
@@ -511,8 +511,8 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                                 selected = selectedModel == model.id,
                                 onClick = { selectedModel = model.id },
                                 colors = RadioButtonDefaults.colors(
-                                    selectedColor = SeekerClawColors.Primary,
-                                    unselectedColor = SeekerClawColors.TextDim,
+                                    selectedColor = shardclawColors.Primary,
+                                    unselectedColor = shardclawColors.TextDim,
                                 ),
                             )
                             Column(modifier = Modifier.padding(start = 8.dp)) {
@@ -520,13 +520,13 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                                     text = "${model.displayName} (${model.description})",
                                     fontFamily = RethinkSans,
                                     fontSize = 14.sp,
-                                    color = SeekerClawColors.TextPrimary,
+                                    color = shardclawColors.TextPrimary,
                                 )
                                 Text(
                                     text = model.id,
                                     fontFamily = FontFamily.Monospace,
                                     fontSize = 11.sp,
-                                    color = SeekerClawColors.TextDim,
+                                    color = shardclawColors.TextDim,
                                 )
                             }
                         }
@@ -541,15 +541,15 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                         showModelPicker = false
                     },
                 ) {
-                    Text("Save", fontFamily = RethinkSans, fontWeight = FontWeight.Bold, color = SeekerClawColors.ActionPrimary)
+                    Text("Save", fontFamily = RethinkSans, fontWeight = FontWeight.Bold, color = shardclawColors.ActionPrimary)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showModelPicker = false }) {
-                    Text("Cancel", fontFamily = RethinkSans, color = SeekerClawColors.TextDim)
+                    Text("Cancel", fontFamily = RethinkSans, color = shardclawColors.TextDim)
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -562,7 +562,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
         AlertDialog(
             onDismissRequest = { showAuthTypePicker = false },
             title = {
-                Text("Auth Type", fontFamily = RethinkSans, fontWeight = FontWeight.Bold, color = SeekerClawColors.TextPrimary)
+                Text("Auth Type", fontFamily = RethinkSans, fontWeight = FontWeight.Bold, color = shardclawColors.TextPrimary)
             },
             text = {
                 Column {
@@ -578,15 +578,15 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                                 selected = selectedAuth == typeId,
                                 onClick = { selectedAuth = typeId },
                                 colors = RadioButtonDefaults.colors(
-                                    selectedColor = SeekerClawColors.Primary,
-                                    unselectedColor = SeekerClawColors.TextDim,
+                                    selectedColor = shardclawColors.Primary,
+                                    unselectedColor = shardclawColors.TextDim,
                                 ),
                             )
                             Text(
                                 text = label,
                                 fontFamily = RethinkSans,
                                 fontSize = 14.sp,
-                                color = SeekerClawColors.TextPrimary,
+                                color = shardclawColors.TextPrimary,
                                 modifier = Modifier.padding(start = 8.dp),
                             )
                         }
@@ -596,7 +596,7 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                         text = "Both credentials are stored. Switching just changes which one is used.",
                         fontFamily = RethinkSans,
                         fontSize = 12.sp,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             },
@@ -608,15 +608,15 @@ fun ProviderConfigScreen(onBack: () -> Unit) {
                         showAuthTypePicker = false
                     },
                 ) {
-                    Text("Save", fontFamily = RethinkSans, fontWeight = FontWeight.Bold, color = SeekerClawColors.ActionPrimary)
+                    Text("Save", fontFamily = RethinkSans, fontWeight = FontWeight.Bold, color = shardclawColors.ActionPrimary)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showAuthTypePicker = false }) {
-                    Text("Cancel", fontFamily = RethinkSans, color = SeekerClawColors.TextDim)
+                    Text("Cancel", fontFamily = RethinkSans, color = shardclawColors.TextDim)
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -679,8 +679,8 @@ private suspend fun testOpenRouterConnection(apiKey: String): Result<Unit> = wit
         val conn = url.openConnection() as HttpURLConnection
         conn.requestMethod = "GET"
         conn.setRequestProperty("Authorization", "Bearer $apiKey")
-        conn.setRequestProperty("HTTP-Referer", "https://seekerclaw.com")
-        conn.setRequestProperty("X-Title", "SeekerClaw")
+        conn.setRequestProperty("HTTP-Referer", "https://shardclaw.com")
+        conn.setRequestProperty("X-Title", "shardclaw")
         conn.connectTimeout = 15000
         conn.readTimeout = 15000
         try {
@@ -754,18 +754,18 @@ fun OpenRouterModelEditDialog(
     onSave: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     val fieldColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = SeekerClawColors.Primary,
-        unfocusedBorderColor = SeekerClawColors.TextDim.copy(alpha = 0.3f),
-        cursorColor = SeekerClawColors.Primary,
-        focusedTextColor = SeekerClawColors.TextPrimary,
-        unfocusedTextColor = SeekerClawColors.TextPrimary,
+        focusedBorderColor = shardclawColors.Primary,
+        unfocusedBorderColor = shardclawColors.TextDim.copy(alpha = 0.3f),
+        cursorColor = shardclawColors.Primary,
+        focusedTextColor = shardclawColors.TextPrimary,
+        unfocusedTextColor = shardclawColors.TextPrimary,
     )
     val monoStyle = androidx.compose.ui.text.TextStyle(
         fontFamily = FontFamily.Monospace,
         fontSize = 14.sp,
-        color = SeekerClawColors.TextPrimary,
+        color = shardclawColors.TextPrimary,
     )
 
     AlertDialog(
@@ -775,7 +775,7 @@ fun OpenRouterModelEditDialog(
                 title,
                 fontFamily = RethinkSans,
                 fontWeight = FontWeight.Bold,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
         },
         text = {
@@ -790,7 +790,7 @@ fun OpenRouterModelEditDialog(
                             fontSize = 12.sp,
                         )
                     },
-                    placeholder = { Text("e.g. anthropic/claude-sonnet-4-6", fontSize = 12.sp, color = SeekerClawColors.TextDim) },
+                    placeholder = { Text("e.g. anthropic/claude-sonnet-4-6", fontSize = 12.sp, color = shardclawColors.TextDim) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     textStyle = monoStyle,
@@ -801,7 +801,7 @@ fun OpenRouterModelEditDialog(
                     value = contextValue,
                     onValueChange = { new -> onContextChange(new.filter { it.isDigit() }) },
                     label = { Text("Context Length (optional)", fontFamily = RethinkSans, fontSize = 12.sp) },
-                    placeholder = { Text("Default: 128000", fontSize = 12.sp, color = SeekerClawColors.TextDim) },
+                    placeholder = { Text("Default: 128000", fontSize = 12.sp, color = shardclawColors.TextDim) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     textStyle = monoStyle,
@@ -812,7 +812,7 @@ fun OpenRouterModelEditDialog(
                     "Max tokens the model supports. Check openrouter.ai/models",
                     fontFamily = RethinkSans,
                     fontSize = 11.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                     modifier = Modifier.padding(top = 4.dp),
                 )
             }
@@ -823,7 +823,7 @@ fun OpenRouterModelEditDialog(
                     "Save",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.ActionPrimary,
+                    color = shardclawColors.ActionPrimary,
                 )
             }
         },
@@ -832,11 +832,11 @@ fun OpenRouterModelEditDialog(
                 Text(
                     "Cancel",
                     fontFamily = RethinkSans,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
             }
         },
-        containerColor = SeekerClawColors.Surface,
+        containerColor = shardclawColors.Surface,
         shape = shape,
     )
 }

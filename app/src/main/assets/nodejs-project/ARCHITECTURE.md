@@ -21,7 +21,7 @@ Core CommonJS modules in `nodejs-project/`:
 | `security.js` | Secret redaction, prompt injection defense |
 | `bridge.js` | Android bridge HTTP client |
 
-Also present: `sql-wasm.js` (third-party SQL.js WASM bundle, not a SeekerClaw module).
+Also present: `sql-wasm.js` (third-party SQL.js WASM bundle, not a shardclaw module).
 
 ## Dependency Graph
 

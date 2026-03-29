@@ -1,10 +1,10 @@
-package com.seekerclaw.app.solana
+package com.shardclaw.app.solana
 
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import androidx.activity.ComponentActivity
-import com.seekerclaw.app.config.ConfigManager
+import com.shardclaw.app.config.ConfigManager
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

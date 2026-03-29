@@ -1,4 +1,4 @@
-# SeekerClaw Skill Format Specification
+# shardclaw Skill Format Specification
 
 ## Standard Format
 
@@ -10,7 +10,7 @@ name: skill-name
 description: "What the skill does — AI reads this to decide when to use the skill"
 version: "1.0.0"
 emoji: "🔧"
-image: "https://seekerclaw.xyz/assets/partner-skills/skill-name.jpg"
+image: "https://shardclaw.xyz/assets/partner-skills/skill-name.jpg"
 requires:
   bins: []
   env: []
@@ -29,7 +29,7 @@ allowed-tools:
 | description | YES | One-line description. This is the PRIMARY trigger — Claude reads it to decide when to use the skill. Include WHEN to use, not just WHAT it does. |
 | version | YES | SemVer (major.minor.patch). Bump when updating content. |
 | emoji | No | Single emoji for display |
-| image | No | Absolute HTTPS URL to skill avatar/logo (displayed in Skills screen). Must start with `https://` or `http://`. Falls back to emoji if missing or fails to load. Partner skills host images at `https://seekerclaw.xyz/assets/partner-skills/{skill-id}.{ext}`. |
+| image | No | Absolute HTTPS URL to skill avatar/logo (displayed in Skills screen). Must start with `https://` or `http://`. Falls back to emoji if missing or fails to load. Partner skills host images at `https://shardclaw.xyz/assets/partner-skills/{skill-id}.{ext}`. |
 | requires.bins | No | Required command-line tools |
 | requires.env | No | Required environment variables |
 | requires.config | No | Required config keys |
@@ -103,7 +103,7 @@ Migrate to YAML frontmatter for marketplace compatibility and auto-update suppor
 
 ## Skill Images
 
-Skills can include an `image:` field with a full HTTPS URL to a logo/avatar. This is a **SeekerClaw extension** (not part of the OpenClaw spec).
+Skills can include an `image:` field with a full HTTPS URL to a logo/avatar. This is a **shardclaw extension** (not part of the OpenClaw spec).
 
 ### How it works
 1. Android app loads the image via Coil with crossfade
@@ -111,8 +111,8 @@ Skills can include an `image:` field with a full HTTPS URL to a logo/avatar. Thi
 3. Falls back to ⚡ if no emoji is set either
 
 ### Partner skill image convention
-- Host images at `https://seekerclaw.xyz/assets/partner-skills/{skill-id}.{ext}`
-- Image files live in the `SeekerClaw_Web` repo under `assets/partner-skills/`
+- Host images at `https://shardclaw.xyz/assets/partner-skills/{skill-id}.{ext}`
+- Image files live in the `shardclaw_Web` repo under `assets/partner-skills/`
 - Supported formats: `.jpg`, `.png`
 - Keep file size small (under 50KB recommended)
 
@@ -127,15 +127,15 @@ Skills can include an `image:` field with a full HTTPS URL to a logo/avatar. Thi
 - Minor (1.x.0): Add new capabilities, new API endpoints
 - Major (x.0.0): Breaking changes to skill behavior
 
-## SeekerClaw Tokenization & Bags Hackathon
+## shardclaw Tokenization & Bags Hackathon
 
-SeekerClaw will **tokenize** and join the **Bags Hackathon** at [https://bags.fm/hackathon](https://bags.fm/hackathon).
+shardclaw will **tokenize** and join the **Bags Hackathon** at [https://bags.fm/hackathon](https://bags.fm/hackathon).
 
 ### Token Details
 
 | Field    | Value                                           |
 |----------|-------------------------------------------------|
-| Name     | SeekerClaw                                      |
+| Name     | shardclaw                                      |
 | Symbol   | SKC                                             |
 | Supply   | 1,000,000,000 (1B)                              |
 | Platform | [Bags](https://bags.fm)                         |
@@ -179,7 +179,7 @@ name: clawpump
 description: "Launch tokens on Solana via ClawPump — gasless pump.fun launches, earn 65% of trading fees"
 version: "1.1.0"
 emoji: "🐾"
-image: "https://seekerclaw.xyz/assets/partner-skills/clawpump.jpg"
+image: "https://shardclaw.xyz/assets/partner-skills/clawpump.jpg"
 requires:
   bins: []
   env: []
@@ -192,7 +192,7 @@ allowed-tools:
 
 # ClawPump Token Launchpad
 
-> **Third-party service.** ClawPump is an independent platform not affiliated with SeekerClaw.
+> **Third-party service.** ClawPump is an independent platform not affiliated with shardclaw.
 
 ## Actions
 

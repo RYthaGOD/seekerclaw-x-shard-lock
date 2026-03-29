@@ -4,7 +4,7 @@
 
 **Please do NOT open a public GitHub issue for security vulnerabilities.**
 
-Instead, report vulnerabilities by emailing **security@seekerclaw.xyz**.
+Instead, report vulnerabilities by emailing **security@ShardClaw.xyz**.
 
 Include:
 - Description of the vulnerability
@@ -16,7 +16,7 @@ We will acknowledge your report within 48 hours and aim to provide a fix within 
 
 ## Security Model
 
-SeekerClaw takes security seriously:
+ShardClaw takes security seriously:
 
 - **Encryption at rest:** All sensitive configuration (API keys, tokens) is encrypted using Android Keystore (AES-256-GCM) before being written to disk.
 - **Usage analytics:** Firebase Analytics tracks feature usage, service health, and model selection — no personal data, no messages, no wallet keys. Enabled by default, fully optional — disable in Settings. `setAnalyticsCollectionEnabled(false)` stops all Firebase collection.

@@ -1,6 +1,6 @@
 # OpenClaw Version Tracking
 
-> **Purpose:** Track OpenClaw releases and identify changes to port to SeekerClaw.
+> **Purpose:** Track OpenClaw releases and identify changes to port to shardclaw.
 > **Current OpenClaw Version:** 2026.3.24 (main b7d70ade3b, 2026-03-25)
 > **Last Sync Review:** 2026-03-25
 > **Parity Plan:** See `PARITY_PLAN.md`
@@ -32,17 +32,17 @@ git diff <old-commit>..<new-commit> -- skills/
 
 ## Critical Files to Monitor
 
-These files in OpenClaw directly affect SeekerClaw behavior. Changes here require review.
+These files in OpenClaw directly affect shardclaw behavior. Changes here require review.
 
 ### Priority 1: System Prompt (CRITICAL)
-| OpenClaw File | SeekerClaw Equivalent | Notes |
+| OpenClaw File | shardclaw Equivalent | Notes |
 |---------------|----------------------|-------|
 | `src/agents/system-prompt.ts` | `main.js:buildSystemPrompt()` | Core agent behavior |
 | `src/agents/system-prompt-sections.ts` | `main.js` (inline) | Prompt sections |
 | `src/agents/identity.ts` | `main.js` (SOUL.md loading) | Agent identity |
 
 ### Priority 2: Memory System
-| OpenClaw File | SeekerClaw Equivalent | Notes |
+| OpenClaw File | shardclaw Equivalent | Notes |
 |---------------|----------------------|-------|
 | `src/memory/manager.ts` | `main.js` (simplified) | Memory read/write |
 | `src/memory/daily.ts` | `main.js:appendDailyMemory()` | Daily memory files |
@@ -50,7 +50,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 | `src/memory/types.ts` | N/A | Type definitions |
 
 ### Priority 3: Skills System
-| OpenClaw File | SeekerClaw Equivalent | Notes |
+| OpenClaw File | shardclaw Equivalent | Notes |
 |---------------|----------------------|-------|
 | `src/agents/skills/workspace.ts` | `main.js:loadSkills()` | Skill loading |
 | `src/agents/skills/matching.ts` | `main.js:findMatchingSkills()` | Skill triggering |
@@ -58,7 +58,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 | `skills/*.md` | `workspace/skills/*.md` | Bundled skills |
 
 ### Priority 4: Tools & Capabilities
-| OpenClaw File | SeekerClaw Equivalent | Notes |
+| OpenClaw File | shardclaw Equivalent | Notes |
 |---------------|----------------------|-------|
 | `src/agents/tools.ts` | `main.js:TOOLS[]` | Tool definitions |
 | `src/agents/tool-execution.ts` | `main.js:executeTool()` | Tool runner |
@@ -66,14 +66,14 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 | `src/web/search.ts` | `main.js:executeWebSearch()` | Web search |
 
 ### Priority 5: Cron & Scheduling
-| OpenClaw File | SeekerClaw Equivalent | Notes |
+| OpenClaw File | shardclaw Equivalent | Notes |
 |---------------|----------------------|-------|
 | `src/cron/manager.ts` | `main.js:cronService` | Full cron service (ported) |
 | `src/cron/natural-time.ts` | `main.js:parseTimeExpression()` | Time parsing (ported) |
 | `src/cron/types.ts` | `main.js` (inline) | Job types (ported) |
 
 ### Priority 6: Channel/Telegram
-| OpenClaw File | SeekerClaw Equivalent | Notes |
+| OpenClaw File | shardclaw Equivalent | Notes |
 |---------------|----------------------|-------|
 | `extensions/telegram/` | `main.js` (Telegram API) | Telegram integration |
 | `src/channels/base.ts` | N/A | Channel abstraction |
@@ -84,11 +84,11 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.3.24 (Current - b7d70ade3b)
 - **Release Date:** 2026-03-25
-- **SeekerClaw Sync Status:** Reviewed, nothing to port
+- **shardclaw Sync Status:** Reviewed, nothing to port
 - **1,782 new commits since last sync (0e9b899ae)**
 - **Skipped (not applicable):**
   - System prompt: memory section extracted to separate file — pure refactor, no wording change
-  - System prompt: heartbeat guard (`if (heartbeatPrompt)`) — SeekerClaw always has heartbeats on, guard would be dead code
+  - System prompt: heartbeat guard (`if (heartbeatPrompt)`) — shardclaw always has heartbeats on, guard would be dead code
   - System prompt: ClarHub URL update — we don't reference ClarHub
   - Model selection: xAI normalization, lazy logger, provider fallback refactor, model catalog builder — server-side multi-provider infrastructure
   - Skills: bundle commands (`loadEnabledClaudeBundleCommands`) — server-only plugin system
@@ -105,7 +105,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.3.13-1 (0e9b899ae)
 - **Release Date:** 2026-03-18
-- **SeekerClaw Sync Status:** Reviewed, 3 cron improvements ported
+- **shardclaw Sync Status:** Reviewed, 3 cron improvements ported
 - **4,022 new commits since last sync (3a08e69a0)**
 - **Ported:**
   - [x] Cron: expanded transient error patterns — added `tokens per day` and `ECONNREFUSED` to `TRANSIENT_ERROR_RE`
@@ -125,7 +125,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.3.1 (8ac7ce73b)
 - **Release Date:** 2026-03-02
-- **SeekerClaw Sync Status:** Reviewed, 1 fix ported, 1 deferred
+- **shardclaw Sync Status:** Reviewed, 1 fix ported, 1 deferred
 - **Re-synced:** 2026-03-06 (670 new commits since 3a08e69a0 — all SKIP, no portable changes)
 - **835 new commits since last sync (be8a5b9d6)**
 - **Ported:**
@@ -151,7 +151,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.28 (be8a5b9d6)
 - **Release Date:** 2026-02-28
-- **SeekerClaw Sync Status:** 1 line ported
+- **shardclaw Sync Status:** 1 line ported
 - **652 new commits since last sync (b3f46f0e2)**
 - **Ported:**
   - [x] System prompt: "tool-first" guidance — use tools directly instead of suggesting CLI/slash commands to user
@@ -167,7 +167,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.25 (b3f46f0e2)
 - **Release Date:** 2026-02-25
-- **SeekerClaw Sync Status:** Reviewed, nothing to port
+- **shardclaw Sync Status:** Reviewed, nothing to port
 - **276 new commits since last sync (4b316c33d)**
 - **Versions reviewed:** v2026.2.24, v2026.2.24-beta.1, v2026.2.25 (HEAD)
 - **Skipped (not applicable):**
@@ -189,11 +189,11 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.23 (4b316c33d)
 - **Release Date:** 2026-02-24
-- **SeekerClaw Sync Status:** Reviewed, nothing to port
+- **shardclaw Sync Status:** Reviewed, nothing to port
 - **660 new commits since last sync (40a68a893)**
 - **Versions reviewed:** v2026.2.23-beta.1, v2026.2.23 (HEAD)
 - **Skipped (not applicable):**
-  - System prompt: remove `isMinimal` guard from `buildSkillsSection` — SeekerClaw always includes skills (no promptMode)
+  - System prompt: remove `isMinimal` guard from `buildSkillsSection` — shardclaw always includes skills (no promptMode)
   - System prompt: extract `EmbeddedSandboxInfo` type — sandbox/container not applicable
   - System prompt: dedupe runtime path helpers — pure refactor
   - Memory: Gemini batch SSRF policy, QMD query expansion, remote HTTP helper, Mistral provider, batch error utils — all Node 22+ / embedding infrastructure
@@ -208,7 +208,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.20 (741435aac)
 - **Release Date:** 2026-02-20
-- **SeekerClaw Sync Status:** Reviewed, nothing to port
+- **shardclaw Sync Status:** Reviewed, nothing to port
 - **505 new commits since last sync (f9e67f3)**
 - **Versions reviewed:** v2026.2.19, v2026.2.20 (HEAD)
 - **Skipped (not applicable):**
@@ -225,7 +225,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.17 (gap review — previously covered in 2026.2.18-dev)
 - **Release Date:** 2026-02-17
-- **SeekerClaw Sync Status:** Reviewed, already ported items noted in 2026.2.18-dev
+- **shardclaw Sync Status:** Reviewed, already ported items noted in 2026.2.18-dev
 - **Key Changes Reviewed:**
   - [x] System prompt: reply tags first-token rule — already ported (BAT-189)
   - [x] Skills: "Use when / Don't use when" routing blocks — already ported (BAT-189)
@@ -241,7 +241,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.12 (gap review)
 - **Release Date:** 2026-02-12
-- **SeekerClaw Sync Status:** Reviewed, nothing to port
+- **shardclaw Sync Status:** Reviewed, nothing to port
 - **Key Changes Reviewed:**
   - System prompt: prefer `[[reply_to_current]]` over `[[reply_to:<id>]]` — we only support `[[reply_to_current]]`, skip
   - System prompt: filter empty-path context files — defensive, our paths always valid
@@ -251,7 +251,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.6 (gap review)
 - **Release Date:** 2026-02-06
-- **SeekerClaw Sync Status:** Key fix already present
+- **shardclaw Sync Status:** Key fix already present
 - **Key Changes Reviewed:**
   - Cron: timer re-arm in `finally` block — **already in our code** (cron.js:477-479)
   - Cron: handle legacy `atMs` field, prevent recomputeNextRuns skipping — server-specific store migration
@@ -259,7 +259,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.3 (gap review)
 - **Release Date:** 2026-02-03
-- **SeekerClaw Sync Status:** Reviewed, nothing to port
+- **shardclaw Sync Status:** Reviewed, nothing to port
 - **Key Changes Reviewed:**
   - Identity: `resolveResponsePrefix` per-channel/per-account config — server-only multi-channel
   - Cron: major delivery normalization (`coerceDelivery`, legacy payload migration, `deleteAfterRun`) — server-only delivery routing; our cron is reminder-only
@@ -267,7 +267,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.18-dev (f9e67f3)
 - **Release Date:** 2026-02-18
-- **SeekerClaw Sync Status:** Ported (BAT-189, PR #117)
+- **shardclaw Sync Status:** Ported (BAT-189, PR #117)
 - **1,563 new commits since last sync (e927fd1)**
 - **Key Changes Ported:**
   - [x] System prompt: reply tags must be first token in message (no leading text/newlines)
@@ -293,7 +293,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.14 (e927fd1)
 - **Release Date:** 2026-02-15
-- **SeekerClaw Sync Status:** Key changes ported
+- **shardclaw Sync Status:** Key changes ported
 - **Key Changes Ported:**
   - [x] System prompt: poll loop avoidance guidance for shell_exec
 - **Skipped (not applicable):**
@@ -301,7 +301,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
   - Sandbox/container workspace path resolution — no Docker on mobile
   - Memory QMD/embedding refactoring — requires Node 22+ / node:sqlite
   - Skills refresh watch optimization (SKILL.md glob patterns) — no file watcher
-  - Cron normalize partial agentTurn payloads — SeekerClaw uses reminder-only payloads
+  - Cron normalize partial agentTurn payloads — shardclaw uses reminder-only payloads
   - Cron sub-agent wait/poll logic — no sub-agent system
   - Web/auto-reply test infrastructure refactoring — test-only
 - **Notable upstream:**
@@ -312,18 +312,18 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.13 (71f357d)
 - **Release Date:** 2026-02-14
-- **SeekerClaw Sync Status:** Key changes ported
+- **shardclaw Sync Status:** Key changes ported
 - **Key Changes Ported:**
   - [x] web-fetch: Accept header prefers `text/markdown` (Cloudflare Markdown for Agents)
   - [x] web-fetch: cf-markdown extractor for pre-rendered markdown responses
   - [x] web-search: Perplexity freshness/recency filter support
   - [x] Error handling: distinct user messages for rate limit vs overloaded
 - **Skipped (not applicable):**
-  - Memory QMD search mode default change (no QMD in SeekerClaw)
+  - Memory QMD search mode default change (no QMD in shardclaw)
   - Discord skill rewrite (no Discord channel)
   - Skills-install archive hardening (no skill install)
   - Telegram poll support (defer)
-  - Telegram replyToMode default change (SeekerClaw uses direct polling)
+  - Telegram replyToMode default change (shardclaw uses direct polling)
 - **Notable upstream:**
   - 60+ commits, tags v2026.2.12 and v2026.2.13
   - Many security hardening fixes (channels, browser, media, archives)
@@ -333,7 +333,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.10-dev (029b77c)
 - **Release Date:** 2026-02-11
-- **SeekerClaw Sync Status:** Synced (critical fixes ported)
+- **shardclaw Sync Status:** Synced (critical fixes ported)
 - **Key Changes Ported:**
   - [x] Strip `<think>` / `<thinking>` reasoning tags from responses before sendMessage()
   - [x] Strip `[Historical context:...]` markers from responses
@@ -345,7 +345,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.9-dev (40b11db)
 - **Release Date:** 2026-02-09
-- **SeekerClaw Sync Status:** Stability fixes ported
+- **shardclaw Sync Status:** Stability fixes ported
 - **Key Changes Ported:**
   - [x] Cross-process SharedPreferences fix
   - [x] BRIDGE_TOKEN TDZ fix
@@ -354,7 +354,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
 
 ### 2026.2.2 (1c4db91)
 - **Release Date:** 2026-02-03
-- **SeekerClaw Sync Status:** Initial baseline
+- **shardclaw Sync Status:** Initial baseline
 - **Key Changes:**
   - [x] System prompt adapted for mobile
   - [x] Memory system (file-based)
@@ -362,7 +362,7 @@ These files in OpenClaw directly affect SeekerClaw behavior. Changes here requir
   - [x] Cron system (full port)
 
 ### Baseline (Initial Clone)
-- **SeekerClaw Created:** 2026-02-03
+- **shardclaw Created:** 2026-02-03
 - **Based On:** OpenClaw 2026.2.2
 - **Initial Sync Notes:**
   - System prompt adapted for mobile
@@ -464,7 +464,7 @@ When a new OpenClaw version is released:
 
 ### Step 1: Update Reference
 ```bash
-cd e:/GIT/SeekerClaw/openclaw-reference
+cd e:/GIT/shardclaw/openclaw-reference
 git fetch origin
 git log --oneline HEAD..origin/main  # See new commits
 git pull origin main
@@ -486,7 +486,7 @@ git diff $OLD_COMMIT..$NEW_COMMIT -- skills/
 ### Step 3: Review Changes
 For each changed file in the priority list above:
 1. Read the diff carefully
-2. Determine if change affects SeekerClaw
+2. Determine if change affects shardclaw
 3. If yes, create a task to port the change
 4. Update this document with the new version
 
@@ -500,13 +500,13 @@ For each changed file in the priority list above:
 1. Add entry to Version History section
 2. Update "Current OpenClaw Version" at top
 3. Update "Last Sync Review" date
-4. Commit changes to SeekerClaw
+4. Commit changes to shardclaw
 
 ---
 
 ## Known Incompatibilities
 
-These OpenClaw features cannot be ported to SeekerClaw due to platform limitations:
+These OpenClaw features cannot be ported to shardclaw due to platform limitations:
 
 | Feature | Reason | Workaround |
 |---------|--------|------------|
@@ -538,5 +538,5 @@ TODO: Create a script that:
 ## Contact & Resources
 
 - **OpenClaw Repository:** https://github.com/openclaw/openclaw
-- **SeekerClaw Repository:** (this repo)
+- **shardclaw Repository:** (this repo)
 - **nodejs-mobile:** https://github.com/nodejs-mobile/nodejs-mobile

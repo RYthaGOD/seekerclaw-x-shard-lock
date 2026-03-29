@@ -1,4 +1,4 @@
-// SeekerClaw — solana.js
+// shardclaw — solana.js
 // Solana RPC, base58 encoding, transaction building, Jupiter DEX (tokens, quotes, swaps, prices), wallet management.
 // Depends on: config.js, http.js, bridge.js
 
@@ -502,7 +502,7 @@ async function ensureWalletAuthorized() {
 function getConnectedWalletAddress() {
     const walletConfigPath = path.join(workDir, 'solana_wallet.json');
     if (!fs.existsSync(walletConfigPath)) {
-        throw new Error('No wallet connected. Connect a wallet in SeekerClaw Settings > Solana Wallet.');
+        throw new Error('No wallet connected. Connect a wallet in shardclaw Settings > Solana Wallet.');
     }
 
     let walletConfig;

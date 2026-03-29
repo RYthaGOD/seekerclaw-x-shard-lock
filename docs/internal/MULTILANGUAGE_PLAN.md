@@ -1,11 +1,11 @@
-# SeekerClaw Multilanguage Support Plan
+# shardclaw Multilanguage Support Plan
 
 > **Status:** Planning | **Target:** v1.8.0 | **First language:** Chinese Simplified (zh-CN)
 > **Users at risk:** 4,700+ live users — zero regressions allowed
 
 ## Summary
 
-SeekerClaw has 1,080+ hardcoded English strings but only ~150-200 are visible UI (labels, headers, status text, buttons). The rest are dialogs, help tooltips, toasts, and accessibility strings — deferred.
+shardclaw has 1,080+ hardcoded English strings but only ~150-200 are visible UI (labels, headers, status text, buttons). The rest are dialogs, help tooltips, toasts, and accessibility strings — deferred.
 
 The agent already responds in any language — no agent-side work needed. This plan covers Android UI labels only.
 
@@ -126,7 +126,7 @@ filter_debug, filter_info, filter_warn, filter_error
 
 ### Non-Translatable Strings
 ```xml
-<string name="brand_seekerclaw" translatable="false">SeekerClaw</string>
+<string name="brand_shardclaw" translatable="false">shardclaw</string>
 <string name="brand_claw_engine" translatable="false">Claw Engine</string>
 <string name="brand_agent_os" translatable="false">AgentOS</string>
 <string name="tech_api" translatable="false">API</string>
@@ -172,7 +172,7 @@ filter_debug, filter_info, filter_warn, filter_error
 ## Safety Rules
 
 1. **English Must Be Identical** — Extract = pure refactor. Before/after screenshots must match.
-2. **Brand Names Never Translate** — SeekerClaw, Claw Engine, AgentOS, OpenClaw. Marked translatable="false".
+2. **Brand Names Never Translate** — shardclaw, Claw Engine, AgentOS, OpenClaw. Marked translatable="false".
 3. **Technical Terms Stay English** — API, SDK, Node.js, Telegram, MCP, SOL, NFT, DCA.
 4. **Solana/DeFi Terms Stay English** — Swap, DCA, Holdings, Wallet, SOL. Crypto uses English globally.
 5. **Log Messages Stay English** — All Log.d(), LogCollector.append(). Debugging must be readable by us.

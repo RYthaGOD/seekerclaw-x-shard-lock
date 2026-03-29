@@ -1,10 +1,10 @@
-package com.seekerclaw.app.ui.setup
+package com.shardclaw.app.ui.setup
 
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import com.seekerclaw.app.util.LogCollector
-import com.seekerclaw.app.util.LogLevel
+import com.shardclaw.app.util.LogCollector
+import com.shardclaw.app.util.LogLevel
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -75,29 +75,29 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import com.seekerclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.RethinkSans
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import com.seekerclaw.app.R
-import com.seekerclaw.app.config.AppConfig
-import com.seekerclaw.app.config.ConfigClaimImporter
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.config.OPENROUTER_DEFAULT_MODEL
-import com.seekerclaw.app.config.availableModels
-import com.seekerclaw.app.config.availableProviders
-import com.seekerclaw.app.config.providerById
-import com.seekerclaw.app.config.modelsForProvider
-import com.seekerclaw.app.qr.QrScannerActivity
-import com.seekerclaw.app.service.OpenClawService
-import com.seekerclaw.app.util.Analytics
+import com.shardclaw.app.R
+import com.shardclaw.app.config.AppConfig
+import com.shardclaw.app.config.ConfigClaimImporter
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.config.OPENROUTER_DEFAULT_MODEL
+import com.shardclaw.app.config.availableModels
+import com.shardclaw.app.config.availableProviders
+import com.shardclaw.app.config.providerById
+import com.shardclaw.app.config.modelsForProvider
+import com.shardclaw.app.qr.QrScannerActivity
+import com.shardclaw.app.service.OpenClawService
+import com.shardclaw.app.util.Analytics
 import kotlinx.coroutines.launch
-import com.seekerclaw.app.ui.components.SetupStepIndicator
-import com.seekerclaw.app.ui.components.dotMatrix
-import com.seekerclaw.app.ui.theme.SeekerClawColors
+import com.shardclaw.app.ui.components.SetupStepIndicator
+import com.shardclaw.app.ui.components.dotMatrix
+import com.shardclaw.app.ui.theme.shardclawColors
 
 private object SetupSteps {
     const val WELCOME = 0
@@ -138,7 +138,7 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
             } ?: modelsForProvider(existingProvider).firstOrNull()?.id ?: availableModels[0].id
         )
     }
-    var agentName by remember { mutableStateOf(existingConfig?.agentName ?: "SeekerClaw") }
+    var agentName by remember { mutableStateOf(existingConfig?.agentName ?: "shardclaw") }
     var modelDropdownExpanded by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var apiKeyError by remember { mutableStateOf<String?>(null) }
@@ -262,7 +262,7 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                     telegramBotToken = botToken.trim(),
                     telegramOwnerId = ownerId.trim(),
                     model = selectedModel,
-                    agentName = agentName.trim().ifBlank { "SeekerClaw" },
+                    agentName = agentName.trim().ifBlank { "shardclaw" },
                 )
                 "openrouter" -> AppConfig(
                     anthropicApiKey = existing?.anthropicApiKey ?: "",
@@ -274,7 +274,7 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                     telegramBotToken = botToken.trim(),
                     telegramOwnerId = ownerId.trim(),
                     model = selectedModel,
-                    agentName = agentName.trim().ifBlank { "SeekerClaw" },
+                    agentName = agentName.trim().ifBlank { "shardclaw" },
                 )
                 else -> AppConfig(
                     anthropicApiKey = if (effectiveAuthType == "api_key") trimmedKey else "",
@@ -286,7 +286,7 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                     telegramBotToken = botToken.trim(),
                     telegramOwnerId = ownerId.trim(),
                     model = selectedModel,
-                    agentName = agentName.trim().ifBlank { "SeekerClaw" },
+                    agentName = agentName.trim().ifBlank { "shardclaw" },
                 )
             }
             ConfigManager.saveConfig(context, config)
@@ -302,33 +302,33 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
     }
 
     val fieldColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = SeekerClawColors.Primary,
-        unfocusedBorderColor = SeekerClawColors.TextDim.copy(alpha = 0.3f),
-        focusedTextColor = SeekerClawColors.TextPrimary,
-        unfocusedTextColor = SeekerClawColors.TextPrimary,
-        cursorColor = SeekerClawColors.Primary,
-        focusedLabelColor = SeekerClawColors.Primary,
-        unfocusedLabelColor = SeekerClawColors.TextSecondary,
-        focusedContainerColor = SeekerClawColors.Surface,
-        unfocusedContainerColor = SeekerClawColors.Surface,
+        focusedBorderColor = shardclawColors.Primary,
+        unfocusedBorderColor = shardclawColors.TextDim.copy(alpha = 0.3f),
+        focusedTextColor = shardclawColors.TextPrimary,
+        unfocusedTextColor = shardclawColors.TextPrimary,
+        cursorColor = shardclawColors.Primary,
+        focusedLabelColor = shardclawColors.Primary,
+        unfocusedLabelColor = shardclawColors.TextSecondary,
+        focusedContainerColor = shardclawColors.Surface,
+        unfocusedContainerColor = shardclawColors.Surface,
     )
 
     val scrollState = rememberScrollState()
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
-    val bgModifier = if (SeekerClawColors.UseDotMatrix) {
+    val bgModifier = if (shardclawColors.UseDotMatrix) {
         Modifier
             .fillMaxSize()
-            .background(SeekerClawColors.Background)
+            .background(shardclawColors.Background)
             .dotMatrix(
-                dotColor = SeekerClawColors.DotMatrix,
+                dotColor = shardclawColors.DotMatrix,
                 dotSpacing = 6.dp,
                 dotRadius = 1.dp,
             )
     } else {
         Modifier
             .fillMaxSize()
-            .background(SeekerClawColors.Background)
+            .background(shardclawColors.Background)
     }
 
     Column(
@@ -346,14 +346,14 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
             ) {
                 Image(
                     painter = painterResource(R.drawable.logo_seeker_claw_premium),
-                    contentDescription = "SeekerClaw logo",
+                    contentDescription = "shardclaw logo",
                     modifier = Modifier.height(48.dp), // Increased height for the premium logo
                 )
                 Text(
                     text = "Set up later",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                     modifier = Modifier
                         .clickable {
                             ConfigManager.markSetupSkipped(context)
@@ -368,7 +368,7 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
             Text(
                 text = "Your personal AI agent, running on your phone",
                 fontSize = 13.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -388,11 +388,11 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
             Text(
                 text = errorMessage!!,
                 fontFamily = FontFamily.Monospace,
-                color = SeekerClawColors.Error,
+                color = shardclawColors.Error,
                 fontSize = 13.sp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Error.copy(alpha = 0.1f), shape)
+                    .background(shardclawColors.Error.copy(alpha = 0.1f), shape)
                     .padding(14.dp),
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -469,7 +469,7 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                 isStarting = isStarting,
             )
             SetupSteps.SUCCESS -> SetupSuccessStep(
-                agentName = agentName.ifBlank { "SeekerClaw" },
+                agentName = agentName.ifBlank { "shardclaw" },
                 botToken = botToken,
                 onContinue = onSetupComplete,
             )
@@ -487,17 +487,17 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                     "Enable Notifications",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
             },
             text = {
                 Text(
-                    "SeekerClaw runs your AI agent in the background. " +
+                    "shardclaw runs your AI agent in the background. " +
                         "Notifications let you know when the agent starts, stops, " +
                         "or needs attention \u2014 even when the app isn\u2019t open.",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextSecondary,
+                    color = shardclawColors.TextSecondary,
                     lineHeight = 20.sp,
                 )
             },
@@ -509,7 +509,7 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                         "Enable",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.Primary,
+                        color = shardclawColors.Primary,
                     )
                 }
             },
@@ -518,11 +518,11 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                     Text(
                         "Not Now",
                         fontFamily = RethinkSans,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -535,7 +535,7 @@ private fun WelcomeStep(
     isQrImporting: Boolean = false,
     qrError: String? = null,
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     val uriHandler = LocalUriHandler.current
 
     Column(
@@ -543,10 +543,10 @@ private fun WelcomeStep(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "SeekerClaw turns your phone into a 24/7 personal AI agent. " +
+            text = "shardclaw turns your phone into a 24/7 personal AI agent. " +
                    "To get started, you\u2019ll need:",
             fontSize = 14.sp,
-            color = SeekerClawColors.TextPrimary,
+            color = shardclawColors.TextPrimary,
             lineHeight = 22.sp,
         )
 
@@ -560,7 +560,7 @@ private fun WelcomeStep(
                 subtitle = "From Claude, OpenAI, or OpenRouter",
             )
             HorizontalDivider(
-                color = SeekerClawColors.CardBorder,
+                color = shardclawColors.CardBorder,
                 modifier = Modifier.padding(vertical = 14.dp),
             )
             RequirementRow(
@@ -569,7 +569,7 @@ private fun WelcomeStep(
                 subtitle = "Create one via @BotFather in Telegram",
             )
             HorizontalDivider(
-                color = SeekerClawColors.CardBorder,
+                color = shardclawColors.CardBorder,
                 modifier = Modifier.padding(vertical = 14.dp),
             )
             RequirementRow(
@@ -590,7 +590,7 @@ private fun WelcomeStep(
                 .height(52.dp),
             shape = shape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = SeekerClawColors.ActionPrimary,
+                containerColor = shardclawColors.ActionPrimary,
                 contentColor = Color.White,
             ),
         ) {
@@ -626,7 +626,7 @@ private fun WelcomeStep(
             Text(
                 text = qrError,
                 fontFamily = FontFamily.Monospace,
-                color = SeekerClawColors.Error,
+                color = shardclawColors.Error,
                 fontSize = 12.sp,
             )
         }
@@ -641,8 +641,8 @@ private fun WelcomeStep(
                 .height(48.dp),
             shape = shape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = SeekerClawColors.Surface,
-                contentColor = SeekerClawColors.TextPrimary,
+                containerColor = shardclawColors.Surface,
+                contentColor = shardclawColors.TextPrimary,
             ),
         ) {
             Text(
@@ -655,19 +655,19 @@ private fun WelcomeStep(
         Spacer(modifier = Modifier.height(8.dp))
 
         TextButton(
-            onClick = { uriHandler.openUri("https://seekerclaw.xyz/setup") },
+            onClick = { uriHandler.openUri("https://shardclaw.xyz/setup") },
         ) {
             Icon(
                 @Suppress("DEPRECATION") Icons.Default.HelpOutline,
                 contentDescription = "Help",
-                tint = SeekerClawColors.TextDim,
+                tint = shardclawColors.TextDim,
                 modifier = Modifier.size(16.dp),
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
                 "Need help? Quick setup guide",
                 fontSize = 13.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
             )
         }
     }
@@ -686,7 +686,7 @@ private fun ProviderSetupStep(
     onNext: () -> Unit,
     onBack: () -> Unit,
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     val providerInfo = providerById(provider)
     val isToken = authType == "setup_token"
     val uriHandler = LocalUriHandler.current
@@ -720,8 +720,8 @@ private fun ProviderSetupStep(
                             selected = isSelected,
                             onClick = null,
                             colors = RadioButtonDefaults.colors(
-                                selectedColor = SeekerClawColors.Primary,
-                                unselectedColor = SeekerClawColors.TextDim,
+                                selectedColor = shardclawColors.Primary,
+                                unselectedColor = shardclawColors.TextDim,
                             ),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -730,11 +730,11 @@ private fun ProviderSetupStep(
                             fontFamily = RethinkSans,
                             fontSize = 15.sp,
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            color = if (isSelected) SeekerClawColors.TextPrimary else SeekerClawColors.TextDim,
+                            color = if (isSelected) shardclawColors.TextPrimary else shardclawColors.TextDim,
                         )
                     }
                     if (index < availableProviders.size - 1) {
-                        HorizontalDivider(color = SeekerClawColors.CardBorder)
+                        HorizontalDivider(color = shardclawColors.CardBorder)
                     }
                 }
             }
@@ -760,12 +760,12 @@ private fun ProviderSetupStep(
                             onClick = { onAuthTypeChange(type) },
                             modifier = Modifier.weight(1f).height(48.dp),
                             shape = shape,
-                            border = if (!isAuthSelected) BorderStroke(1.dp, SeekerClawColors.CardBorder) else null,
+                            border = if (!isAuthSelected) BorderStroke(1.dp, shardclawColors.CardBorder) else null,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isAuthSelected) SeekerClawColors.Primary.copy(alpha = 0.15f)
-                                    else SeekerClawColors.Background,
-                                contentColor = if (isAuthSelected) SeekerClawColors.Primary
-                                    else SeekerClawColors.TextDim,
+                                containerColor = if (isAuthSelected) shardclawColors.Primary.copy(alpha = 0.15f)
+                                    else shardclawColors.Background,
+                                contentColor = if (isAuthSelected) shardclawColors.Primary
+                                    else shardclawColors.TextDim,
                             ),
                         ) {
                             Text(
@@ -785,32 +785,32 @@ private fun ProviderSetupStep(
                 Text(
                     text = "Run in your terminal:",
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextSecondary,
+                    color = shardclawColors.TextSecondary,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "claude setup-token",
                     fontFamily = FontFamily.Monospace,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.Primary,
+                    color = shardclawColors.Primary,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Requires Claude Pro or Max subscription.",
                     fontSize = 12.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
             } else {
                 Row {
                     Text(
                         text = "Get your API key from ",
                         fontSize = 13.sp,
-                        color = SeekerClawColors.TextSecondary,
+                        color = shardclawColors.TextSecondary,
                     )
                     Text(
                         text = providerInfo.keysUrl.removePrefix("https://"),
                         fontSize = 13.sp,
-                        color = SeekerClawColors.Primary,
+                        color = shardclawColors.Primary,
                         modifier = Modifier.clickable {
                             uriHandler.openUri(providerInfo.keysUrl)
                         },
@@ -834,7 +834,7 @@ private fun ProviderSetupStep(
                         if (provider == "claude" && isToken) "sk-ant-oat01-\u2026" else providerInfo.keyHint,
                         fontFamily = FontFamily.Monospace,
                         fontSize = 14.sp,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -846,7 +846,7 @@ private fun ProviderSetupStep(
                         Icon(
                             Icons.Default.CheckCircle,
                             contentDescription = "Valid",
-                            tint = SeekerClawColors.Accent,
+                            tint = shardclawColors.Accent,
                             modifier = Modifier.size(20.dp),
                         )
                     }
@@ -881,7 +881,7 @@ private fun TelegramStep(
     onBack: () -> Unit,
     isStarting: Boolean = false,
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     Column(modifier = Modifier.fillMaxWidth()) {
         SectionLabel("Telegram Connection")
@@ -894,13 +894,13 @@ private fun TelegramStep(
                 text = "Bot Token",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "Open Telegram \u2192 @BotFather \u2192 /newbot \u2192 copy the token.",
                 fontSize = 12.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
                 lineHeight = 18.sp,
             )
 
@@ -915,7 +915,7 @@ private fun TelegramStep(
                         "123456789:ABC\u2026",
                         fontFamily = FontFamily.Monospace,
                         fontSize = 14.sp,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -933,7 +933,7 @@ private fun TelegramStep(
                         Icon(
                             Icons.Default.CheckCircle,
                             contentDescription = "Valid format",
-                            tint = SeekerClawColors.Accent,
+                            tint = shardclawColors.Accent,
                             modifier = Modifier.size(20.dp),
                         )
                     }
@@ -946,7 +946,7 @@ private fun TelegramStep(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            HorizontalDivider(color = SeekerClawColors.CardBorder)
+            HorizontalDivider(color = shardclawColors.CardBorder)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -956,13 +956,13 @@ private fun TelegramStep(
                     text = "User ID",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "(optional)",
                     fontSize = 12.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
                 if (ownerId.isBlank()) {
                     Spacer(modifier = Modifier.width(8.dp))
@@ -970,11 +970,11 @@ private fun TelegramStep(
                         text = "AUTO-DETECT",
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.Accent,
+                        color = shardclawColors.Accent,
                         letterSpacing = 0.5.sp,
                         modifier = Modifier
                             .background(
-                                SeekerClawColors.Accent.copy(alpha = 0.12f),
+                                shardclawColors.Accent.copy(alpha = 0.12f),
                                 RoundedCornerShape(4.dp),
                             )
                             .padding(horizontal = 6.dp, vertical = 2.dp),
@@ -985,7 +985,7 @@ private fun TelegramStep(
             Text(
                 text = "Leave empty \u2014 the first person to message your bot becomes the owner.",
                 fontSize = 12.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
                 lineHeight = 18.sp,
             )
 
@@ -999,7 +999,7 @@ private fun TelegramStep(
                     Text(
                         "auto-detect",
                         fontSize = 14.sp,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -1017,7 +1017,7 @@ private fun TelegramStep(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TextButton(onClick = onBack, enabled = !isStarting) {
-                Text("Back", fontSize = 14.sp, color = if (isStarting) SeekerClawColors.TextDim.copy(alpha = 0.3f) else SeekerClawColors.TextDim)
+                Text("Back", fontSize = 14.sp, color = if (isStarting) shardclawColors.TextDim.copy(alpha = 0.3f) else shardclawColors.TextDim)
             }
             Button(
                 onClick = onNext,
@@ -1025,9 +1025,9 @@ private fun TelegramStep(
                 modifier = Modifier.height(56.dp),
                 shape = shape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = SeekerClawColors.ActionPrimary,
+                    containerColor = shardclawColors.ActionPrimary,
                     contentColor = Color.White,
-                    disabledContainerColor = SeekerClawColors.ActionPrimary.copy(alpha = 0.6f),
+                    disabledContainerColor = shardclawColors.ActionPrimary.copy(alpha = 0.6f),
                     disabledContentColor = Color.White.copy(alpha = 0.7f),
                 ),
             ) {
@@ -1063,7 +1063,7 @@ private fun OptionsStep(
     onBack: () -> Unit,
     provider: String = "claude",
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     Column(modifier = Modifier.fillMaxWidth()) {
         SectionLabel("Configuration")
@@ -1076,13 +1076,13 @@ private fun OptionsStep(
                 text = "AI Model",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "Choose the model that powers your agent.",
                 fontSize = 12.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -1095,7 +1095,7 @@ private fun OptionsStep(
                     onValueChange = onModelChange,
                     singleLine = true,
                     label = { Text("Model ID", fontSize = 12.sp) },
-                    placeholder = { Text("e.g. anthropic/claude-sonnet-4-6", fontSize = 14.sp, color = SeekerClawColors.TextDim) },
+                    placeholder = { Text("e.g. anthropic/claude-sonnet-4-6", fontSize = 14.sp, color = shardclawColors.TextDim) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = fieldColors,
                     shape = shape,
@@ -1126,7 +1126,7 @@ private fun OptionsStep(
                                 text = {
                                     Text(
                                         "${model.displayName} (${model.description})",
-                                        color = SeekerClawColors.TextPrimary,
+                                        color = shardclawColors.TextPrimary,
                                     )
                                 },
                                 onClick = {
@@ -1141,7 +1141,7 @@ private fun OptionsStep(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            HorizontalDivider(color = SeekerClawColors.CardBorder)
+            HorizontalDivider(color = shardclawColors.CardBorder)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -1150,13 +1150,13 @@ private fun OptionsStep(
                 text = "Agent Name",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "Give your agent a name. You can change this later.",
                 fontSize = 12.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -1184,7 +1184,7 @@ private fun SetupSuccessStep(
     botToken: String,
     onContinue: () -> Unit,
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     val botId = Regex("""^(\d+):""").find(botToken)?.groupValues?.get(1)
 
     Column(
@@ -1197,13 +1197,13 @@ private fun SetupSuccessStep(
         Box(
             modifier = Modifier
                 .size(80.dp)
-                .background(SeekerClawColors.ActionPrimary.copy(alpha = 0.15f), CircleShape),
+                .background(shardclawColors.ActionPrimary.copy(alpha = 0.15f), CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 Icons.Rounded.Check,
                 contentDescription = "Success",
-                tint = SeekerClawColors.ActionPrimary,
+                tint = shardclawColors.ActionPrimary,
                 modifier = Modifier.size(40.dp),
             )
         }
@@ -1215,7 +1215,7 @@ private fun SetupSuccessStep(
             fontFamily = RethinkSans,
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
-            color = SeekerClawColors.TextPrimary,
+            color = shardclawColors.TextPrimary,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -1224,7 +1224,7 @@ private fun SetupSuccessStep(
             text = "$agentName is starting up",
             fontFamily = RethinkSans,
             fontSize = 14.sp,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
         )
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -1240,7 +1240,7 @@ private fun SetupSuccessStep(
                     Box(
                         modifier = Modifier
                             .size(28.dp)
-                            .background(SeekerClawColors.Accent.copy(alpha = 0.15f), CircleShape),
+                            .background(shardclawColors.Accent.copy(alpha = 0.15f), CircleShape),
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
@@ -1248,7 +1248,7 @@ private fun SetupSuccessStep(
                             fontFamily = FontFamily.Monospace,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            color = SeekerClawColors.Accent,
+                            color = shardclawColors.Accent,
                         )
                     }
                     Spacer(modifier = Modifier.width(12.dp))
@@ -1258,7 +1258,7 @@ private fun SetupSuccessStep(
                             fontFamily = RethinkSans,
                             fontWeight = FontWeight.Medium,
                             fontSize = 14.sp,
-                            color = SeekerClawColors.TextPrimary,
+                            color = shardclawColors.TextPrimary,
                         )
                         Text(
                             text = if (!botId.isNullOrBlank())
@@ -1266,7 +1266,7 @@ private fun SetupSuccessStep(
                                    else "Search for the bot username you created with @BotFather",
                             fontFamily = RethinkSans,
                             fontSize = 12.sp,
-                            color = SeekerClawColors.TextDim,
+                            color = shardclawColors.TextDim,
                         )
                     }
                 }
@@ -1278,7 +1278,7 @@ private fun SetupSuccessStep(
                     Box(
                         modifier = Modifier
                             .size(28.dp)
-                            .background(SeekerClawColors.Primary.copy(alpha = 0.15f), CircleShape),
+                            .background(shardclawColors.Primary.copy(alpha = 0.15f), CircleShape),
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
@@ -1286,7 +1286,7 @@ private fun SetupSuccessStep(
                             fontFamily = FontFamily.Monospace,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            color = SeekerClawColors.Primary,
+                            color = shardclawColors.Primary,
                         )
                     }
                     Spacer(modifier = Modifier.width(12.dp))
@@ -1296,13 +1296,13 @@ private fun SetupSuccessStep(
                             fontFamily = RethinkSans,
                             fontWeight = FontWeight.Medium,
                             fontSize = 14.sp,
-                            color = SeekerClawColors.TextPrimary,
+                            color = shardclawColors.TextPrimary,
                         )
                         Text(
                             text = "Try: \"Hello, what can you do?\"",
                             fontFamily = RethinkSans,
                             fontSize = 12.sp,
-                            color = SeekerClawColors.TextDim,
+                            color = shardclawColors.TextDim,
                         )
                     }
                 }
@@ -1315,7 +1315,7 @@ private fun SetupSuccessStep(
             onClick = onContinue,
             shape = shape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = SeekerClawColors.ActionPrimary,
+                containerColor = shardclawColors.ActionPrimary,
                 contentColor = Color.White,
             ),
             modifier = Modifier.fillMaxWidth().height(52.dp),
@@ -1336,7 +1336,7 @@ private fun NavButtons(
     onNext: () -> Unit,
     nextEnabled: Boolean,
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -1347,7 +1347,7 @@ private fun NavButtons(
             Text(
                 text = "Back",
                 fontSize = 14.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
             )
         }
 
@@ -1356,10 +1356,10 @@ private fun NavButtons(
             enabled = nextEnabled,
             shape = shape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = SeekerClawColors.ActionPrimary,
+                containerColor = shardclawColors.ActionPrimary,
                 contentColor = Color.White,
-                disabledContainerColor = SeekerClawColors.BorderSubtle,
-                disabledContentColor = SeekerClawColors.TextDim,
+                disabledContainerColor = shardclawColors.BorderSubtle,
+                disabledContentColor = shardclawColors.TextDim,
             ),
         ) {
             Text(
@@ -1380,12 +1380,12 @@ private fun SetupCard(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(SeekerClawColors.Surface, shape)
-            .border(1.dp, SeekerClawColors.CardBorder, shape)
+            .background(shardclawColors.Surface, shape)
+            .border(1.dp, shardclawColors.CardBorder, shape)
             .padding(16.dp),
         content = content,
     )
@@ -1401,7 +1401,7 @@ private fun RequirementRow(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = SeekerClawColors.Primary,
+            tint = shardclawColors.Primary,
             modifier = Modifier.size(22.dp),
         )
         Spacer(modifier = Modifier.width(14.dp))
@@ -1410,12 +1410,12 @@ private fun RequirementRow(
                 text = title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             Text(
                 text = subtitle,
                 fontSize = 12.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
             )
         }
     }
@@ -1427,7 +1427,7 @@ private fun SectionLabel(title: String) {
         text = title,
         fontSize = 11.sp,
         fontWeight = FontWeight.Medium,
-        color = SeekerClawColors.TextDim,
+        color = shardclawColors.TextDim,
         letterSpacing = 1.sp,
         modifier = Modifier.fillMaxWidth(),
     )

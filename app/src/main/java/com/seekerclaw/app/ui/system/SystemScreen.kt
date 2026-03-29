@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.system
+package com.shardclaw.app.ui.system
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,21 +35,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
-import com.seekerclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.RethinkSans
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.BuildConfig
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.ui.theme.SeekerClawColors
-import com.seekerclaw.app.util.AppStorageInfo
-import com.seekerclaw.app.util.DeviceInfo
-import com.seekerclaw.app.util.DeviceInfoProvider
-import com.seekerclaw.app.util.ApiUsageData
-import com.seekerclaw.app.util.DbSummary
-import com.seekerclaw.app.util.ServiceState
-import com.seekerclaw.app.util.ServiceStatus
-import com.seekerclaw.app.util.fetchDbSummary
+import com.shardclaw.app.BuildConfig
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.ui.theme.shardclawColors
+import com.shardclaw.app.util.AppStorageInfo
+import com.shardclaw.app.util.DeviceInfo
+import com.shardclaw.app.util.DeviceInfoProvider
+import com.shardclaw.app.util.ApiUsageData
+import com.shardclaw.app.util.DbSummary
+import com.shardclaw.app.util.ServiceState
+import com.shardclaw.app.util.ServiceStatus
+import com.shardclaw.app.util.fetchDbSummary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -68,7 +68,7 @@ fun SystemScreen(onBack: () -> Unit) {
 
     val cfgVersion by ConfigManager.configVersion
     val config = remember(cfgVersion) { ConfigManager.loadConfig(context) }
-    val agentName = remember(config) { config?.agentName?.ifBlank { "SeekerClaw" } ?: "SeekerClaw" }
+    val agentName = remember(config) { config?.agentName?.ifBlank { "shardclaw" } ?: "shardclaw" }
     val modelName = config?.model
         ?.ifBlank { "Not set" }
         ?.let { formatModelName(it) }
@@ -107,12 +107,12 @@ fun SystemScreen(onBack: () -> Unit) {
         }
     }
 
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(SeekerClawColors.Background)
+            .background(shardclawColors.Background)
             .verticalScroll(rememberScrollState())
             .padding(16.dp),
     ) {
@@ -124,7 +124,7 @@ fun SystemScreen(onBack: () -> Unit) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
-                    tint = SeekerClawColors.TextDim,
+                    tint = shardclawColors.TextDim,
                 )
             }
             Text(
@@ -132,7 +132,7 @@ fun SystemScreen(onBack: () -> Unit) {
                 fontFamily = RethinkSans,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
         }
 
@@ -144,7 +144,7 @@ fun SystemScreen(onBack: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(SeekerClawColors.Surface, shape)
+                .background(shardclawColors.Surface, shape)
                 .padding(16.dp),
         ) {
             InfoRow("Version", "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
@@ -158,10 +158,10 @@ fun SystemScreen(onBack: () -> Unit) {
                     ServiceStatus.ERROR -> "Error"
                 }}",
                 dotColor = when (status) {
-                    ServiceStatus.RUNNING -> SeekerClawColors.Accent
-                    ServiceStatus.STARTING -> SeekerClawColors.Warning
-                    ServiceStatus.STOPPED -> SeekerClawColors.TextDim
-                    ServiceStatus.ERROR -> SeekerClawColors.Error
+                    ServiceStatus.RUNNING -> shardclawColors.Accent
+                    ServiceStatus.STARTING -> shardclawColors.Warning
+                    ServiceStatus.STOPPED -> shardclawColors.TextDim
+                    ServiceStatus.ERROR -> shardclawColors.Error
                 },
             )
             InfoRow("Agent", agentName)
@@ -176,7 +176,7 @@ fun SystemScreen(onBack: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(SeekerClawColors.Surface, shape)
+                .background(shardclawColors.Surface, shape)
                 .padding(16.dp),
         ) {
             val info = deviceInfo
@@ -187,9 +187,9 @@ fun SystemScreen(onBack: () -> Unit) {
                     progress = info.batteryLevel / 100f,
                     suffix = if (info.isCharging) "Charging" else "",
                     barColor = when {
-                        info.batteryLevel <= 20 -> SeekerClawColors.Error
-                        info.batteryLevel <= 40 -> SeekerClawColors.Warning
-                        else -> SeekerClawColors.Accent
+                        info.batteryLevel <= 20 -> shardclawColors.Error
+                        info.batteryLevel <= 40 -> shardclawColors.Warning
+                        else -> shardclawColors.Accent
                     },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -201,9 +201,9 @@ fun SystemScreen(onBack: () -> Unit) {
                     ),
                     progress = if (info.memoryTotalMb > 0) info.memoryUsedMb.toFloat() / info.memoryTotalMb else 0f,
                     barColor = when {
-                        info.memoryTotalMb > 0 && info.memoryUsedMb.toFloat() / info.memoryTotalMb > 0.9f -> SeekerClawColors.Error
-                        info.memoryTotalMb > 0 && info.memoryUsedMb.toFloat() / info.memoryTotalMb > 0.7f -> SeekerClawColors.Warning
-                        else -> SeekerClawColors.Accent
+                        info.memoryTotalMb > 0 && info.memoryUsedMb.toFloat() / info.memoryTotalMb > 0.9f -> shardclawColors.Error
+                        info.memoryTotalMb > 0 && info.memoryUsedMb.toFloat() / info.memoryTotalMb > 0.7f -> shardclawColors.Warning
+                        else -> shardclawColors.Accent
                     },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -212,9 +212,9 @@ fun SystemScreen(onBack: () -> Unit) {
                     value = "%.1f / %.0f GB".format(info.storageUsedGb, info.storageTotalGb),
                     progress = if (info.storageTotalGb > 0) info.storageUsedGb / info.storageTotalGb else 0f,
                     barColor = when {
-                        info.storageTotalGb > 0 && info.storageUsedGb / info.storageTotalGb > 0.9f -> SeekerClawColors.Error
-                        info.storageTotalGb > 0 && info.storageUsedGb / info.storageTotalGb > 0.7f -> SeekerClawColors.Warning
-                        else -> SeekerClawColors.Accent
+                        info.storageTotalGb > 0 && info.storageUsedGb / info.storageTotalGb > 0.9f -> shardclawColors.Error
+                        info.storageTotalGb > 0 && info.storageUsedGb / info.storageTotalGb > 0.7f -> shardclawColors.Warning
+                        else -> shardclawColors.Accent
                     },
                 )
             } else {
@@ -222,7 +222,7 @@ fun SystemScreen(onBack: () -> Unit) {
                     text = "Loading\u2026",
                     fontFamily = FontFamily.Monospace,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
             }
 
@@ -234,7 +234,7 @@ fun SystemScreen(onBack: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(1.dp)
-                        .background(SeekerClawColors.TextDim.copy(alpha = 0.15f)),
+                        .background(shardclawColors.TextDim.copy(alpha = 0.15f)),
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
@@ -242,7 +242,7 @@ fun SystemScreen(onBack: () -> Unit) {
                     fontFamily = FontFamily.Monospace,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                     letterSpacing = 1.sp,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -262,13 +262,13 @@ fun SystemScreen(onBack: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(SeekerClawColors.Surface, shape)
+                .background(shardclawColors.Surface, shape)
                 .padding(16.dp),
         ) {
             InfoRow(
                 label = "Telegram",
                 value = if (status == ServiceStatus.RUNNING) "Connected" else "Disconnected",
-                dotColor = if (status == ServiceStatus.RUNNING) SeekerClawColors.Accent else SeekerClawColors.TextDim,
+                dotColor = if (status == ServiceStatus.RUNNING) shardclawColors.Accent else shardclawColors.TextDim,
             )
             if (status == ServiceStatus.RUNNING && lastActivity > 0L) {
                 InfoRow(
@@ -289,7 +289,7 @@ fun SystemScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(16.dp),
             ) {
                 // Only show bars if we have real data (not error-only)
@@ -343,7 +343,7 @@ fun SystemScreen(onBack: () -> Unit) {
                         text = if (hasValidData) "Error: ${usage.error}" else "Usage data unavailable (${usage.error})",
                         fontFamily = FontFamily.Monospace,
                         fontSize = 10.sp,
-                        color = if (hasValidData) SeekerClawColors.Error else SeekerClawColors.TextDim,
+                        color = if (hasValidData) shardclawColors.Error else shardclawColors.TextDim,
                     )
                 }
 
@@ -352,7 +352,7 @@ fun SystemScreen(onBack: () -> Unit) {
                     text = "Updated ${formatTimeAgo(usage.updatedAt)}",
                     fontFamily = FontFamily.Monospace,
                     fontSize = 10.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
             }
 
@@ -410,7 +410,7 @@ fun SystemScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(16.dp),
             ) {
                 InfoRow("Requests", if (stats != null) "${stats.todayRequests} today" else "--")
@@ -418,10 +418,10 @@ fun SystemScreen(onBack: () -> Unit) {
                     label = "Avg Latency",
                     value = if (stats != null && stats.todayAvgLatencyMs > 0) "${stats.todayAvgLatencyMs}ms" else "--",
                     dotColor = when {
-                        stats == null -> SeekerClawColors.TextDim
-                        stats.todayAvgLatencyMs > 5000 -> SeekerClawColors.Error
-                        stats.todayAvgLatencyMs > 3000 -> SeekerClawColors.Warning
-                        else -> SeekerClawColors.Accent
+                        stats == null -> shardclawColors.TextDim
+                        stats.todayAvgLatencyMs > 5000 -> shardclawColors.Error
+                        stats.todayAvgLatencyMs > 3000 -> shardclawColors.Warning
+                        else -> shardclawColors.Accent
                     },
                 )
                 InfoRow(
@@ -430,9 +430,9 @@ fun SystemScreen(onBack: () -> Unit) {
                         String.format("%.1f%%", stats.todayErrors.toDouble() * 100.0 / stats.todayRequests)
                     else if (stats != null) "0%" else "--",
                     dotColor = when {
-                        stats == null -> SeekerClawColors.TextDim
-                        stats.todayErrors > 0 -> SeekerClawColors.Warning
-                        else -> SeekerClawColors.Accent
+                        stats == null -> shardclawColors.TextDim
+                        stats.todayErrors > 0 -> shardclawColors.Warning
+                        else -> shardclawColors.Accent
                     },
                 )
                 InfoRow(
@@ -456,7 +456,7 @@ fun SystemScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(16.dp),
             ) {
                 InfoRow("Files", if (stats != null) "${stats.memoryFilesIndexed}" else "--")
@@ -470,8 +470,8 @@ fun SystemScreen(onBack: () -> Unit) {
                     value = if (stats != null) lastIndexedFormatted else "--",
                     isLast = true,
                     dotColor = when {
-                        stats == null || lastIndexedRaw == null -> SeekerClawColors.TextDim
-                        else -> SeekerClawColors.Accent
+                        stats == null || lastIndexedRaw == null -> shardclawColors.TextDim
+                        else -> shardclawColors.Accent
                     },
                 )
             }
@@ -488,7 +488,7 @@ private fun SectionLabel(text: String) {
         fontFamily = FontFamily.Monospace,
         fontSize = 11.sp,
         fontWeight = FontWeight.Medium,
-        color = SeekerClawColors.TextDim,
+        color = shardclawColors.TextDim,
         letterSpacing = 1.sp,
     )
     Spacer(modifier = Modifier.height(8.dp))
@@ -512,7 +512,7 @@ private fun InfoRow(
             text = label,
             fontFamily = FontFamily.Monospace,
             fontSize = 13.sp,
-            color = SeekerClawColors.TextSecondary,
+            color = shardclawColors.TextSecondary,
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -520,7 +520,7 @@ private fun InfoRow(
                 fontFamily = FontFamily.Monospace,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             if (dotColor != null) {
                 Spacer(modifier = Modifier.width(8.dp))
@@ -538,7 +538,7 @@ private fun InfoRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(SeekerClawColors.TextDim.copy(alpha = 0.15f)),
+                .background(shardclawColors.TextDim.copy(alpha = 0.15f)),
         )
     }
 }
@@ -563,14 +563,14 @@ private fun ResourceBar(
                 fontFamily = FontFamily.Monospace,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = value,
                     fontFamily = FontFamily.Monospace,
                     fontSize = 12.sp,
-                    color = SeekerClawColors.TextSecondary,
+                    color = shardclawColors.TextSecondary,
                 )
                 if (suffix.isNotEmpty()) {
                     Spacer(modifier = Modifier.width(8.dp))
@@ -578,7 +578,7 @@ private fun ResourceBar(
                         text = suffix,
                         fontFamily = FontFamily.Monospace,
                         fontSize = 10.sp,
-                        color = SeekerClawColors.Accent,
+                        color = shardclawColors.Accent,
                     )
                 }
             }
@@ -591,7 +591,7 @@ private fun ResourceBar(
                 .height(8.dp)
                 .clip(RoundedCornerShape(4.dp)),
             color = barColor,
-            trackColor = SeekerClawColors.TextDim.copy(alpha = 0.15f),
+            trackColor = shardclawColors.TextDim.copy(alpha = 0.15f),
         )
     }
 }
@@ -603,18 +603,18 @@ private fun StatCard(
     unit: String,
     modifier: Modifier = Modifier,
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     Column(
         modifier = modifier
-            .background(SeekerClawColors.Surface, shape)
+            .background(shardclawColors.Surface, shape)
             .padding(16.dp),
     ) {
         Text(
             text = label,
             fontFamily = FontFamily.Monospace,
             fontSize = 11.sp,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
@@ -622,14 +622,14 @@ private fun StatCard(
             fontFamily = RethinkSans,
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
-            color = SeekerClawColors.TextPrimary,
+            color = shardclawColors.TextPrimary,
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = unit,
             fontFamily = RethinkSans,
             fontSize = 11.sp,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
         )
     }
 }
@@ -668,9 +668,9 @@ private fun UsageLimitBar(
     val percentage = (utilization * 100).toInt()
     val remaining = 100 - percentage
     val barColor = when {
-        utilization > 0.9f -> SeekerClawColors.Error
-        utilization > 0.7f -> SeekerClawColors.Warning
-        else -> SeekerClawColors.Accent
+        utilization > 0.9f -> shardclawColors.Error
+        utilization > 0.7f -> shardclawColors.Warning
+        else -> shardclawColors.Accent
     }
 
     Column(modifier = modifier) {
@@ -684,7 +684,7 @@ private fun UsageLimitBar(
                 fontFamily = FontFamily.Monospace,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             Text(
                 text = "${remaining}% left",
@@ -704,7 +704,7 @@ private fun UsageLimitBar(
                 .height(8.dp)
                 .clip(RoundedCornerShape(4.dp)),
             color = barColor,
-            trackColor = SeekerClawColors.TextDim.copy(alpha = 0.15f),
+            trackColor = shardclawColors.TextDim.copy(alpha = 0.15f),
         )
 
         if (detailText != null || resetsAt.isNotBlank()) {
@@ -717,14 +717,14 @@ private fun UsageLimitBar(
                     text = detailText ?: "",
                     fontFamily = FontFamily.Monospace,
                     fontSize = 10.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
                 if (resetsAt.isNotBlank()) {
                     Text(
                         text = "Resets ${formatResetTime(resetsAt)}",
                         fontFamily = FontFamily.Monospace,
                         fontSize = 10.sp,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             }
@@ -798,4 +798,4 @@ private fun formatMemoryIndexTime(isoTimestamp: String): String {
     }
 }
 
-// DbSummary and fetchDbSummary are in com.seekerclaw.app.util.StatsClient
+// DbSummary and fetchDbSummary are in com.shardclaw.app.util.StatsClient

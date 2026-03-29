@@ -1,4 +1,4 @@
-# SeekerClaw — Deep Research Document
+# shardclaw — Deep Research Document
 
 > **Product spec:** See `MVP.md` | **Build instructions:** See `PROMPT.md`
 
@@ -110,14 +110,14 @@
 | Survives app kill | ✅ If START_STICKY | ❌ Re-enqueues | ⚠️ Maybe |
 | Best for | 24/7 daemon ✅ | Periodic tasks | Alarms/reminders |
 
-**Winner for SeekerClaw: Foreground Service** — this is the only option for a 24/7 running daemon.
+**Winner for shardclaw: Foreground Service** — this is the only option for a 24/7 running daemon.
 
 ### 2.2 Foreground Service Requirements (Android 12–15)
 
 **Android 12 (API 31):**
 - Must declare `foregroundServiceType` in manifest
 - Types: `dataSync`, `mediaPlayback`, `location`, `connectedDevice`, `specialUse`, etc.
-- For SeekerClaw: Use `specialUse` — justified as continuous AI agent service
+- For shardclaw: Use `specialUse` — justified as continuous AI agent service
 
 **Android 13 (API 33):**
 - Runtime permission required: `POST_NOTIFICATIONS` — must ask user to allow the persistent notification
@@ -175,7 +175,7 @@
 **Telegram (background message checking):**
 - Uses FCM (Firebase Cloud Messaging) for push notifications
 - Falls back to persistent connection when FCM is unreliable
-- Lesson: For SeekerClaw, since it IS a Telegram bot, we can use both approaches
+- Lesson: For shardclaw, since it IS a Telegram bot, we can use both approaches
 
 ### 2.6 Screen Off / Phone Locked Behavior
 
@@ -203,7 +203,7 @@
 | **Crypto Hardware** | Seed Vault (secure element integration) |
 | **Pre-orders** | 140,000+ units |
 
-**For SeekerClaw purposes:**
+**For shardclaw purposes:**
 - 8GB RAM is generous — Node.js + OpenClaw needs ~300MB, leaving plenty for the OS and other apps
 - Snapdragon 6 Gen 1 is mid-range but very capable for Node.js workloads
 - UFS 3.1 storage is fast enough for sqlite/file I/O
@@ -230,7 +230,7 @@ From the official docs (https://docs.solanamobile.com):
 **YES, with caveats.**
 
 The Mobile Wallet Adapter protocol works like this:
-1. dApp (SeekerClaw) sends a signing request
+1. dApp (shardclaw) sends a signing request
 2. MWA routes it to the user's wallet app (e.g., Phantom, Solflare on Seeker)
 3. Wallet app shows a confirmation dialog
 4. User approves → signed transaction returned to dApp
@@ -308,7 +308,7 @@ From official docs (https://docs.solanamobile.com/dapp-publishing/overview):
 **AI/Agent apps on dApp Store:**
 - Emerging category — several AI chatbot and agent apps appearing
 - No direct competitor doing "headless AI agent node" concept yet
-- **SeekerClaw would be first-of-kind** on the dApp Store ✅
+- **shardclaw would be first-of-kind** on the dApp Store ✅
 
 ---
 
@@ -337,7 +337,7 @@ However, if you want faster prototyping and already have a JS-heavy team: **Reac
 
 ```
 ┌─────────────────────────────────────┐
-│      Android App (SeekerClaw)        │
+│      Android App (shardclaw)        │
 │  ┌─────────────────────────────────┐ │
 │  │     Foreground Service          │ │
 │  │  ┌───────────────────────────┐  │ │
@@ -397,7 +397,7 @@ However, if you want faster prototyping and already have a JS-heavy team: **Reac
 **OpenClaw storage locations on Android:**
 
 ```
-/data/data/com.seekerclaw.app/          # App's private storage (no root needed)
+/data/data/com.shardclaw.app/          # App's private storage (no root needed)
 ├── files/
 │   ├── nodejs/                          # Node.js runtime + OpenClaw package
 │   │   ├── node_modules/
@@ -413,9 +413,9 @@ However, if you want faster prototyping and already have a JS-heavy team: **Reac
 │   ├── logs/                            # Runtime logs
 │   └── ...
 ├── databases/
-│   └── seekerclaw.db                    # SQLite database
+│   └── shardclaw.db                    # SQLite database
 └── shared_prefs/
-    └── seekerclaw_prefs.xml             # Android preferences
+    └── shardclaw_prefs.xml             # Android preferences
 ```
 
 - App's private storage is fully accessible without root
@@ -456,8 +456,8 @@ However, if you want faster prototyping and already have a JS-heavy team: **Reac
 ```
 
 **Flow:**
-1. User generates QR via web tool (seekerclaw.xyz/setup)
-2. Opens SeekerClaw app → scans QR
+1. User generates QR via web tool (shardclaw.xyz/setup)
+2. Opens shardclaw app → scans QR
 3. App decrypts/stores config in Android Keystore
 4. Starts the Node.js service with this config
 5. Agent comes online in Telegram — done!
@@ -499,7 +499,7 @@ This avoids full app store updates for JavaScript-only changes. Only native code
 
 ### 5.2 Watchdog Patterns
 
-**SeekerClaw watchdog timing (standardized):**
+**shardclaw watchdog timing (standardized):**
 - **Check interval:** Every 30 seconds
 - **Response timeout:** 10 seconds per ping
 - **Dead declaration:** 60 seconds of no response (2 consecutive missed checks) → restart Node.js
@@ -577,7 +577,7 @@ See `PROMPT.md` for implementation details (KeystoreHelper.kt).
 - Google Find My Device — remote wipe capability
 - Factory reset protection (FRP) — prevents reuse without Google account
 
-**SeekerClaw-specific protections:**
+**shardclaw-specific protections:**
 1. **Inactivity timeout:** If no heartbeat from owner in 48 hours, auto-wipe config
 2. **Remote kill command:** Send Telegram command from another device to wipe the agent
 3. **API key rotation:** If phone is lost, rotate API keys from the provider dashboards
@@ -585,7 +585,7 @@ See `PROMPT.md` for implementation details (KeystoreHelper.kt).
 
 ### 6.4 Config File Protection
 
-- Config stored in app's private directory (`/data/data/com.seekerclaw.app/`) — other apps cannot access
+- Config stored in app's private directory (`/data/data/com.shardclaw.app/`) — other apps cannot access
 - Sensitive fields (API keys, tokens) encrypted via Android Keystore
 - Non-sensitive fields (model preference, agent name) stored as plaintext for easier debugging
 - **Full-disk encryption** on Android 14+ is mandatory and always-on
@@ -596,7 +596,7 @@ See `PROMPT.md` for implementation details (KeystoreHelper.kt).
 
 ### 7.1 AI Agent Hardware/Devices
 
-| Product | Type | Status | Similarity to SeekerClaw |
+| Product | Type | Status | Similarity to shardclaw |
 |---------|------|--------|--------------------------|
 | **Rabbit R1** | Dedicated AI device | Shipped, disappointing reviews | Different — cloud-based, limited, proprietary |
 | **Humane AI Pin** | Wearable AI device | Shipped, mostly failed | Different — wearable, camera-focused, proprietary |
@@ -604,7 +604,7 @@ See `PROMPT.md` for implementation details (KeystoreHelper.kt).
 | **Friend** | AI wearable | Shipped 2024 | Different — always-listening pendant |
 | **Rewind Pendant** (Limitless) | Memory capture device | Shipped | Different — recording/transcription focus |
 
-**Key insight:** All these products are **purpose-built hardware**. None of them repurpose existing phones as agent nodes. SeekerClaw's approach of using commodity Android phones is fundamentally different and cheaper.
+**Key insight:** All these products are **purpose-built hardware**. None of them repurpose existing phones as agent nodes. shardclaw's approach of using commodity Android phones is fundamentally different and cheaper.
 
 ### 7.2 AI Agents on Phones
 
@@ -707,7 +707,7 @@ See `MVP.md` for the full product spec and feature priority list.
 ### 9.2 Pre-Configured "Agent Phones"
 
 - Buy Solana Seeker wholesale
-- Pre-install SeekerClaw app
+- Pre-install shardclaw app
 - Pre-configure with curated personality/skills
 - Sell as "AI Agent in a Box" for $599–799
 - **Revenue:** hardware margin (~$150–350 per unit)

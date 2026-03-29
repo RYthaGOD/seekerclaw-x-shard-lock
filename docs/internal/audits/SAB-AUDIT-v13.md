@@ -1,4 +1,4 @@
-# SAB-AUDIT-v13 — SeekerClaw Agent Self-Knowledge Audit
+# SAB-AUDIT-v13 — shardclaw Agent Self-Knowledge Audit
 
 > **Date:** 2026-03-17
 > **Scope:** Re-audit after BAT-447 (OpenRouter provider), BAT-449 (context trimming), BAT-448 (session summary fix), BAT-439 (button styling), v1.6.1 release.
@@ -30,7 +30,7 @@ Scoring: ✅ = 3 pts, ⚠️ = 1 pt, ❌ = 0 pts.
 | MAX_HISTORY | 35 (claude.js:172) | "35 messages per chat" (line 911) | ✅ |
 | max_tokens | 4096 (claude.js:~1527) | "4096 tokens per response" (line 913) | ✅ |
 | SHELL_ALLOWLIST | 34 commands (config.js:253-260) | 34 commands listed (line 705) | ✅ |
-| SECRETS_BLOCKED | config.json, config.yaml, seekerclaw.db (config.js:244) | seekerclaw.db listed as BLOCKED (line 621) | ✅ |
+| SECRETS_BLOCKED | config.json, config.yaml, shardclaw.db (config.js:244) | shardclaw.db listed as BLOCKED (line 621) | ✅ |
 | BLOCKED_MODULES | 7 modules (tools.js) | Lists all 7 (line 467) | ✅ |
 | js_eval code limit | 10,000 chars (tools.js) | "10,000-character code limit" (line 706) | ✅ |
 | CONFIRM_REQUIRED | 8 tools (config.js:268-277) | 8 tools listed (line 554) | ✅ |

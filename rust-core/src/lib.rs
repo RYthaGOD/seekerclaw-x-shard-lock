@@ -5,7 +5,7 @@ use jni::JNIEnv;
 /// JNI Function to Erasure Encode file bytes into Shards
 /// Kotlin: `external fun encode(data: ByteArray, dataShards: Int, parityShards: Int): Array<ByteArray>`
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_encode<'local>(
+pub extern "system" fn Java_com_shardclaw_app_storage_RustCore_encode<'local>(
     mut env: JNIEnv<'local>,
     _class: JClass<'local>,
     data: jbyteArray,
@@ -70,7 +70,7 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_encode<'local>(
 /// JNI Function to Compute Merkle Root from Shards
 /// Kotlin: `external fun computeMerkleRoot(shards: Array<ByteArray>): ByteArray`
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_computeMerkleRoot<'local>(
+pub extern "system" fn Java_com_shardclaw_app_storage_RustCore_computeMerkleRoot<'local>(
     mut env: JNIEnv<'local>,
     _class: JClass<'local>,
     shards: jobjectArray,
@@ -120,7 +120,7 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_computeMerkleRoo
 /// JNI Function to Sign Heartbeat with Ed25519 Device Key
 /// Kotlin: `external fun generateHeartbeat(merkleRoot: ByteArray, shardCount: Int, privateKey: ByteArray): ByteArray`
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_generateHeartbeat<'local>(
+pub extern "system" fn Java_com_shardclaw_app_storage_RustCore_generateHeartbeat<'local>(
     env: JNIEnv<'local>,
     _class: JClass<'local>,
     merkle_root: jbyteArray,
@@ -167,7 +167,7 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_generateHeartbea
 /// Returns: 0 (Safe), 1 (Throttle/Pause), 2 (Critical Shutdown)
 /// Kotlin: `external fun getThermalStatus(chipTemp: Int, ambientTemp: Int): Int`
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_getThermalStatus<'local>(
+pub extern "system" fn Java_com_shardclaw_app_storage_RustCore_getThermalStatus<'local>(
     _env: JNIEnv<'local>,
     _class: JClass<'local>,
     chip_temp: jint,
@@ -187,7 +187,7 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_getThermalStatus
 /// JNI Function to Decode Shards into original Data
 /// Kotlin: `external fun decode(shards: Array<ByteArray>, dataShards: Int, parityShards: Int): ByteArray`
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_decode<'local>(
+pub extern "system" fn Java_com_shardclaw_app_storage_RustCore_decode<'local>(
     mut env: JNIEnv<'local>,
     _class: JClass<'local>,
     shards: jobjectArray,

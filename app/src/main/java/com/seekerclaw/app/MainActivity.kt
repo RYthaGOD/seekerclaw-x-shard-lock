@@ -1,11 +1,11 @@
-package com.seekerclaw.app
+package com.shardclaw.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.seekerclaw.app.ui.navigation.SeekerClawNavHost
-import com.seekerclaw.app.ui.theme.SeekerClawTheme
+import com.shardclaw.app.ui.navigation.shardclawNavHost
+import com.shardclaw.app.ui.theme.shardclawTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -13,8 +13,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SeekerClawTheme {
-                SeekerClawNavHost()
+            shardclawTheme {
+                shardclawNavHost()
             }
         }
     }

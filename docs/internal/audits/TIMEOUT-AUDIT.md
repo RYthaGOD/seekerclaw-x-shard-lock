@@ -8,7 +8,7 @@
 
 ## 0. Runtime Source-of-Truth
 
-**SeekerClaw does NOT run `openclaw-reference/` in production.** It runs its own custom Node.js bundle.
+**shardclaw does NOT run `openclaw-reference/` in production.** It runs its own custom Node.js bundle.
 
 | Claim | Evidence |
 |-------|----------|
@@ -70,7 +70,7 @@ There is **no config file, env var, or `agent_settings.json` override** for the 
 | — | `agent_settings.json` | Not read for timeouts | Only referenced in system prompt text, not parsed for timeout values |
 | — | Environment variables | None | No `process.env.*TIMEOUT*` patterns found |
 
-**Owner: SeekerClaw's `web.js` — not the Anthropic SDK, not OpenClaw, not Telegram.**
+**Owner: shardclaw's `web.js` — not the Anthropic SDK, not OpenClaw, not Telegram.**
 
 ---
 
@@ -157,7 +157,7 @@ The flow is strictly sequential:
 3. Tools executed one-by-one in a for-loop (`claude.js:1260`)
 4. New API request opened with tool results (`claude.js:1234`, next loop iteration)
 
-**Tools are NOT executed inside the streaming response.** There is no streaming at all — SeekerClaw uses synchronous (non-streaming) `POST /v1/messages`.
+**Tools are NOT executed inside the streaming response.** There is no streaming at all — shardclaw uses synchronous (non-streaming) `POST /v1/messages`.
 
 **Tools are executed SEQUENTIALLY, not in parallel.** The for-loop at `claude.js:1260` `await`s each tool before proceeding to the next.
 
@@ -192,7 +192,7 @@ The flow is strictly sequential:
 | 2 | `config.yaml` / `config.json` | Yes (startup) | **No** — no timeout fields |
 | 3 | Environment variables | N/A (Android) | **No** — none defined |
 | 4 | Hardcoded in `httpRequest` | **Yes** | **60000ms** — `web.js:28` |
-| 5 | Anthropic SDK defaults | N/A | SeekerClaw uses raw HTTP, not the SDK |
+| 5 | Anthropic SDK defaults | N/A | shardclaw uses raw HTTP, not the SDK |
 
 **There is exactly one timeout source: the hardcoded `60000` at `web.js:28`.**
 

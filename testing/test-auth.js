@@ -77,7 +77,7 @@ async function testAuth(label, key, authType) {
 // ── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
-    console.log('🧪 SeekerClaw Auth Test');
+    console.log('🧪 shardclaw Auth Test');
     console.log(`   Time: ${new Date().toISOString()}`);
 
     const apiKey = process.env.ANTHROPIC_API_KEY;

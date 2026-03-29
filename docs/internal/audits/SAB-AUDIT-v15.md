@@ -1,4 +1,4 @@
-# SAB-AUDIT-v15 — SeekerClaw Agent Self-Knowledge Audit
+# SAB-AUDIT-v15 — shardclaw Agent Self-Knowledge Audit
 
 > **Date:** 2026-03-23
 > **Scope:** Re-audit after Search Provider System (BAT-481): DDG removal, Exa/Tavily/Firecrawl addition, http.js extraction, SearchProviderConfigScreen
@@ -19,7 +19,7 @@
 ### Identity (5/5 = 15/15)
 | Item | v14 | v15 | Notes |
 |------|-----|-----|-------|
-| Own name/version | ✅ | ✅ | SeekerClaw v1.7.0 |
+| Own name/version | ✅ | ✅ | shardclaw v1.7.0 |
 | Model | ✅ | ✅ | Dynamic from config |
 | Device/hardware | ✅ | ✅ | Android/Seeker phone |
 | Who built it | ✅ | ✅ | OpenClaw gateway |

@@ -7,7 +7,7 @@
 
 Add OpenRouter as a third provider alongside Claude and OpenAI. OpenRouter is an API gateway that provides access to 100+ models (Claude, GPT, Gemini, Llama, Mistral, DeepSeek, Grok, etc.) through a single **Chat Completions** endpoint. Users bring one API key and can switch models freely — including using Anthropic models at potentially different pricing/routing.
 
-### Why OpenRouter Matters for SeekerClaw
+### Why OpenRouter Matters for shardclaw
 
 1. **Model freedom** — Users access any model without separate API keys per provider
 2. **Model fallbacks** — OpenRouter supports `models: [primary, fallback]` arrays with automatic failover. Critical for a 24/7 agent: if Claude is down, the agent switches to Gemini automatically.
@@ -249,8 +249,8 @@ function buildHeaders(apiKey) {
     return {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://seekerclaw.xyz',
-        'X-OpenRouter-Title': 'SeekerClaw',   // NOT X-Title (old/wrong)
+        'HTTP-Referer': 'https://shardclaw.xyz',
+        'X-OpenRouter-Title': 'shardclaw',   // NOT X-Title (old/wrong)
     };
 }
 ```

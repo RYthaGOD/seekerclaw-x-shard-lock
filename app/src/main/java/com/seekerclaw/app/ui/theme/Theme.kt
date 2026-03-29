@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.theme
+package com.shardclaw.app.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -9,13 +9,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.seekerclaw.app.R
+import com.shardclaw.app.R
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // ============================================================================
-// DARKOPS THEME — SeekerClaw's single theme
+// DARKOPS THEME — shardclaw's single theme
 // ============================================================================
 
 /**
@@ -78,7 +78,7 @@ val DarkOpsThemeColors = ThemeColors(
     surfaceHighlight = Color(0xFF262626),
     cardBorder = Color(0xFF333333),
 
-    primary = Color(0xFFFFDD44),       // SeekerClaw Neon Yellow
+    primary = Color(0xFFFFDD44),       // shardclaw Neon Yellow
     primaryDim = Color(0xFFD4B839),
     primaryGlow = Color(0x33FFDD44),
 
@@ -112,9 +112,9 @@ val DarkOpsThemeColors = ThemeColors(
 )
 
 // ============================================================================
-// SeekerClawColors — Global color accessor (DarkOps only)
+// shardclawColors — Global color accessor (DarkOps only)
 // ============================================================================
-object SeekerClawColors {
+object shardclawColors {
     val Background: Color get() = DarkOpsThemeColors.background
     val Surface: Color get() = DarkOpsThemeColors.surface
     val SurfaceHighlight: Color get() = DarkOpsThemeColors.surfaceHighlight
@@ -213,7 +213,7 @@ private val AppTypography = Typography(
 )
 
 @Composable
-fun SeekerClawTheme(content: @Composable () -> Unit) {
+fun shardclawTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = DarkColorScheme,
         typography = AppTypography,

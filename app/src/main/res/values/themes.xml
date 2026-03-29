@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.SeekerClaw" parent="android:Theme.Material.NoActionBar">
+    <style name="Theme.shardclaw" parent="android:Theme.Material.NoActionBar">
         <item name="android:colorBackground">#0D0F14</item>
         <item name="android:statusBarColor">#0D0F14</item>
         <item name="android:navigationBarColor">#161A25</item>

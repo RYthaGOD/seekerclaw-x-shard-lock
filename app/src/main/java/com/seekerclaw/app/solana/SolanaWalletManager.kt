@@ -1,4 +1,4 @@
-package com.seekerclaw.app.solana
+package com.shardclaw.app.solana
 
 import android.net.Uri
 import android.util.Log
@@ -13,9 +13,9 @@ object SolanaWalletManager {
 
     private val walletAdapter = MobileWalletAdapter(
         connectionIdentity = ConnectionIdentity(
-            identityUri = Uri.parse("https://seekerclaw.xyz"),
+            identityUri = Uri.parse("https://shardclaw.xyz"),
             iconUri = Uri.parse("favicon.ico"),
-            identityName = "SeekerClaw",
+            identityName = "shardclaw",
         )
     ).apply {
         blockchain = Solana.Mainnet

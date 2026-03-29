@@ -1,4 +1,4 @@
-# CLAUDE.md — SeekerClaw Project Guide
+# CLAUDE.md — shardclaw Project Guide
 
 > **Background research:** See `docs/internal/RESEARCH.md` | **Source of truth:** See `PROJECT.md`
 
@@ -13,11 +13,11 @@
 
 ## Design Principle: UX First
 
-**Always think about user experience.** This is the top priority when building SeekerClaw. Every UI decision, feature implementation, and config flow should be designed from the user's perspective. Ask: "Is this intuitive? Will the user lose data? Is switching between options seamless?" When in doubt, prioritize ease of use over technical elegance.
+**Always think about user experience.** This is the top priority when building shardclaw. Every UI decision, feature implementation, and config flow should be designed from the user's perspective. Ask: "Is this intuitive? Will the user lose data? Is switching between options seamless?" When in doubt, prioritize ease of use over technical elegance.
 
 ## What Is This Project
 
-**SeekerClaw** (package: `com.seekerclaw.app`) is an Android app that turns a Solana Seeker phone into a 24/7 personal AI agent. It embeds a Node.js runtime via `nodejs-mobile` and runs the OpenClaw gateway as a foreground service. Users interact with their agent through Telegram — the app itself is minimal (setup, status, logs, settings).
+**shardclaw** (package: `com.shardclaw.app`) is an Android app that turns a Solana Seeker phone into a 24/7 personal AI agent. It embeds a Node.js runtime via `nodejs-mobile` and runs the OpenClaw gateway as a foreground service. Users interact with their agent through Telegram — the app itself is minimal (setup, status, logs, settings).
 
 ### Supported Devices
 
@@ -48,7 +48,7 @@
 
 - **Language:** Kotlin
 - **UI:** Jetpack Compose (Material 3, dark theme only)
-- **Theme:** `Theme.SeekerClaw`
+- **Theme:** `Theme.shardclaw`
 - **Min SDK:** 34 (Android 14)
 - **Node.js Runtime:** nodejs-mobile (https://github.com/nodejs-mobile/nodejs-mobile) — Node 18 LTS, ARM64
 - **QR Scanning:** CameraX + ZXing/ML Kit
@@ -62,14 +62,14 @@
 ## Project Structure
 
 ```
-seekerclaw/
+shardclaw/
 ├── app/
 │   ├── src/main/
-│   │   ├── java/com/seekerclaw/app/
+│   │   ├── java/com/shardclaw/app/
 │   │   │   ├── MainActivity.kt              # Single activity, Compose navigation
-│   │   │   ├── SeekerClawApplication.kt     # App class
+│   │   │   ├── shardclawApplication.kt     # App class
 │   │   │   ├── ui/
-│   │   │   │   ├── theme/Theme.kt            # Dark theme (Theme.SeekerClaw), Material 3
+│   │   │   │   ├── theme/Theme.kt            # Dark theme (Theme.shardclaw), Material 3
 │   │   │   │   ├── navigation/NavGraph.kt    # Setup → Main (Dashboard/Logs/Settings)
 │   │   │   │   ├── setup/SetupScreen.kt      # QR scan + manual entry + notification permission
 │   │   │   │   ├── dashboard/DashboardScreen.kt
@@ -102,7 +102,7 @@ seekerclaw/
 
 ```
 ┌──────────────────────────────────────────────┐
-│          Android App (SeekerClaw)             │
+│          Android App (shardclaw)             │
 │  ┌─────────────┐    ┌──────────────────────┐ │
 │  │  UI Activity │    │  Foreground Service   │ │
 │  │  (Compose)   │◄──►│                      │ │
@@ -140,7 +140,7 @@ seekerclaw/
 
 ## Design Theme (Dark Only)
 
-Theme name: `Theme.SeekerClaw`
+Theme name: `Theme.shardclaw`
 
 | Token | Value |
 |-------|-------|
@@ -173,7 +173,7 @@ Available models for the dropdown (using API aliases — auto-resolve to latest 
 - `claude-sonnet-4-5` — previous gen, still solid (Sonnet 4.5)
 - `claude-haiku-4-5` — fast, cheapest (Haiku 4.5)
 
-Defined in `app/src/main/java/com/seekerclaw/app/config/Models.kt`.
+Defined in `app/src/main/java/com/shardclaw/app/config/Models.kt`.
 
 Model list can be updated via app update or future remote config.
 
@@ -202,7 +202,7 @@ Base64-encoded JSON:
 }
 ```
 
-Sensitive fields encrypted via Android Keystore (AES-256-GCM). Non-sensitive fields (model, agent_name) in SharedPreferences. QR generation web tool at `seekerclaw.xyz/setup` (client-side only, keys never leave the browser).
+Sensitive fields encrypted via Android Keystore (AES-256-GCM). Non-sensitive fields (model, agent_name) in SharedPreferences. QR generation web tool at `shardclaw.xyz/setup` (client-side only, keys never leave the browser).
 
 ## OpenClaw Config Generation
 
@@ -260,7 +260,7 @@ These are standard OpenClaw workspace files — the agent creates and manages th
 ## File System Layout (On Device)
 
 ```
-/data/data/com.seekerclaw.app/
+/data/data/com.shardclaw.app/
 ├── files/
 │   ├── nodejs/              # Node.js runtime (bundled in APK)
 │   ├── openclaw/            # OpenClaw JS package (bundled, extracted on first launch)
@@ -271,8 +271,8 @@ These are standard OpenClaw workspace files — the agent creates and manages th
 │   │   ├── memory/          # Daily memory files
 │   │   └── HEARTBEAT.md
 │   └── logs/                # Rotated logs (10MB max, 7-day retention)
-├── databases/seekerclaw.db
-└── shared_prefs/seekerclaw_prefs.xml
+├── databases/shardclaw.db
+└── shared_prefs/shardclaw_prefs.xml
 ```
 
 ## Mobile-Specific Config
@@ -349,7 +349,7 @@ The agent only knows what we tell it. If we add a new tool, database table, brid
 ### Example
 
 Bad: Adding `memory_search` tool with description "Search memory files"
-Good: Adding `memory_search` tool with description "Search your SQL.js database (seekerclaw.db) for memory content. All memory files are indexed into searchable chunks — this performs ranked keyword search with recency weighting, returning top matches with file paths and line numbers."
+Good: Adding `memory_search` tool with description "Search your SQL.js database (shardclaw.db) for memory content. All memory files are indexed into searchable chunks — this performs ranked keyword search with recency weighting, returning top matches with file paths and line numbers."
 
 ---
 
@@ -399,7 +399,7 @@ Two product flavors under the `distribution` dimension, defined in `app/build.gr
 
 | Flavor | Output | Signing Config | Use |
 |--------|--------|---------------|-----|
-| `dappStore` | APK | `dappStore` (SEEKERCLAW_* keys) | Solana dApp Store + sideload |
+| `dappStore` | APK | `dappStore` (shardclaw_* keys) | Solana dApp Store + sideload |
 | `googlePlay` | AAB | `googlePlay` (PLAY_* keys) | Google Play Store |
 
 **BuildConfig fields** available in Kotlin code:
@@ -436,8 +436,8 @@ adb install app/build/outputs/apk/dappStore/debug/app-dappStore-debug.apk
 **`.github/workflows/build.yml`** — runs on push/PR to main, builds both flavor debug APKs for validation.
 
 **`.github/workflows/release.yml`** — triggered by `v*` tags, 3 parallel jobs:
-1. `build-dappstore` — signed APK (`assembleDappStoreRelease`), renamed to `SeekerClaw-{tag}.apk`
-2. `build-googleplay` — signed AAB (`bundleGooglePlayRelease`), renamed to `SeekerClaw-{tag}.aab`
+1. `build-dappstore` — signed APK (`assembleDappStoreRelease`), renamed to `shardclaw-{tag}.apk`
+2. `build-googleplay` — signed AAB (`bundleGooglePlayRelease`), renamed to `shardclaw-{tag}.aab`
 3. `release` — downloads both artifacts, extracts changelog, creates GitHub Release
 
 **GitHub Secrets:**
@@ -475,7 +475,7 @@ git tag v1.x.x && git push origin v1.x.x
 
 ## OpenClaw Version Tracking
 
-> **IMPORTANT:** SeekerClaw must stay in sync with OpenClaw updates. See `docs/internal/OPENCLAW_TRACKING.md` for full details.
+> **IMPORTANT:** shardclaw must stay in sync with OpenClaw updates. See `docs/internal/OPENCLAW_TRACKING.md` for full details.
 
 ### Current Versions
 - **OpenClaw Reference:** 2026.3.24
@@ -510,7 +510,7 @@ git pull origin main
 
 ## OpenClaw Compatibility
 
-> **Goal:** SeekerClaw should behave as close to OpenClaw as possible.
+> **Goal:** shardclaw should behave as close to OpenClaw as possible.
 
 ### Reference Repository
 
@@ -523,7 +523,7 @@ cd openclaw-reference && git pull
 
 ### Key OpenClaw Files to Monitor
 
-| OpenClaw File | Purpose | SeekerClaw Equivalent |
+| OpenClaw File | Purpose | shardclaw Equivalent |
 |---------------|---------|----------------------|
 | `src/agents/system-prompt.ts` | System prompt builder | `main.js:buildSystemBlocks()` |
 | `src/agents/skills/workspace.ts` | Skills loading | `main.js:loadSkills()` |
@@ -578,14 +578,14 @@ cd openclaw-reference && git pull
 
 > **Full spec:** See `SKILL-FORMAT.md` — Claude uses this as the reference when creating skills.
 
-**SeekerClaw Format (current):**
+**shardclaw Format (current):**
 ```yaml
 ---
 name: skill-name
 description: "What the skill does — AI reads this to decide when to use"
 version: "1.0.0"
 emoji: "🔧"
-image: "https://seekerclaw.xyz/assets/partner-skills/skill-name.jpg"
+image: "https://shardclaw.xyz/assets/partner-skills/skill-name.jpg"
 requires:
   bins: []
   env: []
@@ -600,7 +600,7 @@ Instructions...
 ```
 
 **Key fields:**
-- `image:` — Absolute HTTPS URL to skill logo. Displayed in Skills screen via Coil. Falls back to emoji → ⚡. **Partner skills** host images at `https://seekerclaw.xyz/assets/partner-skills/{skill-id}.{ext}`, with image files in the `SeekerClaw_Web` repo under `assets/partner-skills/`.
+- `image:` — Absolute HTTPS URL to skill logo. Displayed in Skills screen via Coil. Falls back to emoji → ⚡. **Partner skills** host images at `https://shardclaw.xyz/assets/partner-skills/{skill-id}.{ext}`, with image files in the `shardclaw_Web` repo under `assets/partner-skills/`.
 - `allowed-tools:` — Restricts which tools the skill can use (important for partner skills).
 - OpenClaw's nested `metadata.openclaw` format is also supported; top-level fields take precedence.
 
@@ -608,7 +608,7 @@ Instructions...
 
 ### SOUL.md Template
 
-SeekerClaw uses the **exact same SOUL.md template** as OpenClaw:
+shardclaw uses the **exact same SOUL.md template** as OpenClaw:
 
 ```markdown
 # SOUL.md - Who You Are
@@ -626,7 +626,7 @@ _You're not a chatbot. You're becoming someone._
 
 ### Node.js Limitations
 
-OpenClaw requires **Node 22+** for `node:sqlite`. SeekerClaw runs on **Node 18** (nodejs-mobile limitation).
+OpenClaw requires **Node 22+** for `node:sqlite`. shardclaw runs on **Node 18** (nodejs-mobile limitation).
 
 **Solved:**
 - SQLite — uses **SQL.js** (WASM-compiled SQLite, v1.12.0) instead of `node:sqlite`. Bundled as `sql-wasm.js` + `sql-wasm.wasm` in assets. Currently used for API request logging (`api_request_log` table); future: conversation storage, FTS5 memory search.
@@ -643,7 +643,7 @@ OpenClaw requires **Node 22+** for `node:sqlite`. SeekerClaw runs on **Node 18**
 
 ## Android Bridge (Phase 4)
 
-SeekerClaw extends OpenClaw with Android-native capabilities via a local HTTP bridge.
+shardclaw extends OpenClaw with Android-native capabilities via a local HTTP bridge.
 
 ### Architecture
 ```
@@ -700,7 +700,7 @@ const battery = await androidBridgeCall('/battery');
 
 ## Theme
 
-SeekerClaw uses a single **DarkOps** theme (dark navy + crimson red + green status). Colors are defined in `Theme.kt` via `DarkOpsThemeColors` and accessed globally through the `SeekerClawColors` object.
+shardclaw uses a single **DarkOps** theme (dark navy + crimson red + green status). Colors are defined in `Theme.kt` via `DarkOpsThemeColors` and accessed globally through the `shardclawColors` object.
 
 ---
 
@@ -710,7 +710,7 @@ Hard-won lessons from code review. Follow these patterns to avoid recurring bugs
 
 ### ProGuard / R8 and @Serializable
 
-All `@Serializable` classes in `com.seekerclaw.app.**` are protected by wildcard rules in `proguard-rules.pro`. Adding new `@Serializable` objects (routes, data classes) requires no extra steps. If you move serializable classes outside this package, add a matching keep rule.
+All `@Serializable` classes in `com.shardclaw.app.**` are protected by wildcard rules in `proguard-rules.pro`. Adding new `@Serializable` objects (routes, data classes) requires no extra steps. If you move serializable classes outside this package, add a matching keep rule.
 
 ### Timer Cleanup
 

@@ -5,7 +5,7 @@
 > **Rule:** Every item must earn its screen space. Less is more.
 > Before deploying, review the Editorial Notes in each section.
 >
-> **How to use:** Compare this file with `SeekerClaw_Web/js/config.js` + `index.html`.
+> **How to use:** Compare this file with `shardclaw_Web/js/config.js` + `index.html`.
 > Copy updated content into those files. After deploying, set "Last deployed" date.
 
 ---
@@ -54,7 +54,7 @@
 
 - **Tag:** Built for Solana Seeker
 - **Title:** The AI Agent Layer / for Solana Seeker
-- **Description:** SeekerClaw turns your Seeker phone into an autonomous AI agent. Monitor your wallet, trade on Jupiter, get Telegram alerts, control your device — all running 24/7 on your phone.
+- **Description:** shardclaw turns your Seeker phone into an autonomous AI agent. Monitor your wallet, trade on Jupiter, get Telegram alerts, control your device — all running 24/7 on your phone.
 - **CTA Primary:** Get on dApp Store
 - **CTA Secondary:** Quick Setup
 
@@ -100,11 +100,11 @@ reminders, research, and more. Export, import, and share skills as files.
 
 ## Self-Aware Agent
 <!-- Maps to: new section in index.html, after features/capabilities -->
-<!-- Position: after "What SeekerClaw Does" (capabilities), before "How It Works" or Use Cases -->
+<!-- Position: after "What shardclaw Does" (capabilities), before "How It Works" or Use Cases -->
 
 **Title:** An Agent That Knows Itself
 
-**Subtitle:** SeekerClaw scores 100% on SAB (Self-Awareness Benchmark) — 36 audit points across knowledge and diagnostics.
+**Subtitle:** shardclaw scores 100% on SAB (Self-Awareness Benchmark) — 36 audit points across knowledge and diagnostics.
 
 **Three points:**
 
@@ -152,7 +152,7 @@ reminders, research, and more. Export, import, and share skills as files.
 ## Comparison Table
 <!-- Maps to: config.js → comparison.rows[] -->
 
-| Feature | Regular AI Apps | SeekerClaw on Seeker |
+| Feature | Regular AI Apps | shardclaw on Seeker |
 |---------|----------------|---------------------|
 | Runs on device | Cloud only | ✓ Native on Seeker |
 | Wallet access | ✗ | ✓ Via Seed Vault |
@@ -224,7 +224,7 @@ reminders, research, and more. Export, import, and share skills as files.
 
 **Title:** The Vision
 **Text:** Every Seeker owner gets a personal AI agent that lives on their phone 24/7 — monitors their wallet, keeps them informed via Telegram, and gets smarter every day.
-**Tagline:** SeekerClaw is how Solana Seeker becomes the first true AI + Crypto phone.
+**Tagline:** shardclaw is how Solana Seeker becomes the first true AI + Crypto phone.
 
 ---
 

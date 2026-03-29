@@ -10,7 +10,7 @@
 
 The **Wallet Standard** is a chain-agnostic TypeScript interface spec for wallet discovery and interaction. It replaces fragmented `window.solana` / `window.ethereum` patterns with a unified event-based registration system. Originally built for Solana, it now supports any blockchain via namespaced features.
 
-**Key finding:** OWS is a **web/browser standard** — it relies on `window` events and DOM APIs. SeekerClaw is a **native Android app** using MWA (Mobile Wallet Adapter) for wallet operations. **Direct integration is not possible.** However, there are three concrete integration paths worth pursuing, detailed below.
+**Key finding:** OWS is a **web/browser standard** — it relies on `window` events and DOM APIs. shardclaw is a **native Android app** using MWA (Mobile Wallet Adapter) for wallet operations. **Direct integration is not possible.** However, there are three concrete integration paths worth pursuing, detailed below.
 
 ---
 
@@ -70,7 +70,7 @@ The **Wallet Standard** is a chain-agnostic TypeScript interface spec for wallet
 
 ---
 
-## 2. SeekerClaw's Current Wallet Architecture
+## 2. shardclaw's Current Wallet Architecture
 
 ### How It Works Today
 
@@ -106,7 +106,7 @@ User (Telegram) → Agent → solana_swap tool → solana.js
 
 ## 3. Why OWS Cannot Be Integrated Directly
 
-| OWS Requirement | SeekerClaw Reality |
+| OWS Requirement | shardclaw Reality |
 |-----------------|--------------------|
 | `window` object for events | No browser — native Android + Node.js |
 | Browser extension wallets | Wallets are Android apps (Phantom, Solflare) |
@@ -114,7 +114,7 @@ User (Telegram) → Agent → solana_swap tool → solana.js
 | TypeScript interfaces | Node.js 18 (JavaScript) + Kotlin |
 | Synchronous wallet registration | Wallet connection requires user intent + MWA handshake |
 
-**The Wallet Standard is a browser-tier specification.** SeekerClaw operates at the OS tier (Android intents, foreground services, JNI bridge). MWA is the mobile equivalent of what OWS does for browsers.
+**The Wallet Standard is a browser-tier specification.** shardclaw operates at the OS tier (Android intents, foreground services, JNI bridge). MWA is the mobile equivalent of what OWS does for browsers.
 
 ---
 
@@ -122,9 +122,9 @@ User (Telegram) → Agent → solana_swap tool → solana.js
 
 ### Path A: Wallet Standard Abstraction Layer (Recommended)
 
-**What:** Adopt OWS's *interface design* (not its registration mechanism) as an internal abstraction in SeekerClaw's Node.js layer. This enables multi-chain wallet support with a clean, feature-based architecture.
+**What:** Adopt OWS's *interface design* (not its registration mechanism) as an internal abstraction in shardclaw's Node.js layer. This enables multi-chain wallet support with a clean, feature-based architecture.
 
-**Why:** SeekerClaw already has Jupiter/Solana tools, and users are requesting TON and Ethereum support. Rather than building ad-hoc integrations for each chain, adopt the Wallet Standard's interface pattern as the internal API contract.
+**Why:** shardclaw already has Jupiter/Solana tools, and users are requesting TON and Ethereum support. Rather than building ad-hoc integrations for each chain, adopt the Wallet Standard's interface pattern as the internal API contract.
 
 **Architecture:**
 
@@ -233,13 +233,13 @@ User (Telegram) → Agent → solana_swap tool → solana.js
 
 ### Path B: WebView Wallet Bridge (For Web Companion)
 
-**What:** If SeekerClaw ever gets a web companion (seekerclaw.xyz dashboard, web setup tool), implement full OWS in the web layer so browser wallet extensions can interact with the agent.
+**What:** If shardclaw ever gets a web companion (shardclaw.xyz dashboard, web setup tool), implement full OWS in the web layer so browser wallet extensions can interact with the agent.
 
 **Architecture:**
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│              seekerclaw.xyz (Web App)                 │
+│              shardclaw.xyz (Web App)                 │
 │                                                       │
 │  ┌──────────────────────────────────────────────┐    │
 │  │  @wallet-standard/app → getWallets()          │    │
@@ -250,14 +250,14 @@ User (Telegram) → Agent → solana_swap tool → solana.js
 │                  │                                     │
 │                  ▼                                     │
 │  ┌──────────────────────────────────────────────┐    │
-│  │  API → SeekerClaw Agent (via Telegram or WS)  │    │
+│  │  API → shardclaw Agent (via Telegram or WS)  │    │
 │  │  Signed TX submitted to agent for execution   │    │
 │  └──────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────┘
 ```
 
 **User Flow:**
-1. User visits seekerclaw.xyz/wallet
+1. User visits shardclaw.xyz/wallet
 2. Page calls `getWallets()` → discovers Phantom extension
 3. User clicks "Connect" → `standard:connect` → gets accounts
 4. User can sign transactions in browser, relay to agent
@@ -269,25 +269,25 @@ User (Telegram) → Agent → solana_swap tool → solana.js
 
 ---
 
-### Path C: SeekerClaw as a Wallet Standard Wallet (Advanced)
+### Path C: shardclaw as a Wallet Standard Wallet (Advanced)
 
-**What:** Register SeekerClaw itself as a Wallet Standard wallet that other dApps (web or mobile) can discover and use. The agent becomes the signer — dApps request signatures, the agent decides whether to approve.
+**What:** Register shardclaw itself as a Wallet Standard wallet that other dApps (web or mobile) can discover and use. The agent becomes the signer — dApps request signatures, the agent decides whether to approve.
 
-**This is the most novel integration** and aligns with SeekerClaw's identity as an autonomous agent.
+**This is the most novel integration** and aligns with shardclaw's identity as an autonomous agent.
 
 **Architecture:**
 
 ```
 ┌──────────────────────────────────────────────────────┐
 │                  External dApp (web)                   │
-│  getWallets() → discovers "SeekerClaw Agent Wallet"    │
-│  standard:connect → WebSocket to SeekerClaw agent     │
+│  getWallets() → discovers "shardclaw Agent Wallet"    │
+│  standard:connect → WebSocket to shardclaw agent     │
 │  solana:signTransaction → agent evaluates + signs     │
 └──────────────┬───────────────────────────────────────┘
                │ WebSocket / HTTP
                ▼
 ┌──────────────────────────────────────────────────────┐
-│              SeekerClaw Agent                          │
+│              shardclaw Agent                          │
 │  Receives sign request → evaluates safety →            │
 │  Asks user via Telegram "dApp X wants to sign TX" →    │
 │  User approves → MWA signs → returns to dApp          │
@@ -295,18 +295,18 @@ User (Telegram) → Agent → solana_swap tool → solana.js
 ```
 
 **User Flow:**
-1. User installs SeekerClaw browser extension (thin proxy)
-2. Extension calls `registerWallet(new SeekerClawWallet())` on page load
-3. Any dApp calling `getWallets()` sees "SeekerClaw Agent"
+1. User installs shardclaw browser extension (thin proxy)
+2. Extension calls `registerWallet(new shardclawWallet())` on page load
+3. Any dApp calling `getWallets()` sees "shardclaw Agent"
 4. dApp requests `solana:signTransaction`
-5. Extension relays request to SeekerClaw agent (via WebSocket/Telegram)
+5. Extension relays request to shardclaw agent (via WebSocket/Telegram)
 6. Agent evaluates: is this safe? Is this within the user's rules?
 7. Agent asks user via Telegram: "Raydium wants to swap 5 SOL → USDC. Approve?"
 8. User replies YES → agent signs via MWA → returns signed TX to dApp
 
 **Effort:** ~4-6 weeks (browser extension + agent protocol + security review)
 **Risk:** High — new attack surface, needs careful security design
-**Value:** High — SeekerClaw becomes a programmable wallet layer for all dApps
+**Value:** High — shardclaw becomes a programmable wallet layer for all dApps
 
 ---
 
@@ -360,7 +360,7 @@ wallet-standard/
 
 **Kotlin side:**
 ```
-app/src/main/java/com/seekerclaw/app/
+app/src/main/java/com/shardclaw/app/
 ├── ton/
 │   ├── TonWalletManager.kt    # TON Connect protocol
 │   └── TonAuthActivity.kt     # TON wallet intent
@@ -379,7 +379,7 @@ Only if there's user demand for dApp integration.
 ### Flow 1: Multi-Wallet Setup (Path A)
 
 ```
-User opens SeekerClaw → Settings → Wallets
+User opens shardclaw → Settings → Wallets
 
 ┌─────────────────────────────────────┐
 │         Wallet Management            │
@@ -464,11 +464,11 @@ Agent:
 ### Flow 4: dApp Signature Relay (Path C, future)
 
 ```
-User visits raydium.io in browser with SeekerClaw extension
+User visits raydium.io in browser with shardclaw extension
 
-1. Raydium calls getWallets() → sees "SeekerClaw Agent"
+1. Raydium calls getWallets() → sees "shardclaw Agent"
 2. User clicks "Connect" in Raydium
-3. Extension → WebSocket → SeekerClaw Agent
+3. Extension → WebSocket → shardclaw Agent
 4. Agent sends Telegram: "🔗 Raydium wants to connect. Allow?"
 5. User: "yes"
 6. Agent: standard:connect → returns account to Raydium
@@ -507,7 +507,7 @@ User visits raydium.io in browser with SeekerClaw extension
 
 | Requirement | Status | Notes |
 |-------------|--------|-------|
-| Web app (seekerclaw.xyz) | Partial | Setup tool exists, no wallet page |
+| Web app (shardclaw.xyz) | Partial | Setup tool exists, no wallet page |
 | `@wallet-standard/app` npm package | **TODO** | Standard web dependency |
 | `@solana/wallet-standard` | **TODO** | Solana features |
 | WebSocket to agent | **TODO** | Real-time signature relay |
@@ -634,9 +634,9 @@ type SolanaSignMessageFeature = {
 };
 ```
 
-## Appendix B: Current SeekerClaw ↔ OWS Mapping
+## Appendix B: Current shardclaw ↔ OWS Mapping
 
-| OWS Feature | Current SeekerClaw Equivalent | File |
+| OWS Feature | Current shardclaw Equivalent | File |
 |-------------|-------------------------------|------|
 | `standard:connect` | `androidBridgeCall('/solana/authorize')` | `solana.js` |
 | `standard:disconnect` | Delete `solana_wallet.json` | `ConfigManager.kt` |

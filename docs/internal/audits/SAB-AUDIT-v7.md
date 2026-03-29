@@ -1,4 +1,4 @@
-# SAB-AUDIT-v7 — SeekerClaw Agent Self-Knowledge Audit
+# SAB-AUDIT-v7 — shardclaw Agent Self-Knowledge Audit
 
 > **Date:** 2026-02-28
 > **Scope:** Re-audit after BAT-277 (OpenClaw parity 2026.2.26), BAT-278 (formatting fix), BAT-279 (HEARTBEAT_OK), BAT-280 (OpenClaw parity 2026.2.28), BAT-289 (API error reasons), BAT-291 (markdown-it parser)
@@ -27,7 +27,7 @@ Scoring: ✅ = 3 pts, ⚠️ = 1 pt, ❌ = 0 pts.
 | MAX_HISTORY | 35 (claude.js:174) | "35 messages per chat" (line 801) | ✅ |
 | max_tokens | 4096 (claude.js:1505) | "4096 tokens per response" (line 803) | ✅ |
 | SHELL_ALLOWLIST | 34 commands (config.js:234-241) | 34 commands listed (line 637) | ✅ |
-| SECRETS_BLOCKED | config.json, config.yaml, seekerclaw.db (config.js:225) | seekerclaw.db listed as BLOCKED (line 555) | ✅ |
+| SECRETS_BLOCKED | config.json, config.yaml, shardclaw.db (config.js:225) | shardclaw.db listed as BLOCKED (line 555) | ✅ |
 
 No changes to constants since v6.
 
@@ -62,7 +62,7 @@ All 21 items from v6 held at ✅. No regressions.
 | 2 | Model | ✅ | ✅ | ✅ | PLATFORM.md (auto-generated) |
 | 3 | Device/hardware | ✅ | ✅ | ✅ | PLATFORM.md |
 | 4 | Who built it | ✅ | ✅ | ✅ | Line 377 (OpenClaw) |
-| 5 | Official channels | — | ✅ | ✅ | Line 378 (seekerclaw.xyz, @SeekerClaw, t.me/seekerclaw, GitHub) |
+| 5 | Official channels | — | ✅ | ✅ | Line 378 (shardclaw.xyz, @shardclaw, t.me/shardclaw, GitHub) |
 
 **Architecture (4/4)**
 

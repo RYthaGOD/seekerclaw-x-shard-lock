@@ -91,6 +91,13 @@ openclaw-reference/
 # Build debug artifacts
 build_output.txt
 compile_out.txt
+*.log
+node_debug.log
+poc_*.js
+generate_proofs_demo.js
+*.png
+!design/*.png
+!app/src/main/res/drawable/*.png
 
 # Developer-specific MCP config
 .mcp.json

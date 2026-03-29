@@ -136,10 +136,10 @@ The agent has **read-only** access (via the bridge endpoint or an optional
 
 ### 1.1 Data Model — `ToolGuardConfig.kt`
 
-**New file:** `app/src/main/java/com/seekerclaw/app/config/ToolGuardConfig.kt`
+**New file:** `app/src/main/java/com/shardclaw/app/config/ToolGuardConfig.kt`
 
 ```kotlin
-package com.seekerclaw.app.config
+package com.shardclaw.app.config
 
 import kotlinx.serialization.Serializable
 
@@ -266,13 +266,13 @@ data class ShellParamRule(
 
 ### 1.2 Defaults — `ToolGuardDefaults.kt`
 
-**New file:** `app/src/main/java/com/seekerclaw/app/config/ToolGuardDefaults.kt`
+**New file:** `app/src/main/java/com/shardclaw/app/config/ToolGuardDefaults.kt`
 
 These defaults **exactly match** the current hardcoded behavior so that upgrading
 users experience zero change.
 
 ```kotlin
-package com.seekerclaw.app.config
+package com.shardclaw.app.config
 
 /**
  * Hardcoded default values for tool guard settings.
@@ -387,7 +387,7 @@ object ToolGuardDefaults {
 
 ### 1.3 Storage — `ConfigManager.kt` Extension
 
-**Modified file:** `app/src/main/java/com/seekerclaw/app/config/ConfigManager.kt`
+**Modified file:** `app/src/main/java/com/shardclaw/app/config/ConfigManager.kt`
 
 Add these members to the existing `ConfigManager` class:
 
@@ -482,7 +482,7 @@ data class EffectiveToolGuardConfig(
 
 ### 1.4 Bridge Endpoint — `AndroidBridge.kt`
 
-**Modified file:** `app/src/main/java/com/seekerclaw/app/service/AndroidBridge.kt`
+**Modified file:** `app/src/main/java/com/shardclaw/app/service/AndroidBridge.kt`
 
 Add a new route handler in the existing `serve()` method:
 
@@ -572,7 +572,7 @@ private fun handleToolGuard(): Response {
 
 ### 2.1 Navigation
 
-**Modified file:** `app/src/main/java/com/seekerclaw/app/ui/navigation/NavGraph.kt`
+**Modified file:** `app/src/main/java/com/shardclaw/app/ui/navigation/NavGraph.kt`
 
 Add a new route:
 
@@ -588,7 +588,7 @@ composable(TOOL_GUARD_ROUTE) {
 }
 ```
 
-**Modified file:** `app/src/main/java/com/seekerclaw/app/ui/settings/SettingsScreen.kt`
+**Modified file:** `app/src/main/java/com/shardclaw/app/ui/settings/SettingsScreen.kt`
 
 Add a card in the Settings screen that navigates to the new screen:
 
@@ -604,7 +604,7 @@ SettingsCard(
 
 ### 2.2 Screen Layout — `ToolGuardScreen.kt`
 
-**New file:** `app/src/main/java/com/seekerclaw/app/ui/settings/ToolGuardScreen.kt`
+**New file:** `app/src/main/java/com/shardclaw/app/ui/settings/ToolGuardScreen.kt`
 
 The screen is a single scrollable column with collapsible sections:
 
@@ -716,10 +716,10 @@ fun ToolStateSelector(
 ) {
     // Segmented button with 4 segments
     // Color coding:
-    //   ALLOW  → SeekerClawColors.accent (green #4ADE80)
-    //   CONFIRM → SeekerClawColors.warning (yellow #FBBF24)
-    //   DENY   → SeekerClawColors.error (red #E41F28)
-    //   HIDDEN → SeekerClawColors.textSecondary (gray)
+    //   ALLOW  → shardclawColors.accent (green #4ADE80)
+    //   CONFIRM → shardclawColors.warning (yellow #FBBF24)
+    //   DENY   → shardclawColors.error (red #E41F28)
+    //   HIDDEN → shardclawColors.textSecondary (gray)
 }
 ```
 
@@ -826,14 +826,14 @@ fun ResetConfirmDialog(
 
 ### 2.3 ViewModel — `ToolGuardViewModel.kt`
 
-**New file:** `app/src/main/java/com/seekerclaw/app/ui/settings/ToolGuardViewModel.kt`
+**New file:** `app/src/main/java/com/shardclaw/app/ui/settings/ToolGuardViewModel.kt`
 
 ```kotlin
-package com.seekerclaw.app.ui.settings
+package com.shardclaw.app.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seekerclaw.app.config.*
+import com.shardclaw.app.config.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -1183,20 +1183,20 @@ data class McpGuardState(
 
 ### 2.4 Theme Integration
 
-All UI components use the existing `SeekerClawColors` object and `Theme.SeekerClaw`.
+All UI components use the existing `shardclawColors` object and `Theme.shardclaw`.
 New color semantics needed (map to existing palette):
 
 | Semantic | Color | Existing Token |
 |----------|-------|----------------|
-| ALLOW state | `#4ADE80` | `SeekerClawColors.accent` |
-| CONFIRM state | `#FBBF24` | `SeekerClawColors.warning` |
-| DENY state | `#E41F28` | `SeekerClawColors.primary` (error/red) |
-| HIDDEN state | `#FFFFFF` at 50% | `SeekerClawColors.textSecondary` |
-| Modified indicator | `#A78BFA` | `SeekerClawColors.accentPurple` (if exists) |
-| Severity CRITICAL | `#E41F28` | `SeekerClawColors.primary` |
+| ALLOW state | `#4ADE80` | `shardclawColors.accent` |
+| CONFIRM state | `#FBBF24` | `shardclawColors.warning` |
+| DENY state | `#E41F28` | `shardclawColors.primary` (error/red) |
+| HIDDEN state | `#FFFFFF` at 50% | `shardclawColors.textSecondary` |
+| Modified indicator | `#A78BFA` | `shardclawColors.accentPurple` (if exists) |
+| Severity CRITICAL | `#E41F28` | `shardclawColors.primary` |
 | Severity HIGH | `#FF8C00` | New or derive from warning |
-| Severity MEDIUM | `#FBBF24` | `SeekerClawColors.warning` |
-| Severity LOW | `#FFFFFF` at 50% | `SeekerClawColors.textSecondary` |
+| Severity MEDIUM | `#FBBF24` | `shardclawColors.warning` |
+| Severity LOW | `#FFFFFF` at 50% | `shardclawColors.textSecondary` |
 
 ---
 
@@ -1484,7 +1484,7 @@ if (isDenied(toolUse.name)) {
         tool_use_id: toolUse.id,
         content: JSON.stringify({
             error: `Tool "${toolUse.name}" is blocked by your security settings. ` +
-                   `You can change this in SeekerClaw > Settings > Security & Permissions.`
+                   `You can change this in shardclaw > Settings > Security & Permissions.`
         }),
     });
     continue; // Skip to next tool_use in the batch
@@ -1635,7 +1635,7 @@ A read-only tool that lets the user ask "what are my security settings?"
         'Show your current security settings: which tools need confirmation, ' +
         'which are blocked, the shell allowlist, MCP guard patterns, and ' +
         'confirmation timeout. Read-only — cannot modify settings. ' +
-        'Direct the user to SeekerClaw app > Settings > Security & Permissions ' +
+        'Direct the user to shardclaw app > Settings > Security & Permissions ' +
         'to make changes.',
     input_schema: {
         type: 'object',
@@ -1688,7 +1688,7 @@ to the Android Settings UI for changes.
 | File | Reason |
 |------|--------|
 | `config.js` | Hardcoded constants remain as fallback; no removal needed |
-| `proguard-rules.pro` | Wildcard rule already covers `com.seekerclaw.app.**` `@Serializable` classes |
+| `proguard-rules.pro` | Wildcard rule already covers `com.shardclaw.app.**` `@Serializable` classes |
 | `AndroidManifest.xml` | No new permissions needed |
 | `build.gradle.kts` | No new dependencies needed (all Compose/serialization deps already present) |
 
@@ -1816,7 +1816,7 @@ to modify its own guard config.
 - **Defense in depth:** Even if a new bridge endpoint were accidentally added,
   the auth token is per-boot and the bridge only listens on localhost.
 - **Self-awareness prompt:** Tells the agent about restrictions but does not
-  reveal how to change them (directs to "SeekerClaw app Settings").
+  reveal how to change them (directs to "shardclaw app Settings").
 
 ---
 
@@ -1856,7 +1856,7 @@ User customizations would overlay the selected profile.
 
 **Question:** Should guard settings be per-Telegram-chat (for future multi-chat)?
 
-**Recommendation:** No. SeekerClaw is single-owner. Guard settings apply globally.
+**Recommendation:** No. shardclaw is single-owner. Guard settings apply globally.
 If multi-chat is ever added, guard settings would still be global (they protect
 the device, not individual conversations).
 
@@ -1924,7 +1924,7 @@ mcp__<server_id>__<tool_name> (matched by glob patterns)
 
 ---
 
-*This plan was created based on analysis of SeekerClaw's existing security
+*This plan was created based on analysis of shardclaw's existing security
 architecture and adapted for its mobile-first, agent-cannot-modify-settings
 design principle. The key architectural decision: security config lives in
 Kotlin/SharedPreferences (agent cannot modify), not in workspace files

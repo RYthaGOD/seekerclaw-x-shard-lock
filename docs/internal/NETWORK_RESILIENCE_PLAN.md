@@ -7,7 +7,7 @@
 
 ## Problem
 
-SeekerClaw runs 24/7 on a phone. Mobile networks are inherently unreliable:
+shardclaw runs 24/7 on a phone. Mobile networks are inherently unreliable:
 - Wi-Fi → cellular handoff drops connections mid-API-call
 - Tunnel/elevator/subway = total connectivity loss for seconds to minutes
 - Cellular data can be metered — large `web_fetch` results burn user's plan

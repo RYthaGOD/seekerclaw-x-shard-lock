@@ -1,4 +1,4 @@
-// SeekerClaw MCP Client — Remote MCP server support via Streamable HTTP
+// shardclaw MCP Client — Remote MCP server support via Streamable HTTP
 // Protocol: MCP 2025-06-18 (JSON-RPC 2.0 over HTTP, no SDK)
 // BAT-168
 
@@ -293,7 +293,7 @@ class MCPClient {
         const initResult = await this._sendRequest('initialize', {
             protocolVersion: MCP_PROTOCOL_VERSION,
             capabilities: {},
-            clientInfo: { name: 'SeekerClaw', version: '1.2.0' },
+            clientInfo: { name: 'shardclaw', version: '1.2.0' },
         }, CONNECT_TIMEOUT_MS);
 
         if (initResult.error) {

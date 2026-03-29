@@ -1,8 +1,8 @@
-# QClaw Deep Audit — What SeekerClaw Can Borrow
+# QClaw Deep Audit — What shardclaw Can Borrow
 
 > **Date:** 2026-03-22 | **Site:** https://qclaw.qq.com/
 > **QClaw:** Tencent's OpenClaw wrapper, closed-source, desktop + WeChat, China market
-> **SeekerClaw:** Android-native 24/7 agent, Telegram, crypto/DeFi, global market
+> **shardclaw:** Android-native 24/7 agent, Telegram, crypto/DeFi, global market
 
 ---
 
@@ -53,7 +53,7 @@ Phone (WeChat/QQ)  ──message──►  QClaw Desktop App  ──►  PC acti
 
 ### Core Features
 
-| Feature | Description | SeekerClaw Equivalent |
+| Feature | Description | shardclaw Equivalent |
 |---------|-------------|----------------------|
 | **WeChat Remote Control** | Send commands from phone via WeChat → executes on PC | Telegram → executes on phone ✅ |
 | **QQ Remote Control** | Same via QQ messaging | N/A (Telegram only) |
@@ -71,7 +71,7 @@ Phone (WeChat/QQ)  ──message──►  QClaw Desktop App  ──►  PC acti
 
 ### Built-in Safety Skills
 
-| Skill | Purpose | SeekerClaw Equivalent |
+| Skill | Purpose | shardclaw Equivalent |
 |-------|---------|----------------------|
 | `qclaw-rules` | Forces Chinese language replies | N/A (we're English-first) |
 | `qclaw-env` | Auto-resolves network issues, switches mirrors | N/A (direct API calls) |
@@ -79,7 +79,7 @@ Phone (WeChat/QQ)  ──message──►  QClaw Desktop App  ──►  PC acti
 
 ### What QClaw Has That We Don't
 
-| Feature | Value for SeekerClaw | Priority |
+| Feature | Value for shardclaw | Priority |
 |---------|---------------------|----------|
 | **Inspiration Square** (preset tasks) | Quick-action buttons in Telegram for common tasks | P2 |
 | **Skill Vetter** | Security scanning for 3rd-party skills/MCP servers | P1 |
@@ -104,7 +104,7 @@ Phone (WeChat/QQ)  ──message──►  QClaw Desktop App  ──►  PC acti
 
 ## 3. Architecture Comparison
 
-| Dimension | QClaw (Tencent) | SeekerClaw |
+| Dimension | QClaw (Tencent) | shardclaw |
 |-----------|----------------|------------|
 | **Platform** | Desktop (Electron, Mac+Win) | Android (Kotlin + Node.js) |
 | **Framework** | OpenClaw (direct wrapper) | OpenClaw-compatible (custom port) |
@@ -134,7 +134,7 @@ All three Chinese tech giants have built OpenClaw wrappers:
 
 **Key insight:** All three are **distribution plays**, not technology plays. The OpenClaw core is identical. The moat is the messaging platform integration.
 
-**SeekerClaw's position:** We're the only **mobile-native** OpenClaw-compatible agent. No Chinese competitor runs on the phone itself. They all require a desktop.
+**shardclaw's position:** We're the only **mobile-native** OpenClaw-compatible agent. No Chinese competitor runs on the phone itself. They all require a desktop.
 
 ---
 
@@ -148,7 +148,7 @@ QClaw has ~20 preset task templates that users can execute with one click. Examp
 - "Check today's weather"
 - "Monitor news about [topic]"
 
-**For SeekerClaw:** Add a `/quick` command or inline keyboard in Telegram with preset actions:
+**For shardclaw:** Add a `/quick` command or inline keyboard in Telegram with preset actions:
 
 ```
 🔋 Device Status    📊 Portfolio Check
@@ -171,7 +171,7 @@ QClaw's `skill-vetter` scans skills for dangerous operations before installation
 - MCP server URLs pointing to suspicious domains
 - Skills requesting tools they shouldn't need (e.g., a "weather" skill requesting `solana_swap`)
 
-**For SeekerClaw:** Add a `validateSkill()` function in `skills.js` that runs before `skill_install` completes. Warn user via Telegram if suspicious patterns found. Don't block — warn and require explicit confirmation.
+**For shardclaw:** Add a `validateSkill()` function in `skills.js` that runs before `skill_install` completes. Warn user via Telegram if suspicious patterns found. Don't block — warn and require explicit confirmation.
 
 **Effort:** Medium. ~100 lines of pattern matching + Telegram confirmation flow.
 
@@ -211,7 +211,7 @@ QClaw's `qclaw-env` auto-resolves network issues and switches mirrors. For mobil
 | **WeChat/QQ integration** | Wrong market. Our users are on Telegram globally. |
 | **Chinese LLM defaults** | Our users want Claude/GPT. DeepSeek/Kimi/MiniMax are niche outside China. |
 | **Desktop file management** | We manage phone files, not desktop. Different OS, different UX. |
-| **"Lobster" branding** | Cute in China, confusing globally. Keep SeekerClaw brand. |
+| **"Lobster" branding** | Cute in China, confusing globally. Keep shardclaw brand. |
 
 ---
 
@@ -224,7 +224,7 @@ The rapid rollout of OpenClaw-based agents (including QClaw) exposed serious sec
 - **15,000 vulnerable to RCE** (Remote Code Execution)
 - China's Ministry of Industry flagged default configs as having "material security exposure"
 
-**Lessons for SeekerClaw:**
+**Lessons for shardclaw:**
 1. Our Android-native approach is inherently safer — no exposed ports (bridge is localhost-only)
 2. Our per-boot auth token on the Android Bridge prevents unauthorized access
 3. Our `js_eval` sandbox + `shell_exec` allowlist limits blast radius
@@ -232,7 +232,7 @@ The rapid rollout of OpenClaw-based agents (including QClaw) exposed serious sec
 
 ### QClaw's Security Stack vs Ours
 
-| Security Layer | QClaw | SeekerClaw |
+| Security Layer | QClaw | shardclaw |
 |---------------|-------|------------|
 | API key storage | Plaintext config file | Android Keystore AES-256-GCM ✅ |
 | Network exposure | Electron app (desktop ports) | Localhost-only bridge ✅ |
@@ -261,7 +261,7 @@ The rapid rollout of OpenClaw-based agents (including QClaw) exposed serious sec
 3. **GUI automation is fragile.** Entering "aaa/aaaaaa" during searches, clicking wrong buttons.
 4. **"Thinking interns, not employees."** Current agent products including QClaw are characterized as unreliable for real work.
 
-**SeekerClaw advantage:** We don't do GUI automation. Our tools are API-level (Telegram, Solana, Android Bridge), which are deterministic and reliable. A `solana_swap` either succeeds or fails — it doesn't accidentally click the wrong button.
+**shardclaw advantage:** We don't do GUI automation. Our tools are API-level (Telegram, Solana, Android Bridge), which are deterministic and reliable. A `solana_swap` either succeeds or fails — it doesn't accidentally click the wrong button.
 
 ### The "Lobster Fever" Validation
 
@@ -274,7 +274,7 @@ The fact that Tencent, Alibaba, and ByteDance all simultaneously built OpenClaw 
 
 ## 9. Competitive Positioning Update
 
-| Feature | QClaw | DeerFlow | SeekerClaw | Claude Code |
+| Feature | QClaw | DeerFlow | shardclaw | Claude Code |
 |---------|-------|----------|------------|-------------|
 | Runs on phone | ❌ (Mini Program only) | ❌ | ✅ | ❌ |
 | 24/7 background | ❌ (needs desktop) | ❌ (needs server) | ✅ | ❌ |
@@ -303,4 +303,4 @@ The fact that Tencent, Alibaba, and ByteDance all simultaneously built OpenClaw 
 ---
 
 *Generated from deep audit of https://qclaw.qq.com/ (Tencent QClaw)*
-*Cross-referenced with SeekerClaw v1.7.0 and DeerFlow audit*
+*Cross-referenced with shardclaw v1.7.0 and DeerFlow audit*

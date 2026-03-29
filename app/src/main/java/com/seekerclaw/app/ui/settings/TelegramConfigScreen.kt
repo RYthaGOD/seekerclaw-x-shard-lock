@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.settings
+package com.shardclaw.app.ui.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -36,9 +36,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.ui.theme.RethinkSans
-import com.seekerclaw.app.ui.theme.SeekerClawColors
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.shardclawColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -60,7 +60,7 @@ fun TelegramConfigScreen(onBack: () -> Unit) {
     var testStatus by remember { mutableStateOf("Idle") } // Idle, Loading, Success, Error
     var testMessage by remember { mutableStateOf("") }
 
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     fun saveField(field: String, value: String) {
         ConfigManager.updateConfigField(context, field, value)
@@ -81,7 +81,7 @@ fun TelegramConfigScreen(onBack: () -> Unit) {
                         fontFamily = RethinkSans,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.TextPrimary
+                        color = shardclawColors.TextPrimary
                     )
                 },
                 navigationIcon = {
@@ -89,16 +89,16 @@ fun TelegramConfigScreen(onBack: () -> Unit) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = SeekerClawColors.TextPrimary
+                            tint = shardclawColors.TextPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = SeekerClawColors.Background
+                    containerColor = shardclawColors.Background
                 )
             )
         },
-        containerColor = SeekerClawColors.Background
+        containerColor = shardclawColors.Background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -110,7 +110,7 @@ fun TelegramConfigScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape),
+                    .background(shardclawColors.Surface, shape),
             ) {
                 ProviderConfigField(
                     label = "Bot Token",
@@ -143,14 +143,14 @@ fun TelegramConfigScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(16.dp),
             ) {
                 Text(
                     text = "Verify your bot token is valid and Telegram is reachable.",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -181,7 +181,7 @@ fun TelegramConfigScreen(onBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = SeekerClawColors.ActionPrimary,
+                        containerColor = shardclawColors.ActionPrimary,
                         contentColor = Color.White,
                     ),
                 ) {
@@ -204,7 +204,7 @@ fun TelegramConfigScreen(onBack: () -> Unit) {
                         text = testMessage,
                         fontFamily = RethinkSans,
                         fontSize = 13.sp,
-                        color = if (testStatus == "Success") SeekerClawColors.ActionPrimary else SeekerClawColors.Error,
+                        color = if (testStatus == "Success") shardclawColors.ActionPrimary else shardclawColors.Error,
                     )
                 }
             }

@@ -1,4 +1,4 @@
-// SeekerClaw — bridge.js
+// shardclaw — bridge.js
 // Android Bridge HTTP client. Calls the local Android bridge on port 8765.
 // Depends on: config.js
 

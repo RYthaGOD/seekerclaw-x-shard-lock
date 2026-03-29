@@ -20,17 +20,17 @@
 |--------|------|---------|
 | Create | `app/src/main/res/values/strings.xml` | English default (expand existing 3 → ~200 strings) |
 | Create | `app/src/main/res/values-zh-rCN/strings.xml` | Chinese Simplified translations |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/navigation/NavGraph.kt` | Nav labels → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/dashboard/DashboardScreen.kt` | Dashboard strings → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/system/SystemScreen.kt` | System strings → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/logs/LogsScreen.kt` | Logs strings → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/skills/SkillsScreen.kt` | Skills strings → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/skills/SkillDetailScreen.kt` | Skill detail strings → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/settings/SettingsScreen.kt` | Settings strings → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/settings/ProviderConfigScreen.kt` | Provider config strings → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/settings/TelegramConfigScreen.kt` | Telegram config strings → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/settings/SearchProviderConfigScreen.kt` | Search config strings → stringResource |
-| Modify | `app/src/main/java/com/seekerclaw/app/ui/settings/RestartDialog.kt` | Restart dialog strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/navigation/NavGraph.kt` | Nav labels → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/dashboard/DashboardScreen.kt` | Dashboard strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/system/SystemScreen.kt` | System strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/logs/LogsScreen.kt` | Logs strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/skills/SkillsScreen.kt` | Skills strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/skills/SkillDetailScreen.kt` | Skill detail strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/settings/SettingsScreen.kt` | Settings strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/settings/ProviderConfigScreen.kt` | Provider config strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/settings/TelegramConfigScreen.kt` | Telegram config strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/settings/SearchProviderConfigScreen.kt` | Search config strings → stringResource |
+| Modify | `app/src/main/java/com/shardclaw/app/ui/settings/RestartDialog.kt` | Restart dialog strings → stringResource |
 
 ---
 
@@ -52,7 +52,7 @@ banner_no_internet, banner_api_restored
 uplink_telegram, uplink_engine, uplink_ai_provider
 ```
 
-Brand/tech terms use `translatable="false"`: SeekerClaw, AgentOS, OpenClaw, Node.js, Telegram, MCP, SOL, API, SDK.
+Brand/tech terms use `translatable="false"`: shardclaw, AgentOS, OpenClaw, Node.js, Telegram, MCP, SOL, API, SDK.
 
 ---
 
@@ -69,8 +69,8 @@ Current content (3 strings only):
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SeekerClaw</string>
-    <string name="notification_channel_name">SeekerClaw Service</string>
+    <string name="app_name">shardclaw</string>
+    <string name="notification_channel_name">shardclaw Service</string>
     <string name="notification_content">AI agent is running</string>
 </resources>
 ```
@@ -84,7 +84,7 @@ Write the complete `app/src/main/res/values/strings.xml`:
 <resources>
 
     <!-- ==================== NON-TRANSLATABLE ==================== -->
-    <string name="app_name" translatable="false">SeekerClaw</string>
+    <string name="app_name" translatable="false">shardclaw</string>
     <string name="brand_agentos" translatable="false">AgentOS</string>
     <string name="brand_claw_engine" translatable="false">Claw Engine</string>
     <string name="brand_openclaw" translatable="false">OpenClaw</string>
@@ -95,7 +95,7 @@ Write the complete `app/src/main/res/values/strings.xml`:
     <string name="tech_sol" translatable="false">SOL</string>
 
     <!-- ==================== NOTIFICATION ==================== -->
-    <string name="notification_channel_name">SeekerClaw Service</string>
+    <string name="notification_channel_name">shardclaw Service</string>
     <string name="notification_content">AI agent is running</string>
 
     <!-- ==================== NAVIGATION ==================== -->
@@ -327,7 +327,7 @@ Write the complete `app/src/main/res/values/strings.xml`:
     <!-- ==================== SETTINGS SCREEN ==================== -->
     <string name="screen_settings">Settings</string>
     <string name="settings_section_quick_setup">Quick Setup</string>
-    <string name="settings_qr_description">Generate a config QR at seekerclaw.xyz and scan it to set up your agent in seconds.</string>
+    <string name="settings_qr_description">Generate a config QR at shardclaw.xyz and scan it to set up your agent in seconds.</string>
     <string name="button_scan_config_qr">Scan Config QR</string>
     <string name="button_importing_config">Importing Config…</string>
 
@@ -542,7 +542,7 @@ EOF
 ## Task 2: Refactor BottomNavItem to use @StringRes
 
 **Files:**
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/navigation/NavGraph.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/navigation/NavGraph.kt`
 
 The `BottomNavItem` data class uses `val label: String` — change it to `@StringRes val labelRes: Int` so nav labels come from string resources.
 
@@ -606,7 +606,7 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 5: Commit**
 
 ```bash
-git add app/src/main/java/com/seekerclaw/app/ui/navigation/NavGraph.kt
+git add app/src/main/java/com/shardclaw/app/ui/navigation/NavGraph.kt
 git commit -m "$(cat <<'EOF'
 i18n: refactor BottomNavItem to use @StringRes
 
@@ -623,7 +623,7 @@ EOF
 ## Task 3: Extract DashboardScreen strings
 
 **Files:**
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/dashboard/DashboardScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/dashboard/DashboardScreen.kt`
 
 This is the most-seen screen with ~80 strings. Replace all hardcoded strings with `stringResource()`.
 
@@ -692,7 +692,7 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 4: Commit**
 
 ```bash
-git add app/src/main/java/com/seekerclaw/app/ui/dashboard/DashboardScreen.kt
+git add app/src/main/java/com/shardclaw/app/ui/dashboard/DashboardScreen.kt
 git commit -m "$(cat <<'EOF'
 i18n: extract DashboardScreen strings to resources
 
@@ -710,7 +710,7 @@ EOF
 ## Task 4: Extract SystemScreen strings
 
 **Files:**
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/system/SystemScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/system/SystemScreen.kt`
 
 ~50 strings covering device stats, connection info, API analytics.
 
@@ -753,7 +753,7 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 3: Commit**
 
 ```bash
-git add app/src/main/java/com/seekerclaw/app/ui/system/SystemScreen.kt
+git add app/src/main/java/com/shardclaw/app/ui/system/SystemScreen.kt
 git commit -m "$(cat <<'EOF'
 i18n: extract SystemScreen strings to resources
 
@@ -770,9 +770,9 @@ EOF
 ## Task 5: Extract LogsScreen + SkillsScreen + SkillDetailScreen strings
 
 **Files:**
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/logs/LogsScreen.kt`
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/skills/SkillsScreen.kt`
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/skills/SkillDetailScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/logs/LogsScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/skills/SkillsScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/skills/SkillDetailScreen.kt`
 
 ~80 strings total across 3 smaller screens.
 
@@ -820,9 +820,9 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 5: Commit**
 
 ```bash
-git add app/src/main/java/com/seekerclaw/app/ui/logs/LogsScreen.kt \
-      app/src/main/java/com/seekerclaw/app/ui/skills/SkillsScreen.kt \
-      app/src/main/java/com/seekerclaw/app/ui/skills/SkillDetailScreen.kt
+git add app/src/main/java/com/shardclaw/app/ui/logs/LogsScreen.kt \
+      app/src/main/java/com/shardclaw/app/ui/skills/SkillsScreen.kt \
+      app/src/main/java/com/shardclaw/app/ui/skills/SkillDetailScreen.kt
 git commit -m "$(cat <<'EOF'
 i18n: extract Logs + Skills screen strings to resources
 
@@ -839,7 +839,7 @@ EOF
 ## Task 6: Extract SettingsScreen strings
 
 **Files:**
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/settings/SettingsScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/settings/SettingsScreen.kt`
 
 The biggest file (~130 strings). Extract section headers, field labels, buttons, and dialog text. **Skip SettingsHelpTexts.kt** (deferred — long-form text).
 
@@ -901,7 +901,7 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 3: Commit**
 
 ```bash
-git add app/src/main/java/com/seekerclaw/app/ui/settings/SettingsScreen.kt
+git add app/src/main/java/com/shardclaw/app/ui/settings/SettingsScreen.kt
 git commit -m "$(cat <<'EOF'
 i18n: extract SettingsScreen strings to resources
 
@@ -919,10 +919,10 @@ EOF
 ## Task 7: Extract config screen strings (Provider, Telegram, Search, RestartDialog)
 
 **Files:**
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/settings/ProviderConfigScreen.kt`
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/settings/TelegramConfigScreen.kt`
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/settings/SearchProviderConfigScreen.kt`
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/settings/RestartDialog.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/settings/ProviderConfigScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/settings/TelegramConfigScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/settings/SearchProviderConfigScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/settings/RestartDialog.kt`
 
 ~80 strings across 4 files.
 
@@ -979,10 +979,10 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 6: Commit**
 
 ```bash
-git add app/src/main/java/com/seekerclaw/app/ui/settings/ProviderConfigScreen.kt \
-      app/src/main/java/com/seekerclaw/app/ui/settings/TelegramConfigScreen.kt \
-      app/src/main/java/com/seekerclaw/app/ui/settings/SearchProviderConfigScreen.kt \
-      app/src/main/java/com/seekerclaw/app/ui/settings/RestartDialog.kt
+git add app/src/main/java/com/shardclaw/app/ui/settings/ProviderConfigScreen.kt \
+      app/src/main/java/com/shardclaw/app/ui/settings/TelegramConfigScreen.kt \
+      app/src/main/java/com/shardclaw/app/ui/settings/SearchProviderConfigScreen.kt \
+      app/src/main/java/com/shardclaw/app/ui/settings/RestartDialog.kt
 git commit -m "$(cat <<'EOF'
 i18n: extract config screen strings to resources
 
@@ -1033,7 +1033,7 @@ Create `app/src/main/res/values-zh-rCN/strings.xml` with all translatable string
 
 **Translation rules:**
 - Keep crypto/DeFi terms in English: Wallet, SOL, Swap, NFT
-- Keep brand names: SeekerClaw, Telegram, Claude, OpenAI, OpenRouter
+- Keep brand names: shardclaw, Telegram, Claude, OpenAI, OpenRouter
 - Keep technical terms: API, SDK, MCP, Node.js, HTTPS, URL
 - Use standard Chinese software localization (not machine translation)
 - Match Android platform terminology (设置, 权限, 通知, etc.)
@@ -1086,8 +1086,8 @@ Execute the smoke-test skill to verify:
 
 Search for obvious remaining hardcoded strings:
 ```bash
-grep -rn 'Text("' app/src/main/java/com/seekerclaw/app/ui/dashboard/DashboardScreen.kt | grep -v 'stringResource\|//' | head -20
-grep -rn 'text = "' app/src/main/java/com/seekerclaw/app/ui/settings/SettingsScreen.kt | grep -v 'stringResource\|//' | head -20
+grep -rn 'Text("' app/src/main/java/com/shardclaw/app/ui/dashboard/DashboardScreen.kt | grep -v 'stringResource\|//' | head -20
+grep -rn 'text = "' app/src/main/java/com/shardclaw/app/ui/settings/SettingsScreen.kt | grep -v 'stringResource\|//' | head -20
 ```
 
 Some hardcoded strings are intentional (emoji symbols like `"⚡"`, `"⚠"`, format templates). The check is for missed user-facing text.

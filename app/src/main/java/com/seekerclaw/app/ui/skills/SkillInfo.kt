@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.skills
+package com.shardclaw.app.ui.skills
 
 data class SkillInfo(
     val name: String,

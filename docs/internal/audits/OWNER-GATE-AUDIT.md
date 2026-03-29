@@ -1,4 +1,4 @@
-# Owner Gate Security Audit — SeekerClaw
+# Owner Gate Security Audit — shardclaw
 
 **Date:** 2026-02-20
 **Scope:** All inbound Telegram update paths → AI/tool execution gate
@@ -239,7 +239,7 @@ Telegram update
 
 **Path:** Android → `OpenClawService.kt` / `NodeBridge.kt`
 **Issue:** If Setup screen is skipped or owner ID is cleared, the service starts with no owner set, opening the auto-detect race window.
-**Fix:** In service `onStartCommand()`, read owner ID from `ConfigManager`. If empty, log an error and do NOT start Node.js. Post a notification: "Setup incomplete — open SeekerClaw to configure."
+**Fix:** In service `onStartCommand()`, read owner ID from `ConfigManager`. If empty, log an error and do NOT start Node.js. Post a notification: "Setup incomplete — open shardclaw to configure."
 
 ### FIX-2 (Low Priority) — Document `REACTION_NOTIFICATIONS = 'all'` security implication
 

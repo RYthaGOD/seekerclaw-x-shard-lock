@@ -1,12 +1,12 @@
-package com.seekerclaw.app.service
+package com.shardclaw.app.service
 
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
-import com.seekerclaw.app.util.LogCollector
-import com.seekerclaw.app.util.LogLevel
-import com.seekerclaw.app.util.ServiceState
-import com.seekerclaw.app.util.ServiceStatus
+import com.shardclaw.app.util.LogCollector
+import com.shardclaw.app.util.LogLevel
+import com.shardclaw.app.util.ServiceState
+import com.shardclaw.app.util.ServiceStatus
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

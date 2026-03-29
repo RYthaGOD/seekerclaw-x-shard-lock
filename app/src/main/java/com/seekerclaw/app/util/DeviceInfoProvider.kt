@@ -1,4 +1,4 @@
-package com.seekerclaw.app.util
+package com.shardclaw.app.util
 
 import android.app.ActivityManager
 import android.content.Context
@@ -63,7 +63,7 @@ object DeviceInfoProvider {
     fun getAppStorageInfo(context: Context): AppStorageInfo {
         val filesDir = context.filesDir
         val workspaceDir = File(filesDir, "workspace")
-        val databaseMb = fileSizeMb(File(workspaceDir, "seekerclaw.db"))
+        val databaseMb = fileSizeMb(File(workspaceDir, "shardclaw.db"))
         val nodeDebugLogMb = fileSizeMb(File(workspaceDir, "node_debug.log"))
         val workspaceMb = dirSizeMb(workspaceDir) - databaseMb - nodeDebugLogMb
         val logsMb = fileSizeMb(File(filesDir, "service_logs")) + nodeDebugLogMb

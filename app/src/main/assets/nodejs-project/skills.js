@@ -1,4 +1,4 @@
-// SeekerClaw — skills.js
+// shardclaw — skills.js
 // Skill loading, YAML parsing, matching, and system prompt building.
 // Depends on: config.js
 
@@ -27,7 +27,7 @@ const { SKILLS_DIR, log, config, SHELL_ALLOWLIST } = require('./config');
  * (body is instructions)
  * ```
  *
- * 2. SeekerClaw YAML block frontmatter:
+ * 2. shardclaw YAML block frontmatter:
  * ```
  * ---
  * name: skill-name
@@ -485,7 +485,7 @@ function loadSkills() {
                     }
                 }
             } else if (isFile && entry.name.endsWith('.md')) {
-                // Flat .md skill files (SeekerClaw format)
+                // Flat .md skill files (shardclaw format)
                 const filePath = entryPath;
                 // Symlink escape check (read resolved path to close TOCTOU)
                 let realFile;

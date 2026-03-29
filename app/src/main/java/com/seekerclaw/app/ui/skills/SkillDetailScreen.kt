@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.skills
+package com.shardclaw.app.ui.skills
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,8 +28,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.ui.theme.RethinkSans
-import com.seekerclaw.app.ui.theme.SeekerClawColors
+import com.shardclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.shardclawColors
 
 @Composable
 fun SkillDetailScreen(
@@ -37,12 +37,12 @@ fun SkillDetailScreen(
     onBack: () -> Unit,
     onExport: (() -> Unit)? = null,
 ) {
-    val shape = remember { RoundedCornerShape(SeekerClawColors.CornerRadius) }
+    val shape = remember { RoundedCornerShape(shardclawColors.CornerRadius) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(SeekerClawColors.Background)
+            .background(shardclawColors.Background)
             .verticalScroll(rememberScrollState()),
     ) {
         // Top bar
@@ -58,7 +58,7 @@ fun SkillDetailScreen(
                 fontFamily = RethinkSans,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.Primary,
+                color = shardclawColors.Primary,
                 modifier = Modifier.clickable(onClickLabel = "Back to skills list", onClick = onBack),
             )
             if (onExport != null) {
@@ -67,7 +67,7 @@ fun SkillDetailScreen(
                     fontFamily = RethinkSans,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = SeekerClawColors.Accent,
+                    color = shardclawColors.Accent,
                     modifier = Modifier
                         .clickable(onClickLabel = "Export skill", onClick = onExport)
                         .padding(4.dp),
@@ -77,7 +77,7 @@ fun SkillDetailScreen(
 
         HorizontalDivider(
             thickness = 1.dp,
-            color = SeekerClawColors.CardBorder,
+            color = shardclawColors.CardBorder,
         )
 
         Column(
@@ -94,7 +94,7 @@ fun SkillDetailScreen(
                         fontFamily = RethinkSans,
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.TextPrimary,
+                        color = shardclawColors.TextPrimary,
                     )
                     if (skill.version.isNotEmpty()) {
                         Spacer(Modifier.height(2.dp))
@@ -102,7 +102,7 @@ fun SkillDetailScreen(
                             text = "v${skill.version.removePrefix("v").removePrefix("V")}",
                             fontFamily = FontFamily.Monospace,
                             fontSize = 12.sp,
-                            color = SeekerClawColors.TextDim,
+                            color = shardclawColors.TextDim,
                         )
                     }
                 }
@@ -114,7 +114,7 @@ fun SkillDetailScreen(
                     text = if (skill.isDefault) "Default (bundled)" else "Added by user",
                     fontFamily = RethinkSans,
                     fontSize = 14.sp,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
             }
 
@@ -125,7 +125,7 @@ fun SkillDetailScreen(
                         text = skill.description,
                         fontFamily = RethinkSans,
                         fontSize = 14.sp,
-                        color = SeekerClawColors.TextPrimary,
+                        color = shardclawColors.TextPrimary,
                         lineHeight = 22.sp,
                     )
                 }
@@ -138,7 +138,7 @@ fun SkillDetailScreen(
                         text = "Semantic — AI picks this skill based on description",
                         fontFamily = RethinkSans,
                         fontSize = 13.sp,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 } else {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -148,14 +148,14 @@ fun SkillDetailScreen(
                                     modifier = Modifier
                                         .size(6.dp)
                                         .clip(CircleShape)
-                                        .background(SeekerClawColors.Accent),
+                                        .background(shardclawColors.Accent),
                                 )
                                 Spacer(Modifier.width(10.dp))
                                 Text(
                                     text = trigger,
                                     fontFamily = FontFamily.Monospace,
                                     fontSize = 13.sp,
-                                    color = SeekerClawColors.TextPrimary,
+                                    color = shardclawColors.TextPrimary,
                                 )
                             }
                         }
@@ -172,14 +172,14 @@ fun SkillDetailScreen(
                                 Text(
                                     text = "⚠",
                                     fontSize = 13.sp,
-                                    color = SeekerClawColors.Warning,
+                                    color = shardclawColors.Warning,
                                 )
                                 Spacer(Modifier.width(8.dp))
                                 Text(
                                     text = warning,
                                     fontFamily = RethinkSans,
                                     fontSize = 13.sp,
-                                    color = SeekerClawColors.Warning,
+                                    color = shardclawColors.Warning,
                                     lineHeight = 18.sp,
                                 )
                             }
@@ -194,7 +194,7 @@ fun SkillDetailScreen(
                     text = skill.filePath,
                     fontFamily = FontFamily.Monospace,
                     fontSize = 11.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                     lineHeight = 18.sp,
                 )
             }
@@ -211,7 +211,7 @@ private fun InfoSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(SeekerClawColors.Surface, shape)
+            .background(shardclawColors.Surface, shape)
             .padding(16.dp),
     ) {
         Text(
@@ -219,7 +219,7 @@ private fun InfoSection(
             fontFamily = RethinkSans,
             fontSize = 11.sp,
             fontWeight = FontWeight.Bold,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
             letterSpacing = 1.sp,
         )
         Spacer(Modifier.height(10.dp))

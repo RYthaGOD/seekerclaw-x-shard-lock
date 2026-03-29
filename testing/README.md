@@ -1,4 +1,4 @@
-# SeekerClaw API Testing
+# shardclaw API Testing
 
 Standalone scripts to test Anthropic API calls without building the app.
 

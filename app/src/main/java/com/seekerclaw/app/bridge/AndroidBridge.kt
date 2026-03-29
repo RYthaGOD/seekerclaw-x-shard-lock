@@ -1,4 +1,4 @@
-package com.seekerclaw.app.bridge
+package com.shardclaw.app.bridge
 
 import android.Manifest
 import android.content.ClipData
@@ -19,12 +19,12 @@ import android.speech.tts.TextToSpeech
 import android.telephony.SmsManager
 import android.util.Log
 import androidx.core.content.ContextCompat
-import com.seekerclaw.app.camera.CameraCaptureActivity
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.util.Analytics
-import com.seekerclaw.app.util.ServiceState
-import com.seekerclaw.app.storage.RustCore
-import com.seekerclaw.app.storage.StorageManager
+import com.shardclaw.app.camera.CameraCaptureActivity
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.util.Analytics
+import com.shardclaw.app.util.ServiceState
+import com.shardclaw.app.storage.RustCore
+import com.shardclaw.app.storage.StorageManager
 import fi.iki.elonen.NanoHTTPD
 import org.json.JSONArray
 import org.json.JSONObject
@@ -249,7 +249,7 @@ class AndroidBridge(
     private fun handleClipboardSet(params: JSONObject): Response {
         val content = params.optString("content", "")
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("SeekerClaw", content)
+        val clip = ClipData.newPlainText("shardclaw", content)
         clipboard.setPrimaryClip(clip)
         return jsonResponse(200, mapOf("success" to true))
     }
@@ -416,7 +416,7 @@ class AndroidBridge(
 
         tts?.setPitch(pitch)
         tts?.setSpeechRate(speed)
-        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "seekerclaw_tts")
+        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "shardclaw_tts")
 
         return jsonResponse(200, mapOf("success" to true, "text" to text))
     }
@@ -526,7 +526,7 @@ class AndroidBridge(
 
     private fun handleSolanaAuthorize(): Response {
         val requestId = java.util.UUID.randomUUID().toString()
-        val intent = Intent(context, com.seekerclaw.app.solana.SolanaAuthActivity::class.java).apply {
+        val intent = Intent(context, com.shardclaw.app.solana.SolanaAuthActivity::class.java).apply {
             putExtra("action", "authorize")
             putExtra("requestId", requestId)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -572,7 +572,7 @@ class AndroidBridge(
         val txBytes = android.util.Base64.decode(txBase64, android.util.Base64.NO_WRAP)
         val requestId = java.util.UUID.randomUUID().toString()
 
-        val intent = Intent(context, com.seekerclaw.app.solana.SolanaAuthActivity::class.java).apply {
+        val intent = Intent(context, com.shardclaw.app.solana.SolanaAuthActivity::class.java).apply {
             putExtra("action", "sign")
             putExtra("requestId", requestId)
             putExtra("transaction", txBytes)
@@ -618,7 +618,7 @@ class AndroidBridge(
         }
         val requestId = java.util.UUID.randomUUID().toString()
 
-        val intent = Intent(context, com.seekerclaw.app.solana.SolanaAuthActivity::class.java).apply {
+        val intent = Intent(context, com.shardclaw.app.solana.SolanaAuthActivity::class.java).apply {
             putExtra("action", "signOnly")
             putExtra("requestId", requestId)
             putExtra("transaction", txBytes)
@@ -626,7 +626,7 @@ class AndroidBridge(
         }
         context.startActivity(intent)
 
-        val resultsDir = java.io.File(context.filesDir, com.seekerclaw.app.solana.SolanaAuthActivity.RESULTS_DIR)
+        val resultsDir = java.io.File(context.filesDir, com.shardclaw.app.solana.SolanaAuthActivity.RESULTS_DIR)
         val resultFile = java.io.File(resultsDir, "$requestId.json")
         val deadline = System.currentTimeMillis() + 120_000
         while (System.currentTimeMillis() < deadline) {

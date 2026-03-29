@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.logs
+package com.shardclaw.app.ui.logs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -46,16 +46,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
-import com.seekerclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.RethinkSans
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
-import com.seekerclaw.app.ui.theme.SeekerClawColors
-import com.seekerclaw.app.util.LogCollector
-import com.seekerclaw.app.util.LogLevel
+import com.shardclaw.app.ui.theme.shardclawColors
+import com.shardclaw.app.util.LogCollector
+import com.shardclaw.app.util.LogLevel
 import java.util.Date
 
 @Composable
@@ -89,7 +89,7 @@ fun LogsScreen() {
         }
     }
 
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     val timePattern = if (android.text.format.DateFormat.is24HourFormat(context)) "HH:mm:ss" else "hh:mm:ss a"
 
     // Use last entry timestamp+message (not list size) so auto-scroll still works
@@ -105,7 +105,7 @@ fun LogsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(SeekerClawColors.Background)
+            .background(shardclawColors.Background)
             .padding(20.dp),
     ) {
         // Header — icon + title + share/trash buttons
@@ -118,7 +118,7 @@ fun LogsScreen() {
                 Icon(
                     Icons.Default.Terminal,
                     contentDescription = null,
-                    tint = SeekerClawColors.Primary,
+                    tint = shardclawColors.Primary,
                     modifier = Modifier.size(24.dp),
                 )
                 Spacer(modifier = Modifier.width(10.dp))
@@ -127,13 +127,13 @@ fun LogsScreen() {
                     fontFamily = RethinkSans,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
             }
             Row {
                 IconButton(onClick = {
                     val logText = buildString {
-                        appendLine("SeekerClaw Logs — ${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US).format(Date())}")
+                        appendLine("shardclaw Logs — ${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US).format(Date())}")
                         appendLine("─".repeat(40))
                         filteredLogs.forEach { entry ->
                             val timeStr = android.text.format.DateFormat.format(timePattern, Date(entry.timestamp))
@@ -143,21 +143,21 @@ fun LogsScreen() {
                     val sendIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
                         type = "text/plain"
                         putExtra(android.content.Intent.EXTRA_TEXT, logText)
-                        putExtra(android.content.Intent.EXTRA_SUBJECT, "SeekerClaw Logs")
+                        putExtra(android.content.Intent.EXTRA_SUBJECT, "shardclaw Logs")
                     }
                     context.startActivity(android.content.Intent.createChooser(sendIntent, "Share Logs"))
                 }) {
                     Icon(
                         Icons.Default.Share,
                         contentDescription = "Share logs",
-                        tint = SeekerClawColors.TextDim,
+                        tint = shardclawColors.TextDim,
                     )
                 }
                 TextButton(onClick = { showClearDialog = true }) {
                     Icon(
                         Icons.Default.Delete,
                         contentDescription = "Clear logs",
-                        tint = SeekerClawColors.TextDim,
+                        tint = shardclawColors.TextDim,
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(4.dp))
@@ -165,7 +165,7 @@ fun LogsScreen() {
                         text = "Clear",
                         fontFamily = RethinkSans,
                         fontSize = 13.sp,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             }
@@ -175,7 +175,7 @@ fun LogsScreen() {
             text = "System logs and diagnostics",
             fontFamily = RethinkSans,
             fontSize = 13.sp,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -195,7 +195,7 @@ fun LogsScreen() {
                 Icon(
                     Icons.Default.Search,
                     contentDescription = "Search",
-                    tint = SeekerClawColors.TextDim,
+                    tint = shardclawColors.TextDim,
                     modifier = Modifier.size(18.dp),
                 )
             },
@@ -205,7 +205,7 @@ fun LogsScreen() {
                         Icon(
                             Icons.Default.Close,
                             contentDescription = "Clear search",
-                            tint = SeekerClawColors.TextDim,
+                            tint = shardclawColors.TextDim,
                             modifier = Modifier.size(18.dp),
                         )
                     }
@@ -215,12 +215,12 @@ fun LogsScreen() {
             textStyle = androidx.compose.ui.text.TextStyle(
                 fontFamily = FontFamily.Monospace,
                 fontSize = 13.sp,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             ),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = SeekerClawColors.Primary,
-                unfocusedBorderColor = SeekerClawColors.TextDim.copy(alpha = 0.3f),
-                cursorColor = SeekerClawColors.Primary,
+                focusedBorderColor = shardclawColors.Primary,
+                unfocusedBorderColor = shardclawColors.TextDim.copy(alpha = 0.3f),
+                cursorColor = shardclawColors.Primary,
             ),
             shape = shape,
             modifier = Modifier.fillMaxWidth(),
@@ -233,7 +233,7 @@ fun LogsScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .background(SeekerClawColors.Surface, shape),
+                .background(shardclawColors.Surface, shape),
         ) {
             if (filteredLogs.isEmpty()) {
                 Box(
@@ -247,14 +247,14 @@ fun LogsScreen() {
                                 text = "$ _",
                                 fontFamily = FontFamily.Monospace,
                                 fontSize = 24.sp,
-                                color = SeekerClawColors.TextDim.copy(alpha = 0.4f),
+                                color = shardclawColors.TextDim.copy(alpha = 0.4f),
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = "No logs yet.",
                                 fontFamily = FontFamily.Monospace,
                                 fontSize = 13.sp,
-                                color = SeekerClawColors.TextDim,
+                                color = shardclawColors.TextDim,
                             )
                         }
                     } else {
@@ -268,21 +268,21 @@ fun LogsScreen() {
                             Text(
                                 text = "\u2205",
                                 fontSize = 28.sp,
-                                color = SeekerClawColors.TextDim.copy(alpha = 0.4f),
+                                color = shardclawColors.TextDim.copy(alpha = 0.4f),
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = reasonText,
                                 fontFamily = FontFamily.Monospace,
                                 fontSize = 13.sp,
-                                color = SeekerClawColors.TextDim,
+                                color = shardclawColors.TextDim,
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "${logs.size} entries hidden.",
                                 fontFamily = FontFamily.Monospace,
                                 fontSize = 12.sp,
-                                color = SeekerClawColors.TextDim.copy(alpha = 0.6f),
+                                color = shardclawColors.TextDim.copy(alpha = 0.6f),
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             TextButton(onClick = {
@@ -297,7 +297,7 @@ fun LogsScreen() {
                                     fontFamily = RethinkSans,
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = SeekerClawColors.Primary,
+                                    color = shardclawColors.Primary,
                                 )
                             }
                         }
@@ -315,10 +315,10 @@ fun LogsScreen() {
                         key = { index, entry -> entry.timestamp to index },
                     ) { index, entry ->
                         val color = when (entry.level) {
-                            LogLevel.DEBUG -> SeekerClawColors.LogDebug
-                            LogLevel.INFO -> SeekerClawColors.LogInfo
-                            LogLevel.WARN -> SeekerClawColors.Warning
-                            LogLevel.ERROR -> SeekerClawColors.Error
+                            LogLevel.DEBUG -> shardclawColors.LogDebug
+                            LogLevel.INFO -> shardclawColors.LogInfo
+                            LogLevel.WARN -> shardclawColors.Warning
+                            LogLevel.ERROR -> shardclawColors.Error
                         }
                         val timeStr = android.text.format.DateFormat.format(timePattern, Date(entry.timestamp))
                         Text(
@@ -346,7 +346,7 @@ fun LogsScreen() {
                 text = statusText,
                 fontFamily = FontFamily.Monospace,
                 fontSize = 11.sp,
-                color = SeekerClawColors.TextDim.copy(alpha = 0.5f),
+                color = shardclawColors.TextDim.copy(alpha = 0.5f),
             )
         }
 
@@ -362,7 +362,7 @@ fun LogsScreen() {
                 text = "Auto-scroll",
                 fontFamily = RethinkSans,
                 fontSize = 14.sp,
-                color = SeekerClawColors.TextSecondary,
+                color = shardclawColors.TextSecondary,
             )
             Switch(
                 checked = autoScroll,
@@ -372,9 +372,9 @@ fun LogsScreen() {
                 },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = Color.White,
-                    checkedTrackColor = SeekerClawColors.Primary,
+                    checkedTrackColor = shardclawColors.Primary,
                     uncheckedThumbColor = Color.White,
-                    uncheckedTrackColor = SeekerClawColors.BorderSubtle,
+                    uncheckedTrackColor = shardclawColors.BorderSubtle,
                     uncheckedBorderColor = Color.Transparent,
                 ),
             )
@@ -390,7 +390,7 @@ fun LogsScreen() {
             FilterChip(
                 label = "Debug",
                 active = showDebug,
-                activeColor = SeekerClawColors.LogDebug,
+                activeColor = shardclawColors.LogDebug,
                 shape = shape,
                 modifier = Modifier.weight(1f),
                 onClick = {
@@ -401,7 +401,7 @@ fun LogsScreen() {
             FilterChip(
                 label = "Info",
                 active = showInfo,
-                activeColor = SeekerClawColors.LogInfo,
+                activeColor = shardclawColors.LogInfo,
                 shape = shape,
                 modifier = Modifier.weight(1f),
                 onClick = {
@@ -412,7 +412,7 @@ fun LogsScreen() {
             FilterChip(
                 label = "Warn",
                 active = showWarn,
-                activeColor = SeekerClawColors.Warning,
+                activeColor = shardclawColors.Warning,
                 shape = shape,
                 modifier = Modifier.weight(1f),
                 onClick = {
@@ -423,7 +423,7 @@ fun LogsScreen() {
             FilterChip(
                 label = "Error",
                 active = showError,
-                activeColor = SeekerClawColors.Error,
+                activeColor = shardclawColors.Error,
                 shape = shape,
                 modifier = Modifier.weight(1f),
                 onClick = {
@@ -442,7 +442,7 @@ fun LogsScreen() {
                     "Clear Logs",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
             },
             text = {
@@ -450,7 +450,7 @@ fun LogsScreen() {
                     "This will delete all log entries. This cannot be undone.",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextSecondary,
+                    color = shardclawColors.TextSecondary,
                     lineHeight = 20.sp,
                 )
             },
@@ -463,7 +463,7 @@ fun LogsScreen() {
                         "Clear",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.Error,
+                        color = shardclawColors.Error,
                     )
                 }
             },
@@ -472,11 +472,11 @@ fun LogsScreen() {
                     Text(
                         "Cancel",
                         fontFamily = RethinkSans,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -497,8 +497,8 @@ private fun FilterChip(
         shape = shape,
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (active) activeColor.copy(alpha = 0.2f) else SeekerClawColors.Surface,
-            contentColor = if (active) activeColor else SeekerClawColors.TextDim,
+            containerColor = if (active) activeColor.copy(alpha = 0.2f) else shardclawColors.Surface,
+            contentColor = if (active) activeColor else shardclawColors.TextDim,
         ),
     ) {
         Text(text = label, fontFamily = RethinkSans, fontSize = 12.sp, maxLines = 1, softWrap = false)

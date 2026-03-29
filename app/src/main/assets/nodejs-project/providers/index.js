@@ -1,4 +1,4 @@
-// SeekerClaw — providers/index.js
+// shardclaw — providers/index.js
 // Provider registry: register adapters, resolve by ID.
 // Adding a new provider = 1 new file + register() call here.
 

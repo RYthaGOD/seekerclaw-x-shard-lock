@@ -12,7 +12,7 @@ metadata:
 
 # Solana Wallet
 
-Interact with the user's Solana wallet connected via the SeekerClaw app.
+Interact with the user's Solana wallet connected via the shardclaw app.
 
 ## When to Use
 
@@ -180,7 +180,7 @@ You can view it on Solscan: https://solscan.io/tx/5UBr..."
 ## Error Handling
 
 **No wallet connected:**
-"No wallet is connected yet. Open the SeekerClaw app > Settings > Solana Wallet to paste your wallet address or connect via MWA."
+"No wallet is connected yet. Open the shardclaw app > Settings > Solana Wallet to paste your wallet address or connect via MWA."
 
 **Insufficient balance:**
 Check balance first before attempting to send. If SOL balance < requested amount:

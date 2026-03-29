@@ -1,4 +1,4 @@
-package com.seekerclaw.app.config
+package com.shardclaw.app.config
 
 /**
  * Provider registry for multi-provider support (BAT-315).

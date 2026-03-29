@@ -1,4 +1,4 @@
-package com.seekerclaw.app.camera
+package com.shardclaw.app.camera
 
 import android.Manifest
 import android.app.KeyguardManager

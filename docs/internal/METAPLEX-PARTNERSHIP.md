@@ -1,6 +1,6 @@
-# Metaplex x SeekerClaw — Partnership Proposal
+# Metaplex x shardclaw — Partnership Proposal
 
-> **From**: SeekerClaw Team
+> **From**: shardclaw Team
 > **To**: Metaplex Foundation
 > **Date**: 2026-03-24
 > **Subject**: HTTP API for Agent Passport — enabling mobile-first AI agents on Solana
@@ -9,17 +9,17 @@
 
 ## Executive Summary
 
-SeekerClaw is an Android app that turns Solana Seeker phones into 24/7 personal AI agents. Users interact via Telegram — the phone runs the agent autonomously in the background.
+shardclaw is an Android app that turns Solana Seeker phones into 24/7 personal AI agents. Users interact via Telegram — the phone runs the agent autonomously in the background.
 
-We want to integrate **Metaplex Agent Passport** so every SeekerClaw agent gets an on-chain identity, a theft-proof wallet, and the ability to participate in the agent economy (x402 payments, A2A interactions, MCP discovery).
+We want to integrate **Metaplex Agent Passport** so every shardclaw agent gets an on-chain identity, a theft-proof wallet, and the ability to participate in the agent economy (x402 payments, A2A interactions, MCP discovery).
 
-**The problem**: Agent Passport currently requires the Umi SDK (`@metaplex-foundation/mpl-agent-registry`) to build transactions. SeekerClaw runs Node.js 18 via `nodejs-mobile` — we cannot install npm packages at runtime. We have wallet signing (Mobile Wallet Adapter) and HTTP capabilities, but no way to construct Metaplex program instructions.
+**The problem**: Agent Passport currently requires the Umi SDK (`@metaplex-foundation/mpl-agent-registry`) to build transactions. shardclaw runs Node.js 18 via `nodejs-mobile` — we cannot install npm packages at runtime. We have wallet signing (Mobile Wallet Adapter) and HTTP capabilities, but no way to construct Metaplex program instructions.
 
 **The ask**: A REST API that returns **unsigned Solana transactions** for Agent Passport operations. We sign locally via MWA, broadcast, done. This is the same pattern that works for Jupiter (swap API), ClawPump (token launches), and other Solana services.
 
 ---
 
-## What SeekerClaw Has Today
+## What shardclaw Has Today
 
 | Capability | Implementation |
 |------------|---------------|
@@ -76,17 +76,17 @@ Content-Type: application/json
   "services": [
     {
       "name": "MCP",
-      "endpoint": "https://my-agent.seekerclaw.xyz/mcp",
+      "endpoint": "https://my-agent.shardclaw.xyz/mcp",
       "version": "2025-06-18"
     },
     {
       "name": "A2A",
-      "endpoint": "https://my-agent.seekerclaw.xyz/agent-card.json",
+      "endpoint": "https://my-agent.shardclaw.xyz/agent-card.json",
       "version": "0.3.0"
     },
     {
       "name": "web",
-      "endpoint": "https://my-agent.seekerclaw.xyz"
+      "endpoint": "https://my-agent.shardclaw.xyz"
     }
   ],
   "supportedTrust": ["reputation"],
@@ -450,7 +450,7 @@ Content-Type: application/json
 }
 ```
 
-**Note:** SeekerClaw can already do this with `solana_send` by sending to the PDA address directly. This endpoint is a convenience.
+**Note:** shardclaw can already do this with `solana_send` by sending to the PDA address directly. This endpoint is a convenience.
 
 ---
 
@@ -494,7 +494,7 @@ Content-Type: application/json
 }
 ```
 
-**Full x402 flow on SeekerClaw:**
+**Full x402 flow on shardclaw:**
 
 ```
 Step 1: Agent calls external API
@@ -651,9 +651,9 @@ All endpoints return standard HTTP status codes with JSON error bodies:
 
 ---
 
-## SeekerClaw Integration Plan
+## shardclaw Integration Plan
 
-Once the API exists, SeekerClaw implementation is straightforward:
+Once the API exists, shardclaw implementation is straightforward:
 
 ### New tools (6 total)
 
@@ -666,7 +666,7 @@ Once the API exists, SeekerClaw implementation is straightforward:
 | `metaplex_agent_send` | POST /wallet/send-sol, /send-token | YES — spends funds |
 | `metaplex_agent_pay` | POST /wallet/pay | Configurable (auto/confirm) |
 
-### Spending controls (SeekerClaw-side)
+### Spending controls (shardclaw-side)
 
 | Setting | Default | Description |
 |---------|---------|-------------|
@@ -680,7 +680,7 @@ Users configure these in Settings > Agent Wallet > Spending Limits.
 ### Setup flow for users
 
 ```
-1. User opens SeekerClaw Settings > Agent Identity
+1. User opens shardclaw Settings > Agent Identity
 2. Taps "Register on Metaplex"
 3. Fills in: name, description, avatar
 4. MWA prompt: "Register agent for ~0.015 SOL?" → Approve
@@ -695,15 +695,15 @@ Users configure these in Settings > Agent Wallet > Spending Limits.
 ## Why This Matters
 
 ### For Metaplex
-- **Adoption**: Every SeekerClaw user = a registered agent on Metaplex
+- **Adoption**: Every shardclaw user = a registered agent on Metaplex
 - **Mobile-first**: First mobile agent platform on Solana using Agent Passport
 - **Ecosystem growth**: Agents with wallets = economic activity on Solana
 - **Showcase**: Real-world demonstration of Agent Passport's value (not just SDK demos)
 
-### For SeekerClaw
+### For shardclaw
 - **On-chain identity**: Agents become first-class Solana citizens
 - **Agent economy**: x402 payments enable premium API access, A2A services
-- **Discovery**: Other agents can find SeekerClaw agents via registry
+- **Discovery**: Other agents can find shardclaw agents via registry
 - **Trust**: Verifiable on-chain identity builds user confidence
 
 ### For the Solana Ecosystem
@@ -742,5 +742,5 @@ Phase 5 can come anytime.
 
 ## Contact
 
-**SeekerClaw**: [seekerclaw.xyz](https://seekerclaw.xyz)
+**shardclaw**: [shardclaw.xyz](https://shardclaw.xyz)
 **Metaplex Agents Docs**: [metaplex.com/docs/agents](https://www.metaplex.com/docs/agents)

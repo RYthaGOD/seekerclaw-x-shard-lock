@@ -1,4 +1,4 @@
-# SAB-AUDIT-v12 — SeekerClaw Agent Self-Knowledge Audit
+# SAB-AUDIT-v12 — shardclaw Agent Self-Knowledge Audit
 
 > **Date:** 2026-03-09
 > **Scope:** First SAB v2 audit — adds Section C (tool consistency) + negative knowledge checks. Re-audit after BAT-359 (OpenClaw 2026.3.8 parity), BAT-319 (NFT holdings), BAT-326 (cron agentTurn), v1.5.4 fixes.
@@ -30,7 +30,7 @@ Scoring: ✅ = 3 pts, ⚠️ = 1 pt, ❌ = 0 pts.
 | MAX_HISTORY | 35 (claude.js:172) | "35 messages per chat" (line 899) | ✅ |
 | max_tokens | 4096 (claude.js:~1515) | "4096 tokens per response" (line 901) | ✅ |
 | SHELL_ALLOWLIST | 34 commands (config.js:241-248) | 34 commands listed (line 703) | ✅ |
-| SECRETS_BLOCKED | config.json, config.yaml, seekerclaw.db (config.js:233) | seekerclaw.db listed as BLOCKED (line 619) | ✅ |
+| SECRETS_BLOCKED | config.json, config.yaml, shardclaw.db (config.js:233) | shardclaw.db listed as BLOCKED (line 619) | ✅ |
 | BLOCKED_MODULES | 7 modules (tools.js) | Lists all 7 (line 467) | ✅ |
 | js_eval code limit | 10,000 chars (tools.js) | "10,000-character code limit" (line 704) | ✅ |
 | CONFIRM_REQUIRED | 8 tools (config.js:257-266) | 8 tools listed (line 562, post-fix) | ✅ (was 4, fixed) |

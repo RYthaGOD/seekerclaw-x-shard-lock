@@ -1,4 +1,4 @@
-// SeekerClaw — database.js
+// shardclaw — database.js
 // SQL.js initialization, persistence, memory indexing, stats server, graceful shutdown.
 // Depends on: config.js, memory.js (setDb)
 

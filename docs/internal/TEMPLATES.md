@@ -1,4 +1,4 @@
-# SeekerClaw Message Templates
+# shardclaw Message Templates
 
 > **Central repository for all user-facing message templates.**
 > Update here first, then sync to code. Keep consistent voice and formatting.
@@ -195,7 +195,7 @@ Turn your phone into someone who actually helps. ⚡
 ```
 Scan QR Code
 
-Use the SeekerClaw web setup tool to generate your configuration QR code.
+Use the shardclaw web setup tool to generate your configuration QR code.
 ```
 
 ### Manual Entry
@@ -219,7 +219,7 @@ Double-check and try again?
 
 ### Foreground Service
 ```
-SeekerClaw · Your companion is awake 🟢
+shardclaw · Your companion is awake 🟢
 ```
 
 ### Low Battery Warning

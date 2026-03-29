@@ -1,4 +1,4 @@
-package com.seekerclaw.app.config
+package com.shardclaw.app.config
 
 import android.Manifest
 import android.content.Context
@@ -11,9 +11,9 @@ import android.util.Base64
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.core.content.ContextCompat
-import com.seekerclaw.app.BuildConfig
-import com.seekerclaw.app.util.LogCollector
-import com.seekerclaw.app.util.LogLevel
+import com.shardclaw.app.BuildConfig
+import com.shardclaw.app.util.LogCollector
+import com.shardclaw.app.util.LogLevel
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -78,7 +78,7 @@ object ConfigManager {
     /** Incremented on every saveConfig(); observe in `remember(configVersion)`. */
     val configVersion = mutableIntStateOf(0)
 
-    private const val PREFS_NAME = "seekerclaw_prefs"
+    private const val PREFS_NAME = "shardclaw_prefs"
     private const val KEY_API_KEY_ENC = "api_key_enc"
     private const val KEY_BOT_TOKEN_ENC = "bot_token_enc"
     private const val KEY_OWNER_ID = "owner_id"

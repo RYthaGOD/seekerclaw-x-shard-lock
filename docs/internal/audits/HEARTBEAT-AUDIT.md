@@ -1,4 +1,4 @@
-# HEARTBEAT-AUDIT.md — SeekerClaw Heartbeat Audit
+# HEARTBEAT-AUDIT.md — shardclaw Heartbeat Audit
 
 > Audited: 2026-02-20 | Auditor: Claude Code | Device: SM02E4072807319 (connected, runtime verified)
 
@@ -6,7 +6,7 @@
 
 ## 1. System Overview
 
-SeekerClaw has **four distinct heartbeat mechanisms** operating in parallel. They serve different purposes and are not coupled to each other.
+shardclaw has **four distinct heartbeat mechanisms** operating in parallel. They serve different purposes and are not coupled to each other.
 
 | ID | Name | Layer | Interval | Purpose |
 |----|------|-------|----------|---------|
@@ -23,9 +23,9 @@ SeekerClaw has **four distinct heartbeat mechanisms** operating in parallel. The
 
 | Constant | Value | File | Line |
 |----------|-------|------|------|
-| `CHECK_INTERVAL_MS` | 30,000 ms (30s) | [Watchdog.kt](app/src/main/java/com/seekerclaw/app/service/Watchdog.kt#L14) | 14 |
-| `DEAD_AFTER_CHECKS` | 2 | [Watchdog.kt](app/src/main/java/com/seekerclaw/app/service/Watchdog.kt#L15) | 15 |
-| Initial startup delay | `CHECK_INTERVAL_MS * 2` = 60s | [Watchdog.kt](app/src/main/java/com/seekerclaw/app/service/Watchdog.kt#L28) | 28 |
+| `CHECK_INTERVAL_MS` | 30,000 ms (30s) | [Watchdog.kt](app/src/main/java/com/shardclaw/app/service/Watchdog.kt#L14) | 14 |
+| `DEAD_AFTER_CHECKS` | 2 | [Watchdog.kt](app/src/main/java/com/shardclaw/app/service/Watchdog.kt#L15) | 15 |
+| Initial startup delay | `CHECK_INTERVAL_MS * 2` = 60s | [Watchdog.kt](app/src/main/java/com/shardclaw/app/service/Watchdog.kt#L28) | 28 |
 | Effective dead time | 60s (2 × 30s checks) | derived | — |
 
 No config file flags — all hardcoded constants.
@@ -43,8 +43,8 @@ No config file flags — all hardcoded constants.
 | Constant | Value | File | Line |
 |----------|-------|------|------|
 | Periodic write interval | 60,000 ms (60s) | [main.js](app/src/main/assets/nodejs-project/main.js#L772) | 772 |
-| Staleness threshold (Android) | 120,000 ms (120s) | [ServiceState.kt](app/src/main/java/com/seekerclaw/app/util/ServiceState.kt#L294) | 294 |
-| UI poll interval | 1,000 ms (1s) | [ServiceState.kt](app/src/main/java/com/seekerclaw/app/util/ServiceState.kt) | ~191 |
+| Staleness threshold (Android) | 120,000 ms (120s) | [ServiceState.kt](app/src/main/java/com/shardclaw/app/util/ServiceState.kt#L294) | 294 |
+| UI poll interval | 1,000 ms (1s) | [ServiceState.kt](app/src/main/java/com/shardclaw/app/util/ServiceState.kt) | ~191 |
 | File path | `<workspace>/agent_health_state` (JSON, no ext) | [claude.js](app/src/main/assets/nodejs-project/claude.js#L117) | 117 |
 | Write error throttle | once per 60,000 ms | [claude.js](app/src/main/assets/nodejs-project/claude.js) | ~155 |
 
@@ -65,7 +65,7 @@ Also writes immediately on any API status or error change.
 
 ### Watchdog (A)
 
-**Start:** [OpenClawService.kt:155](app/src/main/java/com/seekerclaw/app/service/OpenClawService.kt#L155) — called after Node.js is marked RUNNING.
+**Start:** [OpenClawService.kt:155](app/src/main/java/com/shardclaw/app/service/OpenClawService.kt#L155) — called after Node.js is marked RUNNING.
 
 ```kotlin
 Watchdog.start(
@@ -77,7 +77,7 @@ Watchdog.start(
 )
 ```
 
-**Stop:** [OpenClawService.kt:223](app/src/main/java/com/seekerclaw/app/service/OpenClawService.kt#L223) — `onDestroy()`. Cancels the coroutine job.
+**Stop:** [OpenClawService.kt:223](app/src/main/java/com/shardclaw/app/service/OpenClawService.kt#L223) — `onDestroy()`. Cancels the coroutine job.
 
 **Timer pattern:** `delay(CHECK_INTERVAL_MS * 2)` → first check at t+60s. Then `while(isActive) { delay(30s); check }`. Correctly structured — no drift issues with `delay`-based loops (delay measures from previous cycle end, not wall clock).
 

@@ -65,7 +65,7 @@
 **tools.js** (9 exports — depends on: config, security, bridge, memory, cron, database, solana, web, telegram, claude, skills)
 `TOOLS`, `executeTool`, `formatConfirmationMessage`, `requestConfirmation`, `pendingConfirmations`, `lastToolUseTime`, `listFilesRecursive`, `formatBytes`, `setMcpExecuteTool`
 
-**mcp-client.js** (2 exports — standalone, no SeekerClaw dependencies)
+**mcp-client.js** (2 exports — standalone, no shardclaw dependencies)
 `MCPClient`, `MCPManager`
 
 ---
@@ -251,7 +251,7 @@ The codebase has 15 silent `catch` blocks (excluding third-party `sql-wasm.js`):
 
 ### 4.4 TODO/FIXME Comments
 
-**None found** in SeekerClaw code. The only TODO is in third-party `sql-wasm.js` (line 16). Clean.
+**None found** in shardclaw code. The only TODO is in third-party `sql-wasm.js` (line 16). Clean.
 
 ### 4.5 Other Observations
 
@@ -425,7 +425,7 @@ The cleanup PR addressed every flagged issue from section 4. Dead export rate dr
 
 2. **Observability**: Users can filter DEBUG noise out of the Logs screen (off by default). The DEBUG level captures ~32% of all log calls — previously these showed as undifferentiated INFO alongside genuinely important messages.
 
-3. **Startup noise**: The 10+ verbose startup lines (Node.js version, workspace path, per-skill loads, cron start, etc.) are now DEBUG. A single condensed banner — `SeekerClaw | model | @bot | N skills | N MCP | N cron` — replaces them at INFO level.
+3. **Startup noise**: The 10+ verbose startup lines (Node.js version, workspace path, per-skill loads, cron start, etc.) are now DEBUG. A single condensed banner — `shardclaw | model | @bot | N skills | N MCP | N cron` — replaces them at INFO level.
 
 4. **Wire format**: The `LEVEL|message` pipe-delimited format is simpler and faster to parse than the old substring-matching approach (`line.contains("ERROR")` was fragile — matched error *messages* not error *levels*).
 

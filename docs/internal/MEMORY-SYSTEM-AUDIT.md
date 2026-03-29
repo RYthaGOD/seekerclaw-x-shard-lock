@@ -1,4 +1,4 @@
-# Memory System Audit — SeekerClaw
+# Memory System Audit — shardclaw
 
 > **Audit Date:** 2026-03-07
 > **Purpose:** Full audit of how memory works end-to-end, to inform temporal context awareness feature
@@ -36,7 +36,7 @@
 
 ## Storage Locations
 
-### On-Device Paths (`/data/data/com.seekerclaw.app/files/`)
+### On-Device Paths (`/data/data/com.shardclaw.app/files/`)
 
 ```
 workspace/
@@ -49,7 +49,7 @@ workspace/
 ├── memory/              # Daily + session files
 │   ├── YYYY-MM-DD.md              # Daily notes (one per calendar day)
 │   └── YYYY-MM-DD-{slug}.md       # Session summaries (auto-generated)
-├── seekerclaw.db        # SQL.js database (chunks index + API logs)
+├── shardclaw.db        # SQL.js database (chunks index + API logs)
 └── node_debug.log       # Debug log (rotated at 5MB)
 ```
 
@@ -94,7 +94,7 @@ workspace/
 | `IDENTITY.md` | Agent (bootstrap ritual) | After first convo | Agent-chosen identity | Yes, full |
 | `USER.md` | Agent (bootstrap ritual) | After first convo | Owner profile | Yes, full |
 | `HEARTBEAT.md` | Seeded once | First launch | Task checklist | Read during heartbeats only |
-| `seekerclaw.db` | SQL.js | Continuous | SQLite (chunks, api_log, files, meta) | No (queried by tools) |
+| `shardclaw.db` | SQL.js | Continuous | SQLite (chunks, api_log, files, meta) | No (queried by tools) |
 
 ---
 

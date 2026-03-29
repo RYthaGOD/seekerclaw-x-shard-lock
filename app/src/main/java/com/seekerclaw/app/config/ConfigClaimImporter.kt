@@ -1,7 +1,7 @@
-package com.seekerclaw.app.config
+package com.shardclaw.app.config
 
 import android.net.Uri
-import com.seekerclaw.app.BuildConfig
+import com.shardclaw.app.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -33,7 +33,7 @@ object ConfigClaimImporter {
             }
 
             val ref = parseClaimRef(raw)
-                ?: error("Unsupported QR format. Expected seekerclaw://config payload, seekerclaw://claim, raw JSON, or https URL.")
+                ?: error("Unsupported QR format. Expected shardclaw://config payload, shardclaw://claim, raw JSON, or https URL.")
             val claimUri = Uri.parse(ref.url)
             require(isAllowedClaimUrl(claimUri)) {
                 "Claim URL must use HTTPS (or localhost HTTP for development)."
@@ -135,8 +135,8 @@ object ConfigClaimImporter {
             agent?.optString("agentName"),
             cfg.optString("agentName"),
             root.optString("agentName"),
-            "SeekerClaw",
-        ).ifBlank { "SeekerClaw" }
+            "shardclaw",
+        ).ifBlank { "shardclaw" }
         val braveApiKey = firstNonBlank(
             integrations?.optString("braveApiKey"),
             cfg.optString("braveApiKey"),
@@ -239,7 +239,7 @@ object ConfigClaimImporter {
         }
 
         val uri = Uri.parse(text)
-        if (!uri.scheme.equals("seekerclaw", ignoreCase = true)) return null
+        if (!uri.scheme.equals("shardclaw", ignoreCase = true)) return null
         if (!uri.host.equals("config", ignoreCase = true)) return null
 
         val payload = firstNonBlank(
@@ -277,7 +277,7 @@ object ConfigClaimImporter {
         if (text.isBlank()) return null
 
         val uri = Uri.parse(text)
-        if (uri.scheme.equals("seekerclaw", ignoreCase = true)) {
+        if (uri.scheme.equals("shardclaw", ignoreCase = true)) {
             if (!uri.host.equals("claim", ignoreCase = true)) return null
 
             val directUrl = uri.getQueryParameter("url")?.trim()
@@ -320,7 +320,7 @@ object ConfigClaimImporter {
             connectTimeout = 15_000
             readTimeout = 15_000
             setRequestProperty("Accept", "application/json")
-            setRequestProperty("User-Agent", "SeekerClaw/Android")
+            setRequestProperty("User-Agent", "shardclaw/Android")
         }
 
         return try {

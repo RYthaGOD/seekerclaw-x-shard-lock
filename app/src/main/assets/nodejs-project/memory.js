@@ -1,4 +1,4 @@
-// SeekerClaw — memory.js
+// shardclaw — memory.js
 // Soul, memory, heartbeat management and search.
 // Depends on: config.js
 

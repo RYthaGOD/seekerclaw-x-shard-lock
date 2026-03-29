@@ -1,4 +1,4 @@
-// SeekerClaw — cron.js
+// shardclaw — cron.js
 // Cron/scheduling system: one-shot reminders, recurring intervals, persistence.
 // Depends on: config.js. Needs sendMessage injected from telegram.js.
 

@@ -7,7 +7,7 @@ Secrets required by the [release workflow](.github/workflows/release.yml) to bui
 | Secret | Description |
 |--------|-------------|
 | `KEYSTORE_BASE64` | Base64-encoded `.jks` keystore file |
-| `KEY_ALIAS` | Key alias inside the keystore (e.g. `seekerclaw`) |
+| `KEY_ALIAS` | Key alias inside the keystore (e.g. `shardclaw`) |
 | `KEY_PASSWORD` | Password for the key alias |
 | `STORE_PASSWORD` | Password for the keystore file |
 | `GOOGLE_SERVICES_JSON` | Base64-encoded `google-services.json` (optional — Firebase analytics) |
@@ -16,13 +16,13 @@ Secrets required by the [release workflow](.github/workflows/release.yml) to bui
 
 ```bash
 # Linux / macOS
-base64 -w 0 seekerclaw-release.jks > keystore.b64
+base64 -w 0 shardclaw-release.jks > keystore.b64
 
 # macOS (if -w not supported)
-base64 -i seekerclaw-release.jks -o keystore.b64
+base64 -i shardclaw-release.jks -o keystore.b64
 
 # Windows (PowerShell)
-[Convert]::ToBase64String([IO.File]::ReadAllBytes("seekerclaw-release.jks")) | Out-File keystore.b64 -NoNewline
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("shardclaw-release.jks")) | Out-File keystore.b64 -NoNewline
 ```
 
 The contents of `keystore.b64` is what you paste into the `KEYSTORE_BASE64` secret.
@@ -48,14 +48,14 @@ Paste the output into the `GOOGLE_SERVICES_JSON` secret. If omitted, the build s
 ```bash
 keytool -genkeypair \
   -v \
-  -keystore seekerclaw-release.jks \
-  -alias seekerclaw \
+  -keystore shardclaw-release.jks \
+  -alias shardclaw \
   -keyalg RSA \
   -keysize 2048 \
   -validity 10000 \
   -storepass YOUR_STORE_PASSWORD \
   -keypass YOUR_KEY_PASSWORD \
-  -dname "CN=SeekerClaw, O=SeekerClaw, L=Unknown, ST=Unknown, C=US"
+  -dname "CN=shardclaw, O=shardclaw, L=Unknown, ST=Unknown, C=US"
 ```
 
 Then encode it with the base64 commands above.
@@ -80,10 +80,10 @@ The workflow will:
 For local release builds, add these to `local.properties` (gitignored):
 
 ```properties
-SEEKERCLAW_KEYSTORE_PATH=/path/to/seekerclaw-release.jks
-SEEKERCLAW_STORE_PASSWORD=your_store_password
-SEEKERCLAW_KEY_ALIAS=seekerclaw
-SEEKERCLAW_KEY_PASSWORD=your_key_password
+shardclaw_KEYSTORE_PATH=/path/to/shardclaw-release.jks
+shardclaw_STORE_PASSWORD=your_store_password
+shardclaw_KEY_ALIAS=shardclaw
+shardclaw_KEY_PASSWORD=your_key_password
 ```
 
 ## Security notes

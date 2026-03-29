@@ -18,7 +18,7 @@ emoji: "🔒"
 ---
 
 ## Description
-Shard-Lock gives SeekerClaw hardware-accelerated decentralized storage.
+Shard-Lock gives shardclaw hardware-accelerated decentralized storage.
 Data is split via Reed-Solomon erasure coding, hashed into a SHA-256 Merkle tree,
 and signed with Ed25519 to produce verifiable storage proofs (heartbeats).
 Heartbeats can be anchored on the Solana blockchain via Memo transactions for

@@ -1,4 +1,4 @@
-package com.seekerclaw.app.solana
+package com.shardclaw.app.solana
 
 import android.util.Log
 

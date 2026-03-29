@@ -1,4 +1,4 @@
-// SeekerClaw — providers/claude.js
+// shardclaw — providers/claude.js
 // Claude (Anthropic) provider adapter. Translates between neutral internal
 // message format and Claude Messages API format.
 

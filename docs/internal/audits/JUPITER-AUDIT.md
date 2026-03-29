@@ -1,4 +1,4 @@
-# Jupiter Integration Audit — SeekerClaw
+# Jupiter Integration Audit — shardclaw
 
 **Date:** 2026-02-22
 **Scope:** All code paths related to Solana wallet, Jupiter swap/quote/orders, transaction signing, error handling, and agent runtime interaction.

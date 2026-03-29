@@ -1,4 +1,4 @@
-# Jupiter Test Checklist — SeekerClaw
+# Jupiter Test Checklist — shardclaw
 
 **Ref:** JUPITER-AUDIT.md (2026-02-22), PR #175 (BAT-255)
 **Scope:** Validate all swap/trade paths before live-funds testing.
@@ -27,7 +27,7 @@
 
 | ID | Steps | Expected | Pass/Fail Rule |
 |----|-------|----------|----------------|
-| PF-1 | Open SeekerClaw Settings > Solana Wallet. Tap "Connect Wallet". Approve in wallet app. | Wallet address appears in Settings. `solana_wallet.json` created in workspace. | **PASS** — `5ZJjV2vRA...` connected |
+| PF-1 | Open shardclaw Settings > Solana Wallet. Tap "Connect Wallet". Approve in wallet app. | Wallet address appears in Settings. `solana_wallet.json` created in workspace. | **PASS** — `5ZJjV2vRA...` connected |
 | PF-2 | Send message: "what's my wallet address" | Agent calls `solana_address`, returns the connected address | **PASS** — address matches PF-1 |
 | PF-3 | Check `node_debug.log` for `[Jupiter] Refreshed program labels` | Program label refresh ran on service start | **PASS** — log line visible in console |
 | PF-4 | Check Settings > Configuration > Jupiter API Key | Key is set (or empty for Ultra-only testing) | **PASS** — confirmed in Settings |

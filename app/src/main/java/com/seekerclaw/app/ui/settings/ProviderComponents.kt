@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.settings
+package com.shardclaw.app.ui.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,8 +33,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.ui.theme.RethinkSans
-import com.seekerclaw.app.ui.theme.SeekerClawColors
+import com.shardclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.shardclawColors
 
 @Composable
 fun ProviderSectionLabel(title: String) {
@@ -43,7 +43,7 @@ fun ProviderSectionLabel(title: String) {
         fontFamily = RethinkSans,
         fontSize = 11.sp,
         fontWeight = FontWeight.Medium,
-        color = SeekerClawColors.TextSecondary,
+        color = shardclawColors.TextSecondary,
         letterSpacing = 1.sp,
     )
 }
@@ -80,13 +80,13 @@ fun ProviderConfigField(
                     text = label,
                     fontFamily = RethinkSans,
                     fontSize = 12.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
                 if (isRequired) {
                     Text(
                         text = " *",
                         fontSize = 12.sp,
-                        color = SeekerClawColors.Error,
+                        color = shardclawColors.Error,
                     )
                 }
                 if (info != null) {
@@ -97,7 +97,7 @@ fun ProviderConfigField(
                         Icon(
                             Icons.Outlined.Info,
                             contentDescription = "More info about $label",
-                            tint = SeekerClawColors.TextDim,
+                            tint = shardclawColors.TextDim,
                             modifier = Modifier.size(14.dp),
                         )
                     }
@@ -108,7 +108,7 @@ fun ProviderConfigField(
                     text = "Edit",
                     fontFamily = RethinkSans,
                     fontSize = 12.sp,
-                    color = SeekerClawColors.TextInteractive,
+                    color = shardclawColors.TextInteractive,
                 )
             }
         }
@@ -117,12 +117,12 @@ fun ProviderConfigField(
             text = value,
             fontFamily = RethinkSans,
             fontSize = 14.sp,
-            color = SeekerClawColors.TextPrimary,
+            color = shardclawColors.TextPrimary,
         )
     }
     if (showDivider) {
         HorizontalDivider(
-            color = SeekerClawColors.TextDim.copy(alpha = 0.1f),
+            color = shardclawColors.TextDim.copy(alpha = 0.1f),
             modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
@@ -134,7 +134,7 @@ fun ProviderConfigField(
 
 @Composable
 fun ProviderInfoDialog(title: String, message: String, onDismiss: () -> Unit) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -143,7 +143,7 @@ fun ProviderInfoDialog(title: String, message: String, onDismiss: () -> Unit) {
                 fontFamily = RethinkSans,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
         },
         text = {
@@ -151,7 +151,7 @@ fun ProviderInfoDialog(title: String, message: String, onDismiss: () -> Unit) {
                 text = message,
                 fontFamily = RethinkSans,
                 fontSize = 13.sp,
-                color = SeekerClawColors.TextSecondary,
+                color = shardclawColors.TextSecondary,
                 lineHeight = 20.sp,
             )
         },
@@ -161,11 +161,11 @@ fun ProviderInfoDialog(title: String, message: String, onDismiss: () -> Unit) {
                     "Got it",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.Primary,
+                    color = shardclawColors.Primary,
                 )
             }
         },
-        containerColor = SeekerClawColors.Surface,
+        containerColor = shardclawColors.Surface,
         shape = shape,
     )
 }
@@ -179,7 +179,7 @@ fun ProviderEditDialog(
     onSave: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -187,7 +187,7 @@ fun ProviderEditDialog(
                 "Edit $editLabel",
                 fontFamily = RethinkSans,
                 fontWeight = FontWeight.Bold,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
         },
         text = {
@@ -197,7 +197,7 @@ fun ProviderEditDialog(
                         "Changing this requires an agent restart.",
                         fontFamily = RethinkSans,
                         fontSize = 12.sp,
-                        color = SeekerClawColors.Warning,
+                        color = shardclawColors.Warning,
                         modifier = Modifier.padding(bottom = 12.dp),
                     )
                 }
@@ -210,14 +210,14 @@ fun ProviderEditDialog(
                     textStyle = androidx.compose.ui.text.TextStyle(
                         fontFamily = FontFamily.Monospace,
                         fontSize = 14.sp,
-                        color = SeekerClawColors.TextPrimary,
+                        color = shardclawColors.TextPrimary,
                     ),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = SeekerClawColors.Primary,
-                        unfocusedBorderColor = SeekerClawColors.TextDim.copy(alpha = 0.3f),
-                        cursorColor = SeekerClawColors.Primary,
-                        focusedTextColor = SeekerClawColors.TextPrimary,
-                        unfocusedTextColor = SeekerClawColors.TextPrimary
+                        focusedBorderColor = shardclawColors.Primary,
+                        unfocusedBorderColor = shardclawColors.TextDim.copy(alpha = 0.3f),
+                        cursorColor = shardclawColors.Primary,
+                        focusedTextColor = shardclawColors.TextPrimary,
+                        unfocusedTextColor = shardclawColors.TextPrimary
                     ),
                 )
             }
@@ -230,7 +230,7 @@ fun ProviderEditDialog(
                     "Save",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.ActionPrimary,
+                    color = shardclawColors.ActionPrimary,
                 )
             }
         },
@@ -239,11 +239,11 @@ fun ProviderEditDialog(
                 Text(
                     "Cancel",
                     fontFamily = RethinkSans,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
             }
         },
-        containerColor = SeekerClawColors.Surface,
+        containerColor = shardclawColors.Surface,
         shape = shape,
     )
 }

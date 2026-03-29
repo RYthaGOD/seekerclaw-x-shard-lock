@@ -1,6 +1,6 @@
 # Agent Identity — Settings & Flow
 
-> One-pager covering how SeekerClaw integrates Metaplex Agent Passport.
+> One-pager covering how shardclaw integrates Metaplex Agent Passport.
 
 ---
 
@@ -10,7 +10,7 @@
 |-----------|------|--------|---------------------|
 | **Core NFT** | Agent's on-chain identity | On-chain (Solana) | Yes — tied to user's wallet |
 | **Asset Signer PDA** | Agent's wallet (no private key) | On-chain (derived from NFT) | Yes — deterministic |
-| **Executive Keypair** | SeekerClaw's signing key | Android Keystore | No — re-delegate on new device |
+| **Executive Keypair** | shardclaw's signing key | Android Keystore | No — re-delegate on new device |
 
 ---
 
@@ -135,7 +135,7 @@ Agent identity and wallet survive. Only executive keypair is lost.
 
 ```
 New phone:
-  1. Install SeekerClaw
+  1. Install shardclaw
   2. Connect same Phantom wallet
   3. Agent identity auto-detected (on-chain, owned by wallet)
   4. Generate NEW executive keypair

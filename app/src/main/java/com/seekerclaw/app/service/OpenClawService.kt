@@ -1,4 +1,4 @@
-package com.seekerclaw.app.service
+package com.shardclaw.app.service
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -10,15 +10,15 @@ import android.os.IBinder
 import android.os.Looper
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
-import com.seekerclaw.app.MainActivity
-import com.seekerclaw.app.R
-import com.seekerclaw.app.SeekerClawApplication
-import com.seekerclaw.app.bridge.AndroidBridge
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.util.LogCollector
-import com.seekerclaw.app.util.LogLevel
-import com.seekerclaw.app.util.ServiceState
-import com.seekerclaw.app.util.ServiceStatus
+import com.shardclaw.app.MainActivity
+import com.shardclaw.app.R
+import com.shardclaw.app.shardclawApplication
+import com.shardclaw.app.bridge.AndroidBridge
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.util.LogCollector
+import com.shardclaw.app.util.LogLevel
+import com.shardclaw.app.util.ServiceState
+import com.shardclaw.app.util.ServiceStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -45,7 +45,7 @@ class OpenClawService : Service() {
         ServiceState.init(applicationContext)
         LogCollector.init(applicationContext)
 
-        val notification = createNotification("SeekerClaw is running")
+        val notification = createNotification("shardclaw is running")
         startForeground(NOTIFICATION_ID, notification)
 
         // Clear any lingering setup-required notification from a previous version.
@@ -64,7 +64,7 @@ class OpenClawService : Service() {
 
         // Acquire partial wake lock (CPU stays on)
         val pm = getSystemService(POWER_SERVICE) as PowerManager
-        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SeekerClaw::Service")
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "shardclaw::Service")
         wakeLock?.acquire()
 
         // Optional server mode: keep screen awake for camera-driven automation.
@@ -74,7 +74,7 @@ class OpenClawService : Service() {
                 val flags = PowerManager.FULL_WAKE_LOCK or
                     PowerManager.ACQUIRE_CAUSES_WAKEUP or
                     PowerManager.ON_AFTER_RELEASE
-                screenWakeLock = pm.newWakeLock(flags, "SeekerClaw::ServerMode")
+                screenWakeLock = pm.newWakeLock(flags, "shardclaw::ServerMode")
                 screenWakeLock?.acquire()
                 LogCollector.append("[Service] Server mode enabled: keeping screen awake")
             }
@@ -83,7 +83,7 @@ class OpenClawService : Service() {
         }
 
         // Crash loop protection: if we've restarted too many times quickly, stop trying
-        val prefs = getSharedPreferences("seekerclaw_crash", MODE_PRIVATE)
+        val prefs = getSharedPreferences("shardclaw_crash", MODE_PRIVATE)
         val lastStart = prefs.getLong("last_start", 0L)
         val crashCount = prefs.getInt("crash_count", 0)
         val now = System.currentTimeMillis()
@@ -256,7 +256,7 @@ class OpenClawService : Service() {
         ServiceState.updateUptime(0)
 
         // Clean shutdown should clear crash-loop counters. Unexpected deaths won't hit this path.
-        getSharedPreferences("seekerclaw_crash", MODE_PRIVATE)
+        getSharedPreferences("shardclaw_crash", MODE_PRIVATE)
             .edit()
             .putLong("last_start", 0L)
             .putInt("crash_count", 0)
@@ -276,8 +276,8 @@ class OpenClawService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
-        return NotificationCompat.Builder(this, SeekerClawApplication.CHANNEL_ID)
-            .setContentTitle("SeekerClaw")
+        return NotificationCompat.Builder(this, shardclawApplication.CHANNEL_ID)
+            .setContentTitle("shardclaw")
             .setContentText(text)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntent)
@@ -294,8 +294,8 @@ class OpenClawService : Service() {
             Intent(this, MainActivity::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
-        return NotificationCompat.Builder(this, SeekerClawApplication.ERROR_CHANNEL_ID)
-            .setContentTitle("SeekerClaw")
+        return NotificationCompat.Builder(this, shardclawApplication.ERROR_CHANNEL_ID)
+            .setContentTitle("shardclaw")
             .setContentText(text)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntent)

@@ -1,4 +1,4 @@
-// SeekerClaw — security.js
+// shardclaw — security.js
 // Security helpers: log redaction, path validation, prompt injection defense.
 // Depends on: config.js
 

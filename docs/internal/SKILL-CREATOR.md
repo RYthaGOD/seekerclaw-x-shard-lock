@@ -1,14 +1,14 @@
 # SKILL-CREATOR.md — Skill Creator Page Spec
 
-> **For:** The Claude Code instance building `seekerclaw.xyz`
-> **Page URL:** `seekerclaw.xyz/skill-creator` (or `/skills/create`)
+> **For:** The Claude Code instance building `shardclaw.xyz`
+> **Page URL:** `shardclaw.xyz/skill-creator` (or `/skills/create`)
 > **Type:** Single-page client-side tool. No backend. No API calls. Privacy-first.
 
 ---
 
 ## 1. Overview
 
-A web page that helps SeekerClaw users create custom skills for their AI agent. Skills are `.md` files with YAML frontmatter that teach the agent new capabilities (e.g., "check crypto prices", "send SMS", "look up recipes").
+A web page that helps shardclaw users create custom skills for their AI agent. Skills are `.md` files with YAML frontmatter that teach the agent new capabilities (e.g., "check crypto prices", "send SMS", "look up recipes").
 
 ### Three Creation Modes
 
@@ -176,7 +176,7 @@ The skill parser enforces these rules (warnings logged if violated):
 This is the **exact prompt template** to embed in the page JS. Replace `{placeholders}` with user input. The backticks in code blocks below are literal — they must appear in the generated prompt.
 
 ```
-Create a SeekerClaw skill file. SeekerClaw is an Android app that runs an AI agent on the Solana Seeker phone. Skills are SKILL.md files that teach the agent new capabilities.
+Create a shardclaw skill file. shardclaw is an Android app that runs an AI agent on the Solana Seeker phone. Skills are SKILL.md files that teach the agent new capabilities.
 
 ## SKILL.md Format
 
@@ -228,7 +228,7 @@ metadata:
 - Only reference tools the skill actually needs
 - Keep the file practical and actionable — the AI follows these instructions literally
 
-## Available SeekerClaw Tools (only use what's needed)
+## Available shardclaw Tools (only use what's needed)
 
 {tools_reference_for_checked_categories}
 
@@ -496,7 +496,7 @@ metadata:
 
 # Solana Wallet
 
-Interact with the user's Solana wallet connected via the SeekerClaw app.
+Interact with the user's Solana wallet connected via the shardclaw app.
 
 ## When to Use
 
@@ -1262,7 +1262,7 @@ By cuisine: `https://www.themealdb.com/api/json/v1/1/filter.php?a=Italian`
 
 ## 6. Tool Reference (All 56 Tools)
 
-This is the complete list of SeekerClaw tools. Use this for:
+This is the complete list of shardclaw tools. Use this for:
 - The tool checkbox grid in all modes
 - The `{tools_reference_for_checked_categories}` placeholder in the Claude CC prompt
 
@@ -1449,7 +1449,7 @@ Show this as a collapsible/expandable section below the export buttons. Same tex
 ## How to Install Your Skill
 
 ### Option 1: Tell Your Agent (Easiest)
-Copy the SKILL.md content and send it to your SeekerClaw agent in Telegram:
+Copy the SKILL.md content and send it to your shardclaw agent in Telegram:
 
 "Save this as a skill called {name}:
 
@@ -1465,8 +1465,8 @@ workspace/skills/{name}/SKILL.md
 ### Option 3: Manual (Advanced)
 1. Connect to your device via ADB
 2. Create the file at:
-   /data/data/com.seekerclaw.app/files/workspace/skills/{name}/SKILL.md
-3. Restart the SeekerClaw service to pick up the new skill
+   /data/data/com.shardclaw.app/files/workspace/skills/{name}/SKILL.md
+3. Restart the shardclaw service to pick up the new skill
 
 ### After Installation
 Your agent will automatically detect new skills on the next message.

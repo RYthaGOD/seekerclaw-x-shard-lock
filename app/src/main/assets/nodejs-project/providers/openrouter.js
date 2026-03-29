@@ -1,4 +1,4 @@
-// SeekerClaw — providers/openrouter.js
+// shardclaw — providers/openrouter.js
 // OpenRouter provider adapter. Translates between neutral internal
 // message format and OpenAI Chat Completions format (/api/v1/chat/completions).
 // OpenRouter provides access to 100+ models through a single endpoint.
@@ -216,8 +216,8 @@ function buildHeaders(apiKey) {
     return {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://seekerclaw.com',
-        'X-Title': 'SeekerClaw',
+        'HTTP-Referer': 'https://shardclaw.com',
+        'X-Title': 'shardclaw',
     };
 }
 

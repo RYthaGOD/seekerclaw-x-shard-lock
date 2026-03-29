@@ -8,7 +8,7 @@
 
 ## Overview
 
-When SeekerClaw restarts after downtime, detect cron jobs that were missed and send ONE Telegram notification to the owner, merged into the existing "Back online" message. The user can then reply `/catchup` to execute missed recurring tasks on demand. No auto-execution — the user decides.
+When shardclaw restarts after downtime, detect cron jobs that were missed and send ONE Telegram notification to the owner, merged into the existing "Back online" message. The user can then reply `/catchup` to execute missed recurring tasks on demand. No auto-execution — the user decides.
 
 ---
 
@@ -821,14 +821,14 @@ lines.push('- **Missed task recovery** — on restart, missed cron tasks are rep
 
 ### Prerequisites
 
-- SeekerClaw running on device (Seeker or S24)
+- shardclaw running on device (Seeker or S24)
 - Telegram bot connected to owner
 
 ### Test 1: Basic missed task notification
 
 1. Create a recurring reminder: "remind me every 2 minutes to drink water"
 2. Verify it fires 2-3 times successfully
-3. **Force stop** the app (Settings > Apps > SeekerClaw > Force Stop)
+3. **Force stop** the app (Settings > Apps > shardclaw > Force Stop)
 4. Wait **5 minutes**
 5. Re-launch the app
 6. **Expected:** Receive combined back-online + missed tasks notification:

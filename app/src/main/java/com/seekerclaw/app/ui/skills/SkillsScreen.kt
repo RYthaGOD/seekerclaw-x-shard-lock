@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.skills
+package com.shardclaw.app.ui.skills
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -44,10 +44,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.ui.theme.RethinkSans
-import com.seekerclaw.app.ui.theme.SeekerClawColors
-import com.seekerclaw.app.util.Analytics
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.shardclawColors
+import com.shardclaw.app.util.Analytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -111,7 +111,7 @@ private fun SkillsListContent(
     var skills by remember { mutableStateOf<List<SkillInfo>>(emptyList()) }
     var searchQuery by remember { mutableStateOf("") }
     var reloadTrigger by remember { mutableStateOf(0) }
-    val shape = remember { RoundedCornerShape(SeekerClawColors.CornerRadius) }
+    val shape = remember { RoundedCornerShape(shardclawColors.CornerRadius) }
     val scope = rememberCoroutineScope()
 
     // Bulk export launcher
@@ -183,7 +183,7 @@ private fun SkillsListContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(SeekerClawColors.Background),
+            .background(shardclawColors.Background),
     ) {
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 24.dp),
@@ -202,14 +202,14 @@ private fun SkillsListContent(
                         fontFamily = RethinkSans,
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.TextPrimary,
+                        color = shardclawColors.TextPrimary,
                     )
                     Text(
                         text = "Import",
                         fontFamily = RethinkSans,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
-                        color = SeekerClawColors.Accent,
+                        color = shardclawColors.Accent,
                         modifier = Modifier
                             .clickable(onClickLabel = "Import skills") {
                                 importSkillsLauncher.launch(arrayOf("application/zip", "text/markdown", "text/plain"))
@@ -247,7 +247,7 @@ private fun SkillsListContent(
                                 val timestamp = android.text.format.DateFormat.format(
                                     "yyyyMMdd", java.util.Date()
                                 )
-                                bulkExportLauncher.launch("seekerclaw_skills_$timestamp.zip")
+                                bulkExportLauncher.launch("shardclaw_skills_$timestamp.zip")
                             },
                         )
                     }
@@ -288,7 +288,7 @@ private fun SectionHeader(
             fontFamily = RethinkSans,
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
             letterSpacing = 0.5.sp,
         )
         if (actionLabel != null && onAction != null) {
@@ -297,7 +297,7 @@ private fun SectionHeader(
                 fontFamily = RethinkSans,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.Accent,
+                color = shardclawColors.Accent,
                 modifier = Modifier
                     .clickable(onClickLabel = actionLabel, onClick = onAction)
                     .padding(4.dp),
@@ -315,7 +315,7 @@ private fun SearchField(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(SeekerClawColors.Surface, shape)
+            .background(shardclawColors.Surface, shape)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -323,7 +323,7 @@ private fun SearchField(
             text = "⌕",
             fontFamily = FontFamily.Monospace,
             fontSize = 18.sp,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
         )
         Spacer(Modifier.width(10.dp))
         Box(modifier = Modifier.weight(1f)) {
@@ -332,18 +332,18 @@ private fun SearchField(
                     text = "Search skills...",
                     fontFamily = RethinkSans,
                     fontSize = 14.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
             }
             BasicTextField(
                 value = query,
                 onValueChange = onQueryChange,
                 singleLine = true,
-                cursorBrush = SolidColor(SeekerClawColors.Accent),
+                cursorBrush = SolidColor(shardclawColors.Accent),
                 textStyle = TextStyle(
                     fontFamily = RethinkSans,
                     fontSize = 14.sp,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -354,7 +354,7 @@ private fun SearchField(
                 text = "✕",
                 fontFamily = FontFamily.Monospace,
                 fontSize = 14.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
                 modifier = Modifier.clickable(onClickLabel = "Clear search") { onQueryChange("") },
             )
         }
@@ -366,7 +366,7 @@ private fun MarketplaceTeaserCard(shape: RoundedCornerShape) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(SeekerClawColors.Surface, shape)
+            .background(shardclawColors.Surface, shape)
             .padding(20.dp),
     ) {
         Column {
@@ -380,7 +380,7 @@ private fun MarketplaceTeaserCard(shape: RoundedCornerShape) {
                     fontFamily = RethinkSans,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                     modifier = Modifier.weight(1f),
                 )
                 Text(
@@ -388,10 +388,10 @@ private fun MarketplaceTeaserCard(shape: RoundedCornerShape) {
                     fontFamily = RethinkSans,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.Primary,
+                    color = shardclawColors.Primary,
                     modifier = Modifier
                         .background(
-                            SeekerClawColors.Primary.copy(alpha = 0.12f),
+                            shardclawColors.Primary.copy(alpha = 0.12f),
                             RoundedCornerShape(4.dp),
                         )
                         .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -402,7 +402,7 @@ private fun MarketplaceTeaserCard(shape: RoundedCornerShape) {
                 text = "Discover and install skills created by the community.",
                 fontFamily = RethinkSans,
                 fontSize = 13.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
             )
         }
     }
@@ -412,7 +412,7 @@ private fun MarketplaceTeaserCard(shape: RoundedCornerShape) {
 fun SkillAvatar(
     skill: SkillInfo,
     size: Int = 44,
-    shape: RoundedCornerShape = RoundedCornerShape(SeekerClawColors.CornerRadius),
+    shape: RoundedCornerShape = RoundedCornerShape(shardclawColors.CornerRadius),
     emojiFontSize: Int = 22,
 ) {
     if (skill.imageUrl.isNotEmpty()) {
@@ -464,7 +464,7 @@ private fun EmojiAvatar(
         modifier = Modifier
             .size(size.dp)
             .clip(shape)
-            .background(SeekerClawColors.SurfaceHighlight),
+            .background(shardclawColors.SurfaceHighlight),
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -483,7 +483,7 @@ private fun SkillCard(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(SeekerClawColors.Surface, shape)
+            .background(shardclawColors.Surface, shape)
             .clickable(onClickLabel = "View ${skill.name}", onClick = onClick)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -500,7 +500,7 @@ private fun SkillCard(
                     fontFamily = RethinkSans,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Medium,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                     modifier = Modifier.weight(1f),
                 )
                 if (skill.warnings.isNotEmpty()) {
@@ -508,7 +508,7 @@ private fun SkillCard(
                     Text(
                         text = "⚠",
                         fontSize = 14.sp,
-                        color = SeekerClawColors.Warning,
+                        color = shardclawColors.Warning,
                     )
                 }
                 if (skill.version.isNotEmpty()) {
@@ -517,7 +517,7 @@ private fun SkillCard(
                         text = "v${skill.version.removePrefix("v").removePrefix("V")}",
                         fontFamily = FontFamily.Monospace,
                         fontSize = 11.sp,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             }
@@ -527,7 +527,7 @@ private fun SkillCard(
                     text = skill.description.lines().firstOrNull { it.isNotBlank() } ?: "",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                     maxLines = 1,
                 )
             }
@@ -538,14 +538,14 @@ private fun SkillCard(
                         modifier = Modifier
                             .size(6.dp)
                             .clip(CircleShape)
-                            .background(SeekerClawColors.Accent),
+                            .background(shardclawColors.Accent),
                     )
                     Spacer(Modifier.width(6.dp))
                     Text(
                         text = "${skill.triggers.size} trigger${if (skill.triggers.size > 1) "s" else ""}",
                         fontFamily = RethinkSans,
                         fontSize = 11.sp,
-                        color = SeekerClawColors.Accent,
+                        color = shardclawColors.Accent,
                     )
                 }
             }
@@ -572,7 +572,7 @@ private fun EmptySkillsState(isFiltered: Boolean) {
             fontFamily = RethinkSans,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
-            color = SeekerClawColors.TextPrimary,
+            color = shardclawColors.TextPrimary,
         )
         Spacer(Modifier.height(8.dp))
         Text(
@@ -580,7 +580,7 @@ private fun EmptySkillsState(isFiltered: Boolean) {
             else "Send a .md skill file via Telegram to install your first skill.",
             fontFamily = RethinkSans,
             fontSize = 13.sp,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
         )
     }
 }

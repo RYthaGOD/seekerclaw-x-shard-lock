@@ -1,4 +1,4 @@
-package com.seekerclaw.app.config
+package com.shardclaw.app.config
 
 data class ModelInfo(
     val id: String,

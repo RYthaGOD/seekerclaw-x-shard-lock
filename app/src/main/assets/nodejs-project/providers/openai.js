@@ -1,4 +1,4 @@
-// SeekerClaw — providers/openai.js
+// shardclaw — providers/openai.js
 // OpenAI provider adapter. Translates between neutral internal
 // message format and OpenAI Responses API format (/v1/responses).
 // All OpenAI models route through the Responses API — future-proof

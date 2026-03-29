@@ -1,4 +1,4 @@
-package com.seekerclaw.app.storage
+package com.shardclaw.app.storage
 
 import android.content.Context
 import android.util.Log

@@ -1,4 +1,4 @@
-# SAB-AUDIT-v9 — SeekerClaw Agent Self-Knowledge Audit
+# SAB-AUDIT-v9 — shardclaw Agent Self-Knowledge Audit
 
 > **Date:** 2026-03-03
 > **Scope:** Re-audit after BAT-305 (secrets hardening — vm sandbox, checkpoint redaction, error redaction, memory write filtering, expanded secret redaction, system prompt guidance, dead code cleanup)
@@ -27,7 +27,7 @@ Scoring: ✅ = 3 pts, ⚠️ = 1 pt, ❌ = 0 pts.
 | MAX_HISTORY | 35 (claude.js:175) | "35 messages per chat" (line 806) | ✅ |
 | max_tokens | 4096 (claude.js:1510) | "4096 tokens per response" (line 808) | ✅ |
 | SHELL_ALLOWLIST | 34 commands (config.js:234-241) | 34 commands listed (line 642) | ✅ |
-| SECRETS_BLOCKED | config.json, config.yaml, seekerclaw.db (config.js:225) | seekerclaw.db listed as BLOCKED (line 559) | ✅ |
+| SECRETS_BLOCKED | config.json, config.yaml, shardclaw.db (config.js:225) | shardclaw.db listed as BLOCKED (line 559) | ✅ |
 | BLOCKED_MODULES | 7 modules (tools.js:3506) | **Fixed:** now lists all 7: child_process, vm, cluster, worker_threads, v8, perf_hooks, module (line 417) | ✅ |
 | js_eval code limit | 10,000 chars (tools.js:3471) | "10,000-character code limit" (line 643) | ✅ |
 
@@ -62,7 +62,7 @@ BAT-305 is a security hardening PR with 7 fixes across 6 files. Each evaluated a
 | 2 | Model | ✅ | ✅ | ✅ | ✅ | PLATFORM.md (auto-generated) |
 | 3 | Device/hardware | ✅ | ✅ | ✅ | ✅ | PLATFORM.md |
 | 4 | Who built it | ✅ | ✅ | ✅ | ✅ | Line 378 (OpenClaw) |
-| 5 | Official channels | ✅ | ✅ | ✅ | ✅ | Line 379 (seekerclaw.xyz, @SeekerClaw, t.me/seekerclaw, GitHub) |
+| 5 | Official channels | ✅ | ✅ | ✅ | ✅ | Line 379 (shardclaw.xyz, @shardclaw, t.me/shardclaw, GitHub) |
 
 **Architecture (4/4)**
 

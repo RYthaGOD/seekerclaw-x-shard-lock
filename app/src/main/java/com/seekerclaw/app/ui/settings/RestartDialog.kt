@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.settings
+package com.shardclaw.app.ui.settings
 
 import android.content.Context
 import android.widget.Toast
@@ -9,9 +9,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.service.OpenClawService
-import com.seekerclaw.app.ui.theme.RethinkSans
-import com.seekerclaw.app.ui.theme.SeekerClawColors
+import com.shardclaw.app.service.OpenClawService
+import com.shardclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.shardclawColors
 
 @Composable
 fun RestartDialog(
@@ -25,7 +25,7 @@ fun RestartDialog(
                 "Config Updated",
                 fontFamily = RethinkSans,
                 fontWeight = FontWeight.Bold,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
         },
         text = {
@@ -33,7 +33,7 @@ fun RestartDialog(
                 "Restart the agent to apply changes?",
                 fontFamily = RethinkSans,
                 fontSize = 14.sp,
-                color = SeekerClawColors.TextSecondary,
+                color = shardclawColors.TextSecondary,
             )
         },
         confirmButton = {
@@ -46,7 +46,7 @@ fun RestartDialog(
                     "Restart Now",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.Primary,
+                    color = shardclawColors.Primary,
                 )
             }
         },
@@ -55,11 +55,11 @@ fun RestartDialog(
                 Text(
                     "Later",
                     fontFamily = RethinkSans,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
             }
         },
-        containerColor = SeekerClawColors.Surface,
-        shape = RoundedCornerShape(SeekerClawColors.CornerRadius),
+        containerColor = shardclawColors.Surface,
+        shape = RoundedCornerShape(shardclawColors.CornerRadius),
     )
 }

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add Discord as a second messaging channel alongside Telegram, so users can interact with their SeekerClaw agent via Discord DMs or guild channels.
+**Goal:** Add Discord as a second messaging channel alongside Telegram, so users can interact with their shardclaw agent via Discord DMs or guild channels.
 
 **Architecture:** Introduce a thin channel abstraction layer that normalizes message I/O. Telegram stays as-is but behind the abstraction. Discord connects via WebSocket gateway (outbound, no public IP needed). Both channels share the same `chat()` engine, tools, memory, and conversation history (keyed by `discord:<channelId>` or `telegram:<chatId>`). Config is extended with optional Discord fields — if no Discord token, Discord is simply disabled.
 
@@ -635,7 +635,7 @@ git commit -m "feat: wire multi-channel routing into main.js message flow"
 
 **Files:**
 - Modify: `app/src/main/assets/nodejs-project/config.js`
-- Modify: `app/src/main/java/com/seekerclaw/app/config/ConfigManager.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/config/ConfigManager.kt`
 
 - [ ] **Step 1: Add Discord fields to config.js**
 
@@ -675,7 +675,7 @@ put("discordGuildId", config.discordGuildId)
 
 ```bash
 git add app/src/main/assets/nodejs-project/config.js
-git add app/src/main/java/com/seekerclaw/app/config/ConfigManager.kt
+git add app/src/main/java/com/shardclaw/app/config/ConfigManager.kt
 git commit -m "feat: extend config for Discord bot token, owner ID, guild ID"
 ```
 
@@ -684,9 +684,9 @@ git commit -m "feat: extend config for Discord bot token, owner ID, guild ID"
 ## Task 6: Discord Settings UI
 
 **Files:**
-- Create: `app/src/main/java/com/seekerclaw/app/ui/settings/DiscordConfigScreen.kt`
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/settings/SettingsScreen.kt`
-- Modify: `app/src/main/java/com/seekerclaw/app/ui/navigation/NavGraph.kt`
+- Create: `app/src/main/java/com/shardclaw/app/ui/settings/DiscordConfigScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/settings/SettingsScreen.kt`
+- Modify: `app/src/main/java/com/shardclaw/app/ui/navigation/NavGraph.kt`
 
 - [ ] **Step 1: Create DiscordConfigScreen**
 
@@ -702,7 +702,7 @@ fun DiscordConfigScreen(onBack: () -> Unit) {
     var guildId by rememberSaveable { mutableStateOf(ConfigManager.getDiscordGuildId(context)) }
     var showRestartDialog by remember { mutableStateOf(false) }
 
-    // Standard SeekerClaw settings screen layout:
+    // Standard shardclaw settings screen layout:
     // - Bot Token (masked input)
     // - Owner ID (your Discord user ID)
     // - Guild/Server ID (optional — for guild-specific features)
@@ -744,9 +744,9 @@ In `res/values/strings.xml`:
 - [ ] **Step 5: Commit**
 
 ```bash
-git add app/src/main/java/com/seekerclaw/app/ui/settings/DiscordConfigScreen.kt
-git add app/src/main/java/com/seekerclaw/app/ui/settings/SettingsScreen.kt
-git add app/src/main/java/com/seekerclaw/app/ui/navigation/NavGraph.kt
+git add app/src/main/java/com/shardclaw/app/ui/settings/DiscordConfigScreen.kt
+git add app/src/main/java/com/shardclaw/app/ui/settings/SettingsScreen.kt
+git add app/src/main/java/com/shardclaw/app/ui/navigation/NavGraph.kt
 git add app/src/main/res/values/strings.xml
 git commit -m "feat: add Discord configuration screen in Settings"
 ```
@@ -847,7 +847,7 @@ git commit -m "fix: handle cross-channel edge cases (heartbeat, cron, tools)"
 3. Copy bot token
 4. Invite bot to a test server with `applications.commands` + `bot` scopes
 5. Get your Discord user ID (enable Developer Mode → right-click your name → Copy User ID)
-6. Enter token + owner ID in SeekerClaw Settings → Discord
+6. Enter token + owner ID in shardclaw Settings → Discord
 
 - [ ] **Step 3: Test Discord**
 

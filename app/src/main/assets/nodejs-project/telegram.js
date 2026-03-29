@@ -1,4 +1,4 @@
-// SeekerClaw — telegram.js
+// shardclaw — telegram.js
 // Telegram Bot API: messaging, file uploads/downloads, HTML formatting.
 // Depends on: config.js, http.js
 

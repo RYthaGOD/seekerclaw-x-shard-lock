@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.settings
+package com.shardclaw.app.ui.settings
 
 import android.content.Intent
 import android.net.Uri
@@ -35,12 +35,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.config.SearchProviderInfo
-import com.seekerclaw.app.config.availableSearchProviders
-import com.seekerclaw.app.config.searchProviderById
-import com.seekerclaw.app.ui.theme.RethinkSans
-import com.seekerclaw.app.ui.theme.SeekerClawColors
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.config.SearchProviderInfo
+import com.shardclaw.app.config.availableSearchProviders
+import com.shardclaw.app.config.searchProviderById
+import com.shardclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.shardclawColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +54,7 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
     var editValue by remember { mutableStateOf("") }
     var showRestartDialog by remember { mutableStateOf(false) }
 
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     fun maskKey(key: String?): String {
         if (key.isNullOrBlank()) return "Not set"
@@ -86,7 +86,7 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
                         fontFamily = RethinkSans,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.TextPrimary,
+                        color = shardclawColors.TextPrimary,
                     )
                 },
                 navigationIcon = {
@@ -94,16 +94,16 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = SeekerClawColors.TextPrimary,
+                            tint = shardclawColors.TextPrimary,
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = SeekerClawColors.Background,
+                    containerColor = shardclawColors.Background,
                 ),
             )
         },
-        containerColor = SeekerClawColors.Background,
+        containerColor = shardclawColors.Background,
     ) { padding ->
         Column(
             modifier = Modifier
@@ -119,7 +119,7 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape),
+                    .background(shardclawColors.Surface, shape),
             ) {
                 availableSearchProviders.forEachIndexed { index, provider ->
                     val isActive = provider.id == activeProvider.id
@@ -141,7 +141,7 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
                                 fontFamily = RethinkSans,
                                 fontSize = 14.sp,
                                 fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal,
-                                color = SeekerClawColors.TextPrimary,
+                                color = shardclawColors.TextPrimary,
                             )
                         }
                         if (isActive) {
@@ -150,13 +150,13 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
                                 fontFamily = RethinkSans,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
-                                color = SeekerClawColors.Accent,
+                                color = shardclawColors.Accent,
                             )
                         }
                     }
                     if (index < availableSearchProviders.size - 1) {
                         HorizontalDivider(
-                            color = SeekerClawColors.TextDim.copy(alpha = 0.1f),
+                            color = shardclawColors.TextDim.copy(alpha = 0.1f),
                             modifier = Modifier.padding(horizontal = 16.dp),
                         )
                     }
@@ -174,7 +174,7 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape),
+                    .background(shardclawColors.Surface, shape),
             ) {
                 ProviderConfigField(
                     label = "API Key",
@@ -196,7 +196,7 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
                     text = "Not configured — web search will not work until an API key is set.",
                     fontFamily = RethinkSans,
                     fontSize = 12.sp,
-                    color = SeekerClawColors.Error,
+                    color = shardclawColors.Error,
                 )
             }
 
@@ -208,14 +208,14 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(16.dp),
             ) {
                 Text(
                     text = helpTextForProvider(activeProvider.id),
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
@@ -223,7 +223,7 @@ fun SearchProviderConfigScreen(onBack: () -> Unit) {
                     fontFamily = RethinkSans,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextInteractive,
+                    color = shardclawColors.TextInteractive,
                     modifier = Modifier.clickable {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(activeProvider.consoleUrl))
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

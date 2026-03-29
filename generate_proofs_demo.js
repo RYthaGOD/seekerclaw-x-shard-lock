@@ -16,11 +16,11 @@ function generateMerkleRoot(shards) {
     return level[0];
 }
 
-console.log("\x1b[1m\x1b[33m[SEEKERCLAW SHARD-LOCK PROOF GENERATION]\x1b[0m");
+console.log("\x1b[1m\x1b[33m[shardclaw SHARD-LOCK PROOF GENERATION]\x1b[0m");
 console.log("-----------------------------------------");
 console.log("\x1b[32m[STEP 1]\x1b[0m Capturing Agent 'State-of-Mind' snapshot from Aether Index...");
 const mockState = Buffer.from(JSON.stringify({
-    agent_id: "SeekerClaw-001",
+    agent_id: "shardclaw-001",
     timestamp: new Date().toISOString(),
     last_action: "Verification Protocol Initialized",
     shard_registry: 42,

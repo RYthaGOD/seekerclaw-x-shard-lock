@@ -1,4 +1,4 @@
-package com.seekerclaw.app.qr
+package com.shardclaw.app.qr
 
 import android.Manifest
 import android.app.Activity
@@ -33,7 +33,7 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
-import com.seekerclaw.app.ui.theme.SeekerClawTheme
+import com.shardclaw.app.ui.theme.shardclawTheme
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -86,7 +86,7 @@ class QrScannerActivity : ComponentActivity() {
         }
 
         setContent {
-            SeekerClawTheme {
+            shardclawTheme {
                 QrScannerContent(
                     onQrDetected = { raw ->
                         if (hasResult.compareAndSet(false, true)) {

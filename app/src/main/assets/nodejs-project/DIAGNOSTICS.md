@@ -1,4 +1,4 @@
-# DIAGNOSTICS.md — SeekerClaw Agent Troubleshooting Guide
+# DIAGNOSTICS.md — shardclaw Agent Troubleshooting Guide
 
 > **Purpose:** Deep troubleshooting for failure modes not covered by the quick playbook in your system prompt.
 > Read this file on demand when you need detailed diagnosis steps.
@@ -14,7 +14,7 @@
 grep -i "401\|Unauthorized\|FORBIDDEN" node_debug.log | tail -10
 ```
 **Diagnosis:** If you see `401 Unauthorized` from api.telegram.org (not api.anthropic.com), the Telegram bot token is invalid or revoked.
-**Fix:** Tell the user: "Your Telegram bot token appears invalid. Go to @BotFather on Telegram, regenerate the token, then update it in SeekerClaw Settings > Telegram Token." This requires an app restart.
+**Fix:** Tell the user: "Your Telegram bot token appears invalid. Go to @BotFather on Telegram, regenerate the token, then update it in shardclaw Settings > Telegram Token." This requires an app restart.
 
 ### Telegram Rate Limited (429)
 **Symptoms:** Messages delayed or dropped, 429 responses from Telegram API in logs.
@@ -113,7 +113,7 @@ df -h
 1. Check storage: use `android_storage` tool or `df -h`
 2. Clean up: delete old files in `media/inbound/` (downloaded Telegram files accumulate)
 3. Check `node_debug.log.old` size — large debug logs consume space
-4. Tell user: "Your device storage is nearly full. Clear some space in the SeekerClaw app or your phone's storage settings."
+4. Tell user: "Your device storage is nearly full. Clear some space in the shardclaw app or your phone's storage settings."
 
 ---
 
@@ -157,7 +157,7 @@ grep -i "bridge\|ECONNREFUSED\|8765" node_debug.log | tail -10
 - The bridge server crashed or failed to start
 - Port 8765 is blocked or in use
 **Fix:**
-1. Tell the user: "The Android bridge is down — I can't access device features right now. Try opening the SeekerClaw app to restart the bridge."
+1. Tell the user: "The Android bridge is down — I can't access device features right now. Try opening the shardclaw app to restart the bridge."
 2. Non-bridge tools (Telegram, Claude API, memory, web, cron) still work normally
 3. The bridge auto-recovers when the app's Activity is reopened
 
@@ -170,7 +170,7 @@ grep -i "bridge\|ECONNREFUSED\|8765" node_debug.log | tail -10
 - `android_camera_check` → CAMERA permission
 - `android_contacts` → READ_CONTACTS permission
 **Check:** Read PLATFORM.md — it lists all granted permissions under the "Permissions" section.
-**Fix:** Tell the user which specific permission is needed: "To use [feature], grant [permission] in SeekerClaw Settings > Permissions."
+**Fix:** Tell the user which specific permission is needed: "To use [feature], grant [permission] in shardclaw Settings > Permissions."
 
 ---
 
@@ -194,7 +194,7 @@ grep -i "mcp\|Failed to connect" node_debug.log | tail -10
 ```
 grep -i "rug.pull\|hash.*mismatch\|tool.*blocked\|sha.256" node_debug.log | tail -10
 ```
-**Diagnosis:** SeekerClaw computes SHA-256 hashes of MCP tool definitions on first connect. If a server changes a tool's definition (parameters, description) without the agent's knowledge, the tool is blocked as a security measure. This prevents a compromised MCP server from changing what a tool does.
+**Diagnosis:** shardclaw computes SHA-256 hashes of MCP tool definitions on first connect. If a server changes a tool's definition (parameters, description) without the agent's knowledge, the tool is blocked as a security measure. This prevents a compromised MCP server from changing what a tool does.
 **Fix:**
 1. Tell the user: "An MCP tool's definition changed since it was first loaded. This is a security measure. To accept the new definition, remove and re-add the MCP server in Settings."
 2. This is a security feature, not a bug — explain that it protects against tool definition tampering
@@ -209,7 +209,7 @@ grep -i "rate limit.*mcp\|rate limit.*exceeded" node_debug.log | tail -10
 **Fix:**
 1. Reduce the frequency of MCP tool calls
 2. Space out requests — the rate limit resets each minute
-3. If the server itself returns 429, that's the server's own rate limit (separate from SeekerClaw's)
+3. If the server itself returns 429, that's the server's own rate limit (separate from shardclaw's)
 
 ---
 

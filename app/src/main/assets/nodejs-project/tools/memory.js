@@ -77,7 +77,7 @@ const tools = [
     },
     {
         name: 'memory_search',
-        description: 'Search your SQL.js database (seekerclaw.db) for memory content. All memory files are indexed into searchable chunks — this performs ranked keyword search with recency weighting, returning top matches with file paths and line numbers.',
+        description: 'Search your SQL.js database (shardclaw.db) for memory content. All memory files are indexed into searchable chunks — this performs ranked keyword search with recency weighting, returning top matches with file paths and line numbers.',
         input_schema: {
             type: 'object',
             properties: {

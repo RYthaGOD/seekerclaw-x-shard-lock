@@ -1,4 +1,4 @@
-package com.seekerclaw.app.storage
+package com.shardclaw.app.storage
 
 /**
  * JNI Bridge to the Rust-Core cdylib (`librust_core.so`).

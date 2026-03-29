@@ -1,4 +1,4 @@
-// SeekerClaw AI Agent
+// ShardClaw AI Agent
 // Phase 2: Full Claude AI agent with tools, memory, and personality
 
 const fs = require('fs');
@@ -349,7 +349,7 @@ Use YAML frontmatter with \`name\`, \`description\`, and \`triggers\` fields.`;
                     if (pkg.version) pkgVersion = pkg.version;
                 } catch (_) {}
             }
-            return `**SeekerClaw**
+            return `**ShardClaw**
 Agent: \`${AGENT_NAME}\`
 Package: \`${pkgVersion}\`
 Model: \`${MODEL}\`

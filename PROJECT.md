@@ -1,18 +1,18 @@
-# SeekerClaw — Project Description
+# ShardClaw — Project Description
 
 > **Living document.** Update after every shipped feature. Read before any feature work.
 
 ## One-Liner
 
-SeekerClaw turns a Solana Seeker phone into a 24/7 personal AI agent you control through Telegram.
+ShardClaw turns a Solana Seeker phone into a 24/7 personal AI agent you control through Telegram.
 
 ## Elevator Pitch
 
-SeekerClaw embeds a full Node.js runtime inside an Android app, running an OpenClaw-compatible AI gateway as a foreground service. Users interact with their agent through Telegram — the app itself is minimal (setup, status, logs, settings). The agent has 71 tools, 35 skills (20 bundled + 13 workspace + 2 user-created), ranked memory search, cron scheduling, Android device control, Solana wallet integration, and web intelligence — all running locally on the phone, 24/7.
+ShardClaw embeds a full Node.js runtime inside an Android app, running an OpenClaw-compatible AI gateway as a foreground service. Users interact with their agent through Telegram — the app itself is minimal (setup, status, logs, settings). The agent has 71 tools, 35 skills (20 bundled + 13 workspace + 2 user-created), ranked memory search, cron scheduling, Android device control, Solana wallet integration, and web intelligence — all running locally on the phone, 24/7.
 
 ## What It Is
 
-SeekerClaw is an Android app built for the Solana Seeker phone (also works on any Android 14+ device with 4GB+ RAM). It packages a Node.js 18 runtime via nodejs-mobile and runs an AI agent gateway derived from OpenClaw. The agent connects to Anthropic's Claude API for intelligence and to Telegram for user communication.
+ShardClaw is an Android app built for the Solana Seeker phone (also works on any Android 14+ device with 4GB+ RAM). It packages a Node.js 18 runtime via nodejs-mobile and runs an AI agent gateway derived from OpenClaw. The agent connects to Anthropic's Claude API for intelligence and to Telegram for user communication.
 
 **Who it's for:** Seeker phone owners who want an always-on AI assistant that can manage their crypto wallet, control their phone, search the web, and automate tasks — all from Telegram.
 
@@ -96,7 +96,7 @@ SeekerClaw is an Android app built for the Solana Seeker phone (also works on an
 ### Solana Wallet (16 tools)
 - **Balance check** — SOL + SPL token balances
 - **Transaction history** — Recent transactions for any address
-- **Connected wallet** — Get address from SeekerClaw app
+- **Connected wallet** — Get address from ShardClaw app
 - **Send SOL** — Transfer with wallet approval on phone
 - **Token prices** — Real-time USD prices via Jupiter
 - **Swap quotes** — Jupiter Ultra API quotes with price impact
@@ -152,7 +152,7 @@ SeekerClaw is an Android app built for the Solana Seeker phone (also works on an
 - **Skill file protection** — Writes/edits to `skills/` blocked when suspicious injection patterns detected in content
 - **Tool confirmation gates** — `android_sms`, `android_call`, `solana_send`, `solana_swap`, `jupiter_trigger_create`, `jupiter_dca_create` require explicit user YES via Telegram before execution. 60s timeout auto-cancels. Rate limited (SMS/call 1 per 60s, Solana 1 per 15s, Jupiter 1 per 30s)
 - **Jupiter API hardening** — 7 fixes from official skill audit (BAT-151-157): no retry for non-idempotent POSTs, amount validation, slippage bounds, error message sanitization
-- **Secrets blocklist** — `config.json`, `config.yaml`, `seekerclaw.db` blocked from `read` tool (with symlink resolution) and `js_eval` fs access (proxied `fs`/`fs.promises` modules)
+- **Secrets blocklist** — `config.json`, `config.yaml`, `ShardClaw.db` blocked from `read` tool (with symlink resolution) and `js_eval` fs access (proxied `fs`/`fs.promises` modules)
 - **ALT-safe swap verification** — `verifySwapTransaction()` rejects instructions referencing programs via Address Lookup Tables (prevents drainer bypass)
 - **js_eval sandbox** — blocked modules (child_process, vm, etc.), restricted fs (read/write/copy guards on sensitive files), shadowed `process`/`global`/`globalThis`
 - API key redaction in logs
@@ -200,7 +200,7 @@ User (Telegram) <--HTTPS--> Telegram API <--polling--> Node.js Gateway (on phone
                                                      Android APIs (battery, GPS, SMS, camera, wallet...)
 
 ┌──────────────────────────────────────────────────┐
-│              Android App (SeekerClaw)             │
+│              Android App (ShardClaw)             │
 │                                                    │
 │  UI Activity (Compose)  <-->  Foreground Service   │
 │   - Dashboard                  - Node.js Runtime   │
@@ -243,10 +243,10 @@ User (Telegram) <--HTTPS--> Telegram API <--polling--> Node.js Gateway (on phone
 
 ## Links
 
-- **GitHub:** https://github.com/sepivip/SeekerClaw
-- **Website:** https://seekerclaw.xyz/
-- **X/Twitter:** https://x.com/SeekerClaw
-- **Telegram:** https://t.me/seekerclaw
+- **GitHub:** https://github.com/sepivip/ShardClaw
+- **Website:** https://ShardClaw.xyz/
+- **X/Twitter:** https://x.com/ShardClaw
+- **Telegram:** https://t.me/ShardClaw
 
 ## Website Sync
 
@@ -323,12 +323,12 @@ User (Telegram) <--HTTPS--> Telegram API <--polling--> Node.js Gateway (on phone
 | 2026-02-25 | Fix: bootstrap ritual stops after 2 questions (BAT-268) | #188 |
 | 2026-02-25 | Fix: restore owner ID auto-detect (BAT-267) | #187 |
 | 2026-02-25 | Fix: bootstrap ritual not triggering on first run (BAT-266) | #186 |
-| 2026-02-25 | Feat: add official SeekerClaw socials to agent identity (BAT-263) | #185 |
+| 2026-02-25 | Feat: add official ShardClaw socials to agent identity (BAT-263) | #185 |
 | 2026-02-25 | Chore: bump OpenClaw reference to 2026.2.25 | direct |
 | 2026-02-25 | Docs: create README.md + screenshots for open-source launch (BAT-265) | #184 |
 | 2026-02-25 | Chore: move internal docs to docs/internal/ for open-source prep (BAT-264) | #183 |
 | 2026-02-25 | Docs: update PROJECT.md with recent changes and commit count | direct |
-| 2026-02-25 | Fix: replace seekerclaw.dev with seekerclaw.xyz everywhere | direct |
+| 2026-02-25 | Fix: replace ShardClaw.dev with ShardClaw.xyz everywhere | direct |
 | 2026-02-25 | CI: add GOOGLE_SERVICES_JSON secret for Firebase in CI builds | direct |
 | 2026-02-25 | Chore: remove unused publishing/, scripts/, web-prototype/ directories | direct |
 | 2026-02-25 | CI: fix release workflow signing + changelog extraction, bump v1.4.1 | direct |
@@ -486,9 +486,9 @@ User (Telegram) <--HTTPS--> Telegram API <--polling--> Node.js Gateway (on phone
 
 ## Community Contributors
 
-People who shaped SeekerClaw through ideas, feedback, and bug reports — even without code commits.
+People who shaped ShardClaw through ideas, feedback, and bug reports — even without code commits.
 
 | Contributor | Contribution | Link |
 |-------------|-------------|------|
-| [@DyorAlex](https://github.com/DyorAlex) | Proposed OpenRouter support — shipped in v1.7.0 | [Issue](https://github.com/sepivip/SeekerClaw/issues) |
+| [@DyorAlex](https://github.com/DyorAlex) | Proposed OpenRouter support — shipped in v1.7.0 | [Issue](https://github.com/sepivip/ShardClaw/issues) |
 | [@DashLabsDev](https://github.com/DashLabsDev) | Dash Labs — code contributor | GitHub |

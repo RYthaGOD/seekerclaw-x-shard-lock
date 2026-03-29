@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.components
+package com.shardclaw.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,13 +25,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.ui.theme.SeekerClawColors
+import com.shardclaw.app.ui.theme.shardclawColors
 
 /**
  * Dot matrix background modifier — creates a halftone CRT pattern
  */
 fun Modifier.dotMatrix(
-    dotColor: Color = SeekerClawColors.PrimaryDim.copy(alpha = 0.08f),
+    dotColor: Color = shardclawColors.PrimaryDim.copy(alpha = 0.08f),
     dotSpacing: Dp = 8.dp,
     dotRadius: Dp = 1.dp,
 ): Modifier = this.drawBehind {
@@ -86,15 +86,15 @@ fun SetupStepIndicator(
                         .size(circleSize)
                         .background(
                             color = when {
-                                isCompleted -> SeekerClawColors.ActionPrimary
-                                isCurrent -> SeekerClawColors.Primary
-                                else -> SeekerClawColors.Surface
+                                isCompleted -> shardclawColors.ActionPrimary
+                                isCurrent -> shardclawColors.Primary
+                                else -> shardclawColors.Surface
                             },
                             shape = CircleShape,
                         )
                         .then(
                             if (!isCompleted && !isCurrent)
-                                Modifier.border(1.dp, SeekerClawColors.TextDim.copy(alpha = 0.4f), CircleShape)
+                                Modifier.border(1.dp, shardclawColors.TextDim.copy(alpha = 0.4f), CircleShape)
                             else Modifier
                         ),
                     contentAlignment = Alignment.Center,
@@ -104,14 +104,14 @@ fun SetupStepIndicator(
                             text = "\u2713",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = SeekerClawColors.TextPrimary,
+                            color = shardclawColors.TextPrimary,
                         )
                     } else {
                         Text(
                             text = "${i + 1}",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (isCurrent) SeekerClawColors.TextPrimary else SeekerClawColors.TextDim,
+                            color = if (isCurrent) shardclawColors.TextPrimary else shardclawColors.TextDim,
                         )
                     }
                 }
@@ -122,8 +122,8 @@ fun SetupStepIndicator(
                     text = labels[i],
                     fontSize = 10.sp,
                     fontWeight = if (isCurrent) FontWeight.Medium else FontWeight.Normal,
-                    color = if (isCurrent || isCompleted) SeekerClawColors.TextPrimary
-                            else SeekerClawColors.TextDim,
+                    color = if (isCurrent || isCompleted) shardclawColors.TextPrimary
+                            else shardclawColors.TextDim,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -138,8 +138,8 @@ fun SetupStepIndicator(
                         .padding(top = connectorTopPadding)
                         .height(connectorHeight)
                         .background(
-                            if (i < currentStep) SeekerClawColors.Accent
-                            else SeekerClawColors.TextDim.copy(alpha = 0.2f)
+                            if (i < currentStep) shardclawColors.Accent
+                            else shardclawColors.TextDim.copy(alpha = 0.2f)
                         ),
                 )
             }

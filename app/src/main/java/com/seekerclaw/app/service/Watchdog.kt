@@ -1,7 +1,7 @@
-package com.seekerclaw.app.service
+package com.shardclaw.app.service
 
-import com.seekerclaw.app.util.LogCollector
-import com.seekerclaw.app.util.LogLevel
+import com.shardclaw.app.util.LogCollector
+import com.shardclaw.app.util.LogLevel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

@@ -1,8 +1,8 @@
-package com.seekerclaw.app.ui.dashboard
+package com.shardclaw.app.ui.dashboard
 
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
-import com.seekerclaw.app.R
+import com.shardclaw.app.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -54,22 +54,22 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
-import com.seekerclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.RethinkSans
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.config.modelDisplayName
-import com.seekerclaw.app.config.providerById
-import com.seekerclaw.app.service.OpenClawService
-import com.seekerclaw.app.ui.theme.SeekerClawColors
-import com.seekerclaw.app.util.Analytics
-import com.seekerclaw.app.util.LogCollector
-import com.seekerclaw.app.util.LogLevel
-import com.seekerclaw.app.util.AgentHealth
-import com.seekerclaw.app.util.ServiceState
-import com.seekerclaw.app.util.ServiceStatus
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.config.modelDisplayName
+import com.shardclaw.app.config.providerById
+import com.shardclaw.app.service.OpenClawService
+import com.shardclaw.app.ui.theme.shardclawColors
+import com.shardclaw.app.util.Analytics
+import com.shardclaw.app.util.LogCollector
+import com.shardclaw.app.util.LogLevel
+import com.shardclaw.app.util.AgentHealth
+import com.shardclaw.app.util.ServiceState
+import com.shardclaw.app.util.ServiceStatus
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -82,7 +82,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.seekerclaw.app.util.fetchDbSummary
+import com.shardclaw.app.util.fetchDbSummary
 import kotlinx.coroutines.delay
 import java.util.Date
 
@@ -104,7 +104,7 @@ fun DashboardScreen(
 
     val cfgVersion by ConfigManager.configVersion
     val config = remember(cfgVersion) { ConfigManager.loadConfig(context) }
-    val agentName = remember(config) { config?.agentName?.ifBlank { "SeekerClaw" } ?: "SeekerClaw" }
+    val agentName = remember(config) { config?.agentName?.ifBlank { "shardclaw" } ?: "shardclaw" }
     val hasBotToken = remember(config) { config?.telegramBotToken?.isNotBlank() == true }
     val hasCredential = remember(config) {
         when (config?.provider) {
@@ -228,13 +228,13 @@ fun DashboardScreen(
 
     val statusColor = when (status) {
         ServiceStatus.RUNNING -> when (health.apiStatus) {
-            "degraded", "stale" -> SeekerClawColors.Warning
-            "error" -> SeekerClawColors.Error
-            else -> SeekerClawColors.Accent
+            "degraded", "stale" -> shardclawColors.Warning
+            "error" -> shardclawColors.Error
+            else -> shardclawColors.Accent
         }
-        ServiceStatus.STARTING -> SeekerClawColors.Warning
-        ServiceStatus.STOPPED -> SeekerClawColors.TextDim
-        ServiceStatus.ERROR -> SeekerClawColors.Error
+        ServiceStatus.STARTING -> shardclawColors.Warning
+        ServiceStatus.STOPPED -> shardclawColors.TextDim
+        ServiceStatus.ERROR -> shardclawColors.Error
     }
 
     val statusText = when (status) {
@@ -265,19 +265,19 @@ fun DashboardScreen(
         }
     }
 
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(SeekerClawColors.Background)
+            .background(shardclawColors.Background)
             .verticalScroll(rememberScrollState())
             .padding(16.dp),
     ) {
         // Header — Premium Logo
         Image(
             painter = painterResource(R.drawable.logo_seeker_claw_premium),
-            contentDescription = "SeekerClaw Logo",
+            contentDescription = "shardclaw Logo",
             modifier = Modifier.height(42.dp)
         )
 
@@ -287,7 +287,7 @@ fun DashboardScreen(
             text = "AgentOS",
             fontFamily = RethinkSans,
             fontSize = 14.sp,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
         )
 
         Spacer(modifier = Modifier.height(if (!isOnline) 16.dp else 24.dp))
@@ -302,7 +302,7 @@ fun DashboardScreen(
                 modifier = Modifier
                     .padding(bottom = 24.dp)
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Warning.copy(alpha = 0.15f), shape)
+                    .background(shardclawColors.Warning.copy(alpha = 0.15f), shape)
                     .padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -310,7 +310,7 @@ fun DashboardScreen(
                     modifier = Modifier
                         .size(8.dp)
                         .clip(CircleShape)
-                        .background(SeekerClawColors.Warning),
+                        .background(shardclawColors.Warning),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
@@ -318,7 +318,7 @@ fun DashboardScreen(
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
-                    color = SeekerClawColors.Warning,
+                    color = shardclawColors.Warning,
                     modifier = Modifier.weight(1f),
                 )
                 IconButton(
@@ -327,7 +327,7 @@ fun DashboardScreen(
                     Icon(
                         Icons.Default.Close,
                         contentDescription = "Dismiss network alert",
-                        tint = SeekerClawColors.Warning,
+                        tint = shardclawColors.Warning,
                         modifier = Modifier.size(16.dp),
                     )
                 }
@@ -343,8 +343,8 @@ fun DashboardScreen(
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
         ) {
-            val bannerColor = if (health.apiStatus == "error") SeekerClawColors.Error
-                else SeekerClawColors.Warning
+            val bannerColor = if (health.apiStatus == "error") shardclawColors.Error
+                else shardclawColors.Warning
             val providerName = providerById(config?.provider ?: "claude").displayName
             val bannerText = when (health.lastErrorType) {
                 "auth" -> "API key rejected${health.lastErrorStatus?.let { " ($it)" } ?: ""} \u2014 check Settings"
@@ -403,7 +403,7 @@ fun DashboardScreen(
                 modifier = Modifier
                     .padding(bottom = 24.dp)
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Accent.copy(alpha = 0.12f), shape)
+                    .background(shardclawColors.Accent.copy(alpha = 0.12f), shape)
                     .padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -411,14 +411,14 @@ fun DashboardScreen(
                     modifier = Modifier
                         .size(8.dp)
                         .clip(CircleShape)
-                        .background(SeekerClawColors.Accent),
+                        .background(shardclawColors.Accent),
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = "API connection restored",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.Accent,
+                    color = shardclawColors.Accent,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -435,8 +435,8 @@ fun DashboardScreen(
                 modifier = Modifier
                     .padding(bottom = 24.dp)
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Warning.copy(alpha = 0.10f), shape)
-                    .border(1.dp, SeekerClawColors.Warning.copy(alpha = 0.3f), shape)
+                    .background(shardclawColors.Warning.copy(alpha = 0.10f), shape)
+                    .border(1.dp, shardclawColors.Warning.copy(alpha = 0.3f), shape)
                     .padding(16.dp),
             ) {
                 Text(
@@ -444,7 +444,7 @@ fun DashboardScreen(
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
-                    color = SeekerClawColors.Warning,
+                    color = shardclawColors.Warning,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
@@ -455,15 +455,15 @@ fun DashboardScreen(
                     },
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(
                     onClick = onNavigateToSetup,
                     shape = shape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = SeekerClawColors.Warning,
-                        contentColor = SeekerClawColors.Background,
+                        containerColor = shardclawColors.Warning,
+                        contentColor = shardclawColors.Background,
                     ),
                     modifier = Modifier.fillMaxWidth().height(44.dp),
                 ) {
@@ -490,8 +490,8 @@ fun DashboardScreen(
                 modifier = Modifier
                     .padding(bottom = 24.dp)
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Accent.copy(alpha = 0.08f), shape)
-                    .border(1.dp, SeekerClawColors.Accent.copy(alpha = 0.2f), shape)
+                    .background(shardclawColors.Accent.copy(alpha = 0.08f), shape)
+                    .border(1.dp, shardclawColors.Accent.copy(alpha = 0.2f), shape)
                     .padding(16.dp),
             ) {
                 Text(
@@ -499,14 +499,14 @@ fun DashboardScreen(
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
-                    color = SeekerClawColors.Accent,
+                    color = shardclawColors.Accent,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Tap \"Deploy Agent\" below to start $agentName, then open Telegram to chat with your agent.",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                     lineHeight = 18.sp,
                 )
             }
@@ -517,7 +517,7 @@ fun DashboardScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(SeekerClawColors.Surface, shape)
+                .background(shardclawColors.Surface, shape)
                 .alpha(if (isRunning) 1f else 0.6f)
                 .clickable { if (configNeeded) onNavigateToSettings() else onNavigateToSystem() }
                 .padding(16.dp),
@@ -541,14 +541,14 @@ fun DashboardScreen(
                         fontFamily = RethinkSans,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = SeekerClawColors.TextPrimary,
+                        color = shardclawColors.TextPrimary,
                     )
                 }
                 Text(
                     text = if (configNeeded) "Settings >" else "System >",
                     fontFamily = RethinkSans,
                     fontSize = 12.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
             }
 
@@ -558,14 +558,14 @@ fun DashboardScreen(
                     text = latestError,
                     fontFamily = RethinkSans,
                     fontSize = 12.sp,
-                    color = SeekerClawColors.Error,
+                    color = shardclawColors.Error,
                 )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             HorizontalDivider(
-                color = SeekerClawColors.TextDim.copy(alpha = 0.2f),
+                color = shardclawColors.TextDim.copy(alpha = 0.2f),
                 thickness = 1.dp,
             )
 
@@ -576,7 +576,7 @@ fun DashboardScreen(
                 fontFamily = RethinkSans,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
                 letterSpacing = 1.sp,
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -585,7 +585,7 @@ fun DashboardScreen(
                 fontFamily = FontFamily.Monospace,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -608,7 +608,7 @@ fun DashboardScreen(
             fontFamily = RethinkSans,
             fontSize = 11.sp,
             fontWeight = FontWeight.Medium,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
             letterSpacing = 1.sp,
         )
 
@@ -634,13 +634,13 @@ fun DashboardScreen(
             }
             val gatewayDotColor = when (status) {
                 ServiceStatus.RUNNING -> when (health.apiStatus) {
-                    "degraded", "stale" -> SeekerClawColors.Warning
-                    "error" -> SeekerClawColors.Error
-                    else -> SeekerClawColors.Accent
+                    "degraded", "stale" -> shardclawColors.Warning
+                    "error" -> shardclawColors.Error
+                    else -> shardclawColors.Accent
                 }
-                ServiceStatus.STARTING -> SeekerClawColors.Warning
-                ServiceStatus.STOPPED -> SeekerClawColors.TextDim
-                ServiceStatus.ERROR -> SeekerClawColors.Error
+                ServiceStatus.STARTING -> shardclawColors.Warning
+                ServiceStatus.STOPPED -> shardclawColors.TextDim
+                ServiceStatus.ERROR -> shardclawColors.Error
             }
 
             val telegramSubtitle = if (!hasBotToken) "Bot token missing" else when (status) {
@@ -649,11 +649,11 @@ fun DashboardScreen(
                 ServiceStatus.ERROR -> "Relay error"
                 ServiceStatus.STOPPED -> "Offline"
             }
-            val telegramDotColor = if (!hasBotToken) SeekerClawColors.Error else when (status) {
-                ServiceStatus.RUNNING -> SeekerClawColors.Accent
-                ServiceStatus.STARTING -> SeekerClawColors.Warning
-                ServiceStatus.ERROR -> SeekerClawColors.Error
-                ServiceStatus.STOPPED -> SeekerClawColors.TextDim
+            val telegramDotColor = if (!hasBotToken) shardclawColors.Error else when (status) {
+                ServiceStatus.RUNNING -> shardclawColors.Accent
+                ServiceStatus.STARTING -> shardclawColors.Warning
+                ServiceStatus.ERROR -> shardclawColors.Error
+                ServiceStatus.STOPPED -> shardclawColors.TextDim
             }
 
             val aiSubtitle = if (!hasCredential) "Credential missing" else when (status) {
@@ -672,15 +672,15 @@ fun DashboardScreen(
                 ServiceStatus.ERROR -> "Model error"
                 ServiceStatus.STOPPED -> "Offline"
             }
-            val aiDotColor = if (!hasCredential) SeekerClawColors.Error else when (status) {
+            val aiDotColor = if (!hasCredential) shardclawColors.Error else when (status) {
                 ServiceStatus.RUNNING -> when (health.apiStatus) {
-                    "degraded", "stale" -> SeekerClawColors.Warning
-                    "error" -> SeekerClawColors.Error
-                    else -> SeekerClawColors.Accent
+                    "degraded", "stale" -> shardclawColors.Warning
+                    "error" -> shardclawColors.Error
+                    else -> shardclawColors.Accent
                 }
-                ServiceStatus.STARTING -> SeekerClawColors.Warning
-                ServiceStatus.ERROR -> SeekerClawColors.Error
-                ServiceStatus.STOPPED -> SeekerClawColors.TextDim
+                ServiceStatus.STARTING -> shardclawColors.Warning
+                ServiceStatus.ERROR -> shardclawColors.Error
+                ServiceStatus.STOPPED -> shardclawColors.TextDim
             }
 
             UplinkCard(
@@ -731,10 +731,10 @@ fun DashboardScreen(
                 .height(52.dp),
             shape = shape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (isRunning) SeekerClawColors.Primary else SeekerClawColors.ActionPrimary,
+                containerColor = if (isRunning) shardclawColors.Primary else shardclawColors.ActionPrimary,
                 contentColor = Color.White,
-                disabledContainerColor = SeekerClawColors.BorderSubtle,
-                disabledContentColor = SeekerClawColors.TextDim,
+                disabledContainerColor = shardclawColors.BorderSubtle,
+                disabledContentColor = shardclawColors.TextDim,
             ),
         ) {
             Text(
@@ -750,7 +750,7 @@ fun DashboardScreen(
                 text = "Complete setup to deploy",
                 fontFamily = RethinkSans,
                 fontSize = 12.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
@@ -763,7 +763,7 @@ fun DashboardScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(horizontal = 16.dp, vertical = 14.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -786,7 +786,7 @@ private fun StatMini(label: String, value: String, small: Boolean = false) {
             fontFamily = FontFamily.Monospace,
             fontSize = if (small) 13.sp else 20.sp,
             fontWeight = FontWeight.Bold,
-            color = SeekerClawColors.TextPrimary,
+            color = shardclawColors.TextPrimary,
         )
         if (!small) Spacer(modifier = Modifier.height(2.dp))
         Text(
@@ -794,7 +794,7 @@ private fun StatMini(label: String, value: String, small: Boolean = false) {
             fontFamily = RethinkSans,
             fontSize = 10.sp,
             fontWeight = FontWeight.Medium,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
             letterSpacing = 1.sp,
         )
     }
@@ -812,7 +812,7 @@ private fun UplinkCard(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(SeekerClawColors.Surface, shape)
+            .background(shardclawColors.Surface, shape)
             .padding(horizontal = 16.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -821,7 +821,7 @@ private fun UplinkCard(
             fontFamily = FontFamily.Monospace,
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold,
-            color = SeekerClawColors.Primary,
+            color = shardclawColors.Primary,
             modifier = Modifier.width(44.dp),
         )
 
@@ -831,13 +831,13 @@ private fun UplinkCard(
                 fontFamily = RethinkSans,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             Text(
                 text = subtitle,
                 fontFamily = RethinkSans,
                 fontSize = 12.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
             )
         }
 

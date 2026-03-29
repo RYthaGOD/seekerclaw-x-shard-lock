@@ -1,7 +1,7 @@
-# SAB-AUDIT-v6 — SeekerClaw Agent Self-Knowledge Audit
+# SAB-AUDIT-v6 — shardclaw Agent Self-Knowledge Audit
 
 > **Date:** 2026-02-25
-> **Scope:** Re-audit after BAT-263 (official SeekerClaw socials added to identity)
+> **Scope:** Re-audit after BAT-263 (official shardclaw socials added to identity)
 > **Method:** Full read of buildSystemBlocks() + constants verification
 > **Baseline:** SAB-AUDIT-v5.md (108/108, 100%)
 
@@ -27,7 +27,7 @@ Scoring: ✅ = 3 pts, ⚠️ = 1 pt, ❌ = 0 pts.
 | MAX_HISTORY | 35 (claude.js:174) | "35 messages per chat" (line 787) | ✅ |
 | max_tokens | 4096 (claude.js:1485) | "4096 tokens per response" (line 789) | ✅ |
 | SHELL_ALLOWLIST | **34 commands** (config.js:234-241) | **34 commands listed** (line 627) | ✅ |
-| SECRETS_BLOCKED | config.json, config.yaml, seekerclaw.db (config.js:225) | seekerclaw.db listed as BLOCKED (line 545) | ✅ |
+| SECRETS_BLOCKED | config.json, config.yaml, shardclaw.db (config.js:225) | shardclaw.db listed as BLOCKED (line 545) | ✅ |
 
 No changes to constants since v5.
 
@@ -42,7 +42,7 @@ Previous 20 items held at ✅ from v5. No regressions.
 BAT-263 added 1 line to the identity section (claude.js:369):
 
 ```
-Official channels — Website: seekerclaw.xyz · X: @SeekerClaw · Telegram: t.me/seekerclaw · GitHub: github.com/sepivip/SeekerClaw
+Official channels — Website: shardclaw.xyz · X: @shardclaw · Telegram: t.me/shardclaw · GitHub: github.com/sepivip/shardclaw
 ```
 
 **3-part door test:**
@@ -50,7 +50,7 @@ Official channels — Website: seekerclaw.xyz · X: @SeekerClaw · Telegram: t.m
 | Test | Result |
 |------|--------|
 | Changes what the agent can do? | Yes — can now direct users to official channels |
-| Users likely to ask about it? | Yes — "where do I follow SeekerClaw?" |
+| Users likely to ask about it? | Yes — "where do I follow shardclaw?" |
 | Wrong answer without it? | Yes — would hallucinate or say "I don't know" |
 
 **Score:** ✅ (3 pts) — all 4 links verified against README.md and PROJECT.md

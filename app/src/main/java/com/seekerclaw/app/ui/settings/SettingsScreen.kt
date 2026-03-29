@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.settings
+package com.shardclaw.app.ui.settings
 
 import android.Manifest
 import android.app.Activity
@@ -66,7 +66,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontFamily
-import com.seekerclaw.app.ui.theme.RethinkSans
+import com.shardclaw.app.ui.theme.RethinkSans
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -83,20 +83,20 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import com.seekerclaw.app.config.ConfigClaimImport
-import com.seekerclaw.app.config.ConfigClaimImporter
-import com.seekerclaw.app.config.ConfigManager
-import com.seekerclaw.app.config.McpServerConfig
-import com.seekerclaw.app.config.availableModels
-import com.seekerclaw.app.config.searchProviderById
-import com.seekerclaw.app.qr.QrScannerActivity
-import com.seekerclaw.app.service.OpenClawService
-import com.seekerclaw.app.solana.SolanaAuthActivity
-import com.seekerclaw.app.ui.theme.SeekerClawColors
-import com.seekerclaw.app.util.Analytics
-import com.seekerclaw.app.util.LogCollector
-import com.seekerclaw.app.util.LogLevel
-import com.seekerclaw.app.BuildConfig
+import com.shardclaw.app.config.ConfigClaimImport
+import com.shardclaw.app.config.ConfigClaimImporter
+import com.shardclaw.app.config.ConfigManager
+import com.shardclaw.app.config.McpServerConfig
+import com.shardclaw.app.config.availableModels
+import com.shardclaw.app.config.searchProviderById
+import com.shardclaw.app.qr.QrScannerActivity
+import com.shardclaw.app.service.OpenClawService
+import com.shardclaw.app.solana.SolanaAuthActivity
+import com.shardclaw.app.ui.theme.shardclawColors
+import com.shardclaw.app.util.Analytics
+import com.shardclaw.app.util.LogCollector
+import com.shardclaw.app.util.LogLevel
+import com.shardclaw.app.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -249,7 +249,7 @@ fun SettingsScreen(
             Toast.makeText(
                 context,
                 if (success) "Memory imported. Restart agent to apply."
-                else "Import failed. Ensure the file is a valid SeekerClaw backup.",
+                else "Import failed. Ensure the file is a valid shardclaw backup.",
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -351,12 +351,12 @@ fun SettingsScreen(
         else "*".repeat(token.length)
     } ?: "Not set"
 
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(SeekerClawColors.Background)
+            .background(shardclawColors.Background)
             .padding(20.dp)
             .verticalScroll(rememberScrollState()),
     ) {
@@ -365,7 +365,7 @@ fun SettingsScreen(
             fontFamily = RethinkSans,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = SeekerClawColors.TextPrimary,
+            color = shardclawColors.TextPrimary,
         )
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -378,14 +378,14 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(SeekerClawColors.Surface, shape)
+                .background(shardclawColors.Surface, shape)
                 .padding(16.dp),
         ) {
             Text(
-                text = "Generate a config QR at seekerclaw.xyz and scan it to set up your agent in seconds.",
+                text = "Generate a config QR at shardclaw.xyz and scan it to set up your agent in seconds.",
                 fontFamily = RethinkSans,
                 fontSize = 13.sp,
-                color = SeekerClawColors.TextDim,
+                color = shardclawColors.TextDim,
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -401,7 +401,7 @@ fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 shape = shape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = SeekerClawColors.ActionPrimary,
+                    containerColor = shardclawColors.ActionPrimary,
                     contentColor = androidx.compose.ui.graphics.Color.White,
                 ),
             ) {
@@ -429,7 +429,7 @@ fun SettingsScreen(
                     text = configImportError ?: "",
                     fontFamily = RethinkSans,
                     fontSize = 12.sp,
-                    color = SeekerClawColors.Error,
+                    color = shardclawColors.Error,
                 )
             }
         }
@@ -441,7 +441,7 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape),
+                    .background(shardclawColors.Surface, shape),
             ) {
                 ConfigField(
                     label = "AI Configuration",
@@ -457,7 +457,7 @@ fun SettingsScreen(
                 )
                 ConfigField(
                     label = "Agent Name",
-                    value = config?.agentName?.ifBlank { "SeekerClaw" } ?: "SeekerClaw",
+                    value = config?.agentName?.ifBlank { "shardclaw" } ?: "shardclaw",
                     onClick = {
                         editField = "agentName"
                         editLabel = "Agent Name"
@@ -493,7 +493,7 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(horizontal = 16.dp),
             ) {
                 SettingRow(
@@ -543,7 +543,7 @@ fun SettingsScreen(
                         text = "Enable permissions to unlock device features (camera, GPS, SMS, etc.)",
                         fontFamily = RethinkSans,
                         fontSize = 12.sp,
-                        color = SeekerClawColors.TextSecondary,
+                        color = shardclawColors.TextSecondary,
                         lineHeight = 18.sp,
                         modifier = Modifier.padding(top = 12.dp, bottom = 4.dp),
                     )
@@ -603,7 +603,7 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(16.dp),
             ) {
                 if (walletAddress != null) {
@@ -619,14 +619,14 @@ fun SettingsScreen(
                             text = "Address",
                             fontFamily = RethinkSans,
                             fontSize = 13.sp,
-                            color = SeekerClawColors.TextDim,
+                            color = shardclawColors.TextDim,
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = "${address.take(6)}\u2026${address.takeLast(4)}",
                                 fontFamily = RethinkSans,
                                 fontSize = 13.sp,
-                                color = SeekerClawColors.TextSecondary,
+                                color = shardclawColors.TextSecondary,
                             )
                             TextButton(
                                 onClick = {
@@ -640,7 +640,7 @@ fun SettingsScreen(
                                 Text(
                                     text = "Copy",
                                     fontSize = 12.sp,
-                                    color = SeekerClawColors.TextInteractive,
+                                    color = shardclawColors.TextInteractive,
                                 )
                             }
                         }
@@ -663,7 +663,7 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = SeekerClawColors.Error,
+                        contentColor = shardclawColors.Error,
                     ),
                 ) {
                     Text("Disconnect Wallet", fontFamily = RethinkSans, fontSize = 14.sp)
@@ -675,10 +675,10 @@ fun SettingsScreen(
                         text = walletError!!,
                         fontFamily = RethinkSans,
                         fontSize = 12.sp,
-                        color = SeekerClawColors.Error,
+                        color = shardclawColors.Error,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(SeekerClawColors.Error.copy(alpha = 0.1f), shape)
+                            .background(shardclawColors.Error.copy(alpha = 0.1f), shape)
                             .padding(12.dp),
                     )
                     Spacer(modifier = Modifier.height(12.dp))
@@ -703,9 +703,9 @@ fun SettingsScreen(
                         .height(48.dp),
                     shape = shape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = SeekerClawColors.ActionPrimary,
+                        containerColor = shardclawColors.ActionPrimary,
                         contentColor = androidx.compose.ui.graphics.Color.White,
-                        disabledContainerColor = SeekerClawColors.ActionPrimary.copy(alpha = 0.4f),
+                        disabledContainerColor = shardclawColors.ActionPrimary.copy(alpha = 0.4f),
                         disabledContentColor = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.6f),
                     ),
                 ) {
@@ -727,7 +727,7 @@ fun SettingsScreen(
                     text = "Opens Phantom, Solflare, or Seeker Vault",
                     fontFamily = RethinkSans,
                     fontSize = 11.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -777,14 +777,14 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SeekerClawColors.Surface, shape)
+                    .background(shardclawColors.Surface, shape)
                     .padding(16.dp),
             ) {
                 Text(
                     text = SettingsHelpTexts.MCP_SERVERS,
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -794,7 +794,7 @@ fun SettingsScreen(
                         text = "No servers configured",
                         fontFamily = RethinkSans,
                         fontSize = 13.sp,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                         fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
                     )
                 } else {
@@ -812,13 +812,13 @@ fun SettingsScreen(
                                     fontFamily = RethinkSans,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = SeekerClawColors.TextPrimary,
+                                    color = shardclawColors.TextPrimary,
                                 )
                                 Text(
                                     text = server.url,
                                     fontFamily = FontFamily.Monospace,
                                     fontSize = 11.sp,
-                                    color = SeekerClawColors.TextDim,
+                                    color = shardclawColors.TextDim,
                                     maxLines = 1,
                                     overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
                                 )
@@ -835,9 +835,9 @@ fun SettingsScreen(
                                     },
                                     colors = SwitchDefaults.colors(
                                         checkedThumbColor = androidx.compose.ui.graphics.Color.White,
-                                        checkedTrackColor = SeekerClawColors.ActionPrimary,
+                                        checkedTrackColor = shardclawColors.ActionPrimary,
                                         uncheckedThumbColor = androidx.compose.ui.graphics.Color.White,
-                                        uncheckedTrackColor = SeekerClawColors.BorderSubtle,
+                                        uncheckedTrackColor = shardclawColors.BorderSubtle,
                                         uncheckedBorderColor = androidx.compose.ui.graphics.Color.Transparent,
                                     ),
                                 )
@@ -848,7 +848,7 @@ fun SettingsScreen(
                                     Icon(
                                         imageVector = Icons.Default.Edit,
                                         contentDescription = "Edit server",
-                                        tint = SeekerClawColors.TextDim,
+                                        tint = shardclawColors.TextDim,
                                     )
                                 }
                                 IconButton(onClick = {
@@ -858,7 +858,7 @@ fun SettingsScreen(
                                     Icon(
                                         imageVector = Icons.Default.Delete,
                                         contentDescription = "Remove server",
-                                        tint = SeekerClawColors.Error,
+                                        tint = shardclawColors.Error,
                                     )
                                 }
                             }
@@ -876,7 +876,7 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = SeekerClawColors.ActionPrimary,
+                        containerColor = shardclawColors.ActionPrimary,
                         contentColor = androidx.compose.ui.graphics.Color.White,
                     ),
                 ) {
@@ -894,13 +894,13 @@ fun SettingsScreen(
                     onClick = {
                         Analytics.featureUsed("memory_exported")
                         val timestamp = android.text.format.DateFormat.format("yyyyMMdd_HHmm", Date())
-                        exportLauncher.launch("seekerclaw_backup_$timestamp.zip")
+                        exportLauncher.launch("shardclaw_backup_$timestamp.zip")
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
-                    border = androidx.compose.foundation.BorderStroke(1.dp, SeekerClawColors.BorderSubtle),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, shardclawColors.BorderSubtle),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = SeekerClawColors.TextPrimary,
+                        contentColor = shardclawColors.TextPrimary,
                     ),
                 ) {
                     Text(
@@ -919,9 +919,9 @@ fun SettingsScreen(
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
-                    border = androidx.compose.foundation.BorderStroke(1.dp, SeekerClawColors.BorderSubtle),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, shardclawColors.BorderSubtle),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = SeekerClawColors.TextPrimary,
+                        contentColor = shardclawColors.TextPrimary,
                     ),
                 ) {
                     Text(
@@ -936,13 +936,13 @@ fun SettingsScreen(
                 OutlinedButton(
                     onClick = {
                         val timestamp = android.text.format.DateFormat.format("yyyyMMdd", java.util.Date())
-                        skillsExportLauncher.launch("seekerclaw_skills_$timestamp.zip")
+                        skillsExportLauncher.launch("shardclaw_skills_$timestamp.zip")
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
-                    border = androidx.compose.foundation.BorderStroke(1.dp, SeekerClawColors.BorderSubtle),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, shardclawColors.BorderSubtle),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = SeekerClawColors.TextPrimary,
+                        contentColor = shardclawColors.TextPrimary,
                     ),
                 ) {
                     Text(
@@ -960,9 +960,9 @@ fun SettingsScreen(
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
-                    border = androidx.compose.foundation.BorderStroke(1.dp, SeekerClawColors.BorderSubtle),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, shardclawColors.BorderSubtle),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = SeekerClawColors.TextPrimary,
+                        contentColor = shardclawColors.TextPrimary,
                     ),
                 ) {
                     Text(
@@ -982,9 +982,9 @@ fun SettingsScreen(
                 onClick = { showRunSetupDialog = true },
                 modifier = Modifier.fillMaxWidth(),
                 shape = shape,
-                border = androidx.compose.foundation.BorderStroke(1.dp, SeekerClawColors.BorderSubtle),
+                border = androidx.compose.foundation.BorderStroke(1.dp, shardclawColors.BorderSubtle),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = SeekerClawColors.TextPrimary,
+                    contentColor = shardclawColors.TextPrimary,
                 ),
             ) {
                 Text(
@@ -1005,8 +1005,8 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = SeekerClawColors.ActionDanger,
-                        contentColor = SeekerClawColors.ActionDangerText,
+                        containerColor = shardclawColors.ActionDanger,
+                        contentColor = shardclawColors.ActionDangerText,
                     ),
                 ) {
                     Text(
@@ -1023,17 +1023,17 @@ fun SettingsScreen(
                     onClick = { showClearMemoryDialog = true },
                     modifier = Modifier.fillMaxWidth(),
                     shape = shape,
-                    border = BorderStroke(1.dp, SeekerClawColors.Error),
+                    border = BorderStroke(1.dp, shardclawColors.Error),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = SeekerClawColors.ActionDanger,
-                        contentColor = SeekerClawColors.ActionDangerText,
+                        containerColor = shardclawColors.ActionDanger,
+                        contentColor = shardclawColors.ActionDangerText,
                     ),
                 ) {
                     Icon(
                         Icons.Default.Warning,
                         contentDescription = "Warning",
                         modifier = Modifier.size(16.dp),
-                        tint = SeekerClawColors.ActionDangerText,
+                        tint = shardclawColors.ActionDangerText,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -1056,7 +1056,7 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(SeekerClawColors.Surface, shape)
+                .background(shardclawColors.Surface, shape)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -1077,7 +1077,7 @@ fun SettingsScreen(
                     "Edit $editLabel",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
             },
             text = {
@@ -1087,7 +1087,7 @@ fun SettingsScreen(
                             "Changing this requires an agent restart.",
                             fontFamily = RethinkSans,
                             fontSize = 12.sp,
-                            color = SeekerClawColors.Warning,
+                            color = shardclawColors.Warning,
                             modifier = Modifier.padding(bottom = 12.dp),
                         )
                     }
@@ -1100,12 +1100,12 @@ fun SettingsScreen(
                         textStyle = androidx.compose.ui.text.TextStyle(
                             fontFamily = FontFamily.Monospace,
                             fontSize = 14.sp,
-                            color = SeekerClawColors.TextPrimary,
+                            color = shardclawColors.TextPrimary,
                         ),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = SeekerClawColors.Primary,
-                            unfocusedBorderColor = SeekerClawColors.TextDim.copy(alpha = 0.3f),
-                            cursorColor = SeekerClawColors.Primary,
+                            focusedBorderColor = shardclawColors.Primary,
+                            unfocusedBorderColor = shardclawColors.TextDim.copy(alpha = 0.3f),
+                            cursorColor = shardclawColors.Primary,
                         ),
                     )
                 }
@@ -1128,7 +1128,7 @@ fun SettingsScreen(
                         "Save",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.ActionPrimary,
+                        color = shardclawColors.ActionPrimary,
                     )
                 }
             },
@@ -1137,11 +1137,11 @@ fun SettingsScreen(
                     Text(
                         "Cancel",
                         fontFamily = RethinkSans,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -1163,7 +1163,7 @@ fun SettingsScreen(
                     "Reset Config",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.Error,
+                    color = shardclawColors.Error,
                 )
             },
             text = {
@@ -1171,7 +1171,7 @@ fun SettingsScreen(
                     "This will stop the agent, clear all config, and return to setup. This cannot be undone.",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextSecondary,
+                    color = shardclawColors.TextSecondary,
                     lineHeight = 20.sp,
                 )
             },
@@ -1187,7 +1187,7 @@ fun SettingsScreen(
                         "Confirm",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.Error,
+                        color = shardclawColors.Error,
                     )
                 }
             },
@@ -1196,11 +1196,11 @@ fun SettingsScreen(
                     Text(
                         "Cancel",
                         fontFamily = RethinkSans,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -1214,7 +1214,7 @@ fun SettingsScreen(
                     "Import Memory",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.Warning,
+                    color = shardclawColors.Warning,
                 )
             },
             text = {
@@ -1222,7 +1222,7 @@ fun SettingsScreen(
                     "This will overwrite personality, memory, and skills with the backup. A safety backup is created automatically before importing.",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextSecondary,
+                    color = shardclawColors.TextSecondary,
                     lineHeight = 20.sp,
                 )
             },
@@ -1235,7 +1235,7 @@ fun SettingsScreen(
                         "Select File",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.Warning,
+                        color = shardclawColors.Warning,
                     )
                 }
             },
@@ -1244,11 +1244,11 @@ fun SettingsScreen(
                     Text(
                         "Cancel",
                         fontFamily = RethinkSans,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -1272,7 +1272,7 @@ fun SettingsScreen(
                     "Apply Imported Config",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.Warning,
+                    color = shardclawColors.Warning,
                 )
             },
             text = {
@@ -1290,7 +1290,7 @@ fun SettingsScreen(
                         "Apply this configuration to your device?",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextSecondary,
+                    color = shardclawColors.TextSecondary,
                     lineHeight = 20.sp,
                 )
             },
@@ -1336,7 +1336,7 @@ fun SettingsScreen(
                         "Apply",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.Warning,
+                        color = shardclawColors.Warning,
                     )
                 }
             },
@@ -1348,11 +1348,11 @@ fun SettingsScreen(
                     Text(
                         "Cancel",
                         fontFamily = RethinkSans,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -1366,7 +1366,7 @@ fun SettingsScreen(
                     "Run Setup Again",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
             },
             text = {
@@ -1374,7 +1374,7 @@ fun SettingsScreen(
                     "This will restart the setup flow. Your current config will be overwritten when you complete setup.",
                     fontFamily = RethinkSans,
                     fontSize = 13.sp,
-                    color = SeekerClawColors.TextSecondary,
+                    color = shardclawColors.TextSecondary,
                     lineHeight = 20.sp,
                 )
             },
@@ -1389,7 +1389,7 @@ fun SettingsScreen(
                         "Continue",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.Primary,
+                        color = shardclawColors.Primary,
                     )
                 }
             },
@@ -1398,11 +1398,11 @@ fun SettingsScreen(
                     Text(
                         "Cancel",
                         fontFamily = RethinkSans,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -1422,7 +1422,7 @@ fun SettingsScreen(
                     "Wipe Memory",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.Error,
+                    color = shardclawColors.Error,
                 )
             },
             text = {
@@ -1431,7 +1431,7 @@ fun SettingsScreen(
                         "This will delete all memory files. The agent will lose all accumulated knowledge. This cannot be undone.",
                         fontFamily = RethinkSans,
                         fontSize = 13.sp,
-                        color = SeekerClawColors.TextSecondary,
+                        color = shardclawColors.TextSecondary,
                         lineHeight = 20.sp,
                     )
                     OutlinedTextField(
@@ -1446,13 +1446,13 @@ fun SettingsScreen(
                         },
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = SeekerClawColors.Error,
-                            unfocusedBorderColor = SeekerClawColors.TextDim,
-                            focusedLabelColor = SeekerClawColors.Error,
-                            unfocusedLabelColor = SeekerClawColors.TextDim,
-                            cursorColor = SeekerClawColors.Error,
-                            focusedTextColor = SeekerClawColors.TextPrimary,
-                            unfocusedTextColor = SeekerClawColors.TextPrimary,
+                            focusedBorderColor = shardclawColors.Error,
+                            unfocusedBorderColor = shardclawColors.TextDim,
+                            focusedLabelColor = shardclawColors.Error,
+                            unfocusedLabelColor = shardclawColors.TextDim,
+                            cursorColor = shardclawColors.Error,
+                            focusedTextColor = shardclawColors.TextPrimary,
+                            unfocusedTextColor = shardclawColors.TextPrimary,
                         ),
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -1472,7 +1472,7 @@ fun SettingsScreen(
                         "Confirm",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = if (wipeConfirmed) SeekerClawColors.Error else SeekerClawColors.TextDim,
+                        color = if (wipeConfirmed) shardclawColors.Error else shardclawColors.TextDim,
                     )
                 }
             },
@@ -1484,11 +1484,11 @@ fun SettingsScreen(
                     Text(
                         "Cancel",
                         fontFamily = RethinkSans,
-                        color = SeekerClawColors.TextDim,
+                        color = shardclawColors.TextDim,
                     )
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -1506,7 +1506,7 @@ fun SettingsScreen(
                     if (editingMcpServer != null) "Edit MCP Server" else "Add MCP Server",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
             },
             text = {
@@ -1518,13 +1518,13 @@ fun SettingsScreen(
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = SeekerClawColors.Accent,
-                            unfocusedBorderColor = SeekerClawColors.BorderSubtle,
-                            focusedTextColor = SeekerClawColors.TextPrimary,
-                            unfocusedTextColor = SeekerClawColors.TextPrimary,
-                            cursorColor = SeekerClawColors.Accent,
-                            focusedLabelColor = SeekerClawColors.Accent,
-                            unfocusedLabelColor = SeekerClawColors.TextDim,
+                            focusedBorderColor = shardclawColors.Accent,
+                            unfocusedBorderColor = shardclawColors.BorderSubtle,
+                            focusedTextColor = shardclawColors.TextPrimary,
+                            unfocusedTextColor = shardclawColors.TextPrimary,
+                            cursorColor = shardclawColors.Accent,
+                            focusedLabelColor = shardclawColors.Accent,
+                            unfocusedLabelColor = shardclawColors.TextDim,
                         ),
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -1532,17 +1532,17 @@ fun SettingsScreen(
                         value = mcpUrl,
                         onValueChange = { mcpUrl = it },
                         label = { Text("Server URL", fontFamily = RethinkSans) },
-                        placeholder = { Text("https://mcp.example.com/mcp", color = SeekerClawColors.TextDim) },
+                        placeholder = { Text("https://mcp.example.com/mcp", color = shardclawColors.TextDim) },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = SeekerClawColors.Accent,
-                            unfocusedBorderColor = SeekerClawColors.BorderSubtle,
-                            focusedTextColor = SeekerClawColors.TextPrimary,
-                            unfocusedTextColor = SeekerClawColors.TextPrimary,
-                            cursorColor = SeekerClawColors.Accent,
-                            focusedLabelColor = SeekerClawColors.Accent,
-                            unfocusedLabelColor = SeekerClawColors.TextDim,
+                            focusedBorderColor = shardclawColors.Accent,
+                            unfocusedBorderColor = shardclawColors.BorderSubtle,
+                            focusedTextColor = shardclawColors.TextPrimary,
+                            unfocusedTextColor = shardclawColors.TextPrimary,
+                            cursorColor = shardclawColors.Accent,
+                            focusedLabelColor = shardclawColors.Accent,
+                            unfocusedLabelColor = shardclawColors.TextDim,
                         ),
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -1554,13 +1554,13 @@ fun SettingsScreen(
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = SeekerClawColors.Accent,
-                            unfocusedBorderColor = SeekerClawColors.BorderSubtle,
-                            focusedTextColor = SeekerClawColors.TextPrimary,
-                            unfocusedTextColor = SeekerClawColors.TextPrimary,
-                            cursorColor = SeekerClawColors.Accent,
-                            focusedLabelColor = SeekerClawColors.Accent,
-                            unfocusedLabelColor = SeekerClawColors.TextDim,
+                            focusedBorderColor = shardclawColors.Accent,
+                            unfocusedBorderColor = shardclawColors.BorderSubtle,
+                            focusedTextColor = shardclawColors.TextPrimary,
+                            unfocusedTextColor = shardclawColors.TextPrimary,
+                            cursorColor = shardclawColors.Accent,
+                            focusedLabelColor = shardclawColors.Accent,
+                            unfocusedLabelColor = shardclawColors.TextDim,
                         ),
                     )
                 }
@@ -1623,16 +1623,16 @@ fun SettingsScreen(
                         "Save",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = if (mcpName.isNotBlank() && mcpUrl.isNotBlank()) SeekerClawColors.Accent else SeekerClawColors.TextDim,
+                        color = if (mcpName.isNotBlank() && mcpUrl.isNotBlank()) shardclawColors.Accent else shardclawColors.TextDim,
                     )
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showMcpDialog = false }) {
-                    Text("Cancel", fontFamily = RethinkSans, color = SeekerClawColors.TextDim)
+                    Text("Cancel", fontFamily = RethinkSans, color = shardclawColors.TextDim)
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -1646,7 +1646,7 @@ fun SettingsScreen(
                     "Remove Server",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.TextPrimary,
+                    color = shardclawColors.TextPrimary,
                 )
             },
             text = {
@@ -1654,7 +1654,7 @@ fun SettingsScreen(
                     "Remove \"${deletingMcpServer?.name}\"? Its tools will no longer be available to your agent.",
                     fontFamily = RethinkSans,
                     fontSize = 14.sp,
-                    color = SeekerClawColors.TextSecondary,
+                    color = shardclawColors.TextSecondary,
                 )
             },
             confirmButton = {
@@ -1669,16 +1669,16 @@ fun SettingsScreen(
                         "Remove",
                         fontFamily = RethinkSans,
                         fontWeight = FontWeight.Bold,
-                        color = SeekerClawColors.Error,
+                        color = shardclawColors.Error,
                     )
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteMcpDialog = false }) {
-                    Text("Cancel", fontFamily = RethinkSans, color = SeekerClawColors.TextDim)
+                    Text("Cancel", fontFamily = RethinkSans, color = shardclawColors.TextDim)
                 }
             },
-            containerColor = SeekerClawColors.Surface,
+            containerColor = shardclawColors.Surface,
             shape = shape,
         )
     }
@@ -1691,7 +1691,7 @@ private fun SectionLabel(title: String) {
         fontFamily = RethinkSans,
         fontSize = 11.sp,
         fontWeight = FontWeight.Medium,
-        color = SeekerClawColors.TextSecondary,
+        color = shardclawColors.TextSecondary,
         letterSpacing = 1.sp,
     )
 }
@@ -1717,13 +1717,13 @@ private fun CollapsibleSection(
             fontFamily = RethinkSans,
             fontSize = 11.sp,
             fontWeight = FontWeight.Medium,
-            color = SeekerClawColors.TextSecondary,
+            color = shardclawColors.TextSecondary,
             letterSpacing = 1.sp,
         )
         Icon(
             imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
             contentDescription = if (expanded) "Collapse $title" else "Expand $title",
-            tint = SeekerClawColors.TextDim,
+            tint = shardclawColors.TextDim,
             modifier = Modifier.size(20.dp),
         )
     }
@@ -1772,13 +1772,13 @@ private fun ConfigField(
                     text = label,
                     fontFamily = RethinkSans,
                     fontSize = 12.sp,
-                    color = SeekerClawColors.TextDim,
+                    color = shardclawColors.TextDim,
                 )
                 if (isRequired) {
                     Text(
                         text = " *",
                         fontSize = 12.sp,
-                        color = SeekerClawColors.Error,
+                        color = shardclawColors.Error,
                     )
                 }
                 if (info != null) {
@@ -1788,7 +1788,7 @@ private fun ConfigField(
                         Icon(
                             Icons.Outlined.Info,
                             contentDescription = "More info about $label",
-                            tint = SeekerClawColors.TextDim,
+                            tint = shardclawColors.TextDim,
                             modifier = Modifier.size(14.dp),
                         )
                     }
@@ -1799,7 +1799,7 @@ private fun ConfigField(
                     text = "Edit",
                     fontFamily = RethinkSans,
                     fontSize = 12.sp,
-                    color = SeekerClawColors.TextInteractive,
+                    color = shardclawColors.TextInteractive,
                 )
             }
         }
@@ -1808,12 +1808,12 @@ private fun ConfigField(
             text = value,
             fontFamily = RethinkSans,
             fontSize = 14.sp,
-            color = SeekerClawColors.TextPrimary,
+            color = shardclawColors.TextPrimary,
         )
     }
     if (showDivider) {
         androidx.compose.material3.HorizontalDivider(
-            color = SeekerClawColors.TextDim.copy(alpha = 0.1f),
+            color = shardclawColors.TextDim.copy(alpha = 0.1f),
             modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
@@ -1845,14 +1845,14 @@ private fun SettingRow(
                 text = label,
                 fontFamily = RethinkSans,
                 fontSize = 14.sp,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             if (info != null) {
                 IconButton(onClick = { showInfo = true }) {
                     Icon(
                         Icons.Outlined.Info,
                         contentDescription = "More info about $label",
-                        tint = SeekerClawColors.TextDim,
+                        tint = shardclawColors.TextDim,
                         modifier = Modifier.size(14.dp),
                     )
                 }
@@ -1866,9 +1866,9 @@ private fun SettingRow(
             },
             colors = SwitchDefaults.colors(
                 checkedThumbColor = androidx.compose.ui.graphics.Color.White,
-                checkedTrackColor = SeekerClawColors.ActionPrimary,
+                checkedTrackColor = shardclawColors.ActionPrimary,
                 uncheckedThumbColor = androidx.compose.ui.graphics.Color.White,
-                uncheckedTrackColor = SeekerClawColors.BorderSubtle,
+                uncheckedTrackColor = shardclawColors.BorderSubtle,
                 uncheckedBorderColor = androidx.compose.ui.graphics.Color.Transparent,
             ),
         )
@@ -1889,13 +1889,13 @@ private fun InfoRow(label: String, value: String) {
             text = label,
             fontFamily = RethinkSans,
             fontSize = 13.sp,
-            color = SeekerClawColors.TextDim,
+            color = shardclawColors.TextDim,
         )
         Text(
             text = value,
             fontFamily = RethinkSans,
             fontSize = 13.sp,
-            color = SeekerClawColors.TextSecondary,
+            color = shardclawColors.TextSecondary,
         )
     }
 }
@@ -1924,14 +1924,14 @@ private fun PermissionRow(
                 text = label,
                 fontFamily = RethinkSans,
                 fontSize = 14.sp,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
             if (info != null) {
                 IconButton(onClick = { showInfo = true }) {
                     Icon(
                         Icons.Outlined.Info,
                         contentDescription = "More info about $label",
-                        tint = SeekerClawColors.TextDim,
+                        tint = shardclawColors.TextDim,
                         modifier = Modifier.size(14.dp),
                     )
                 }
@@ -1949,9 +1949,9 @@ private fun PermissionRow(
             },
             colors = SwitchDefaults.colors(
                 checkedThumbColor = androidx.compose.ui.graphics.Color.White,
-                checkedTrackColor = SeekerClawColors.ActionPrimary,
+                checkedTrackColor = shardclawColors.ActionPrimary,
                 uncheckedThumbColor = androidx.compose.ui.graphics.Color.White,
-                uncheckedTrackColor = SeekerClawColors.BorderSubtle,
+                uncheckedTrackColor = shardclawColors.BorderSubtle,
                 uncheckedBorderColor = androidx.compose.ui.graphics.Color.Transparent,
             ),
         )
@@ -1979,7 +1979,7 @@ private fun requestPermissionOrOpenSettings(
     if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
         launcher.launch(permission)
     } else {
-        val prefs = context.getSharedPreferences("seekerclaw_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("shardclaw_prefs", Context.MODE_PRIVATE)
         val askedKey = "permission_asked_$permission"
         if (prefs.getBoolean(askedKey, false)) {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
@@ -2006,7 +2006,7 @@ private fun RevokePermissionDialog(
     onOpenSettings: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -2015,22 +2015,22 @@ private fun RevokePermissionDialog(
                 fontFamily = RethinkSans,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
         },
         text = {
             Text(
-                text = "Android doesn't allow apps to revoke their own permissions.\n\nTo disable $permissionLabel, go to:\nSystem Settings \u2192 Apps \u2192 SeekerClaw \u2192 Permissions",
+                text = "Android doesn't allow apps to revoke their own permissions.\n\nTo disable $permissionLabel, go to:\nSystem Settings \u2192 Apps \u2192 shardclaw \u2192 Permissions",
                 fontFamily = RethinkSans,
                 fontSize = 14.sp,
-                color = SeekerClawColors.TextSecondary,
+                color = shardclawColors.TextSecondary,
                 lineHeight = 20.sp,
             )
         },
         confirmButton = {
             Button(
                 onClick = onOpenSettings,
-                colors = ButtonDefaults.buttonColors(containerColor = SeekerClawColors.ActionPrimary),
+                colors = ButtonDefaults.buttonColors(containerColor = shardclawColors.ActionPrimary),
                 shape = shape,
             ) {
                 Text("Open Settings", fontFamily = RethinkSans, fontWeight = FontWeight.Medium)
@@ -2038,10 +2038,10 @@ private fun RevokePermissionDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel", fontFamily = RethinkSans, color = SeekerClawColors.TextSecondary)
+                Text("Cancel", fontFamily = RethinkSans, color = shardclawColors.TextSecondary)
             }
         },
-        containerColor = SeekerClawColors.Surface,
+        containerColor = shardclawColors.Surface,
         shape = shape,
     )
 }
@@ -2054,7 +2054,7 @@ private fun maskSensitive(value: String): String {
 
 @Composable
 private fun InfoDialog(title: String, message: String, onDismiss: () -> Unit) {
-    val shape = RoundedCornerShape(SeekerClawColors.CornerRadius)
+    val shape = RoundedCornerShape(shardclawColors.CornerRadius)
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -2063,7 +2063,7 @@ private fun InfoDialog(title: String, message: String, onDismiss: () -> Unit) {
                 fontFamily = RethinkSans,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                color = SeekerClawColors.TextPrimary,
+                color = shardclawColors.TextPrimary,
             )
         },
         text = {
@@ -2071,7 +2071,7 @@ private fun InfoDialog(title: String, message: String, onDismiss: () -> Unit) {
                 text = message,
                 fontFamily = RethinkSans,
                 fontSize = 13.sp,
-                color = SeekerClawColors.TextSecondary,
+                color = shardclawColors.TextSecondary,
                 lineHeight = 20.sp,
             )
         },
@@ -2081,11 +2081,11 @@ private fun InfoDialog(title: String, message: String, onDismiss: () -> Unit) {
                     "Got it",
                     fontFamily = RethinkSans,
                     fontWeight = FontWeight.Bold,
-                    color = SeekerClawColors.Primary,
+                    color = shardclawColors.Primary,
                 )
             }
         },
-        containerColor = SeekerClawColors.Surface,
+        containerColor = shardclawColors.Surface,
         shape = shape,
     )
 }

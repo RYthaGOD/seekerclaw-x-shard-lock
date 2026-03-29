@@ -149,7 +149,7 @@ function getVariants(token, model) {
 // ── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
-    console.log('🧪 SeekerClaw Header Combination Test');
+    console.log('🧪 shardclaw Header Combination Test');
     console.log(`   Time: ${new Date().toISOString()}`);
 
     const token = process.env.SETUP_TOKEN;

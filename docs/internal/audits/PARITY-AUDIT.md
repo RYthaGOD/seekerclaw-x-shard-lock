@@ -1,4 +1,4 @@
-# SeekerClaw vs OpenClaw — Feature Parity Audit
+# shardclaw vs OpenClaw — Feature Parity Audit
 
 **Date:** 2026-02-20 | **Codebase:** 10,732 LOC across 15 JS modules | **Tools:** 56 total
 
@@ -35,7 +35,7 @@
 | Android bridge | 13 | ⚠️ UNTESTED | Battery, storage, clipboard, contacts, SMS, call, location, TTS, camera, apps — all via HTTP bridge to Kotlin layer |
 | Solana wallet | 7 | ⚠️ UNTESTED | address, balance, history, send, price, quote, swap — all via RPC + Jupiter Ultra |
 | Jupiter DeFi | 9 | ⚠️ UNTESTED | trigger orders, DCA, token search, token security, holdings — comprehensive validation |
-| **Total** | **56** | | **OpenClaw core: ~29 tools. SeekerClaw adds 27 mobile/Solana tools** |
+| **Total** | **56** | | **OpenClaw core: ~29 tools. shardclaw adds 27 mobile/Solana tools** |
 
 ## Memory System
 
@@ -50,7 +50,7 @@
 | Memory indexing | ✅ WORKING | 500-char chunks with 100-char overlap, auto-reindex on write |
 | Session summaries → memory | ✅ WORKING | Auto-triggered (idle 10m, 50msg, 30min, `/new`, shutdown), indexed into SQL.js |
 | FTS5 full-text search | ❌ MISSING | SQL.js doesn't support FTS5 extensions. Keyword matching is the workaround |
-| Vector embeddings | ❌ MISSING | Requires Node 22+ native bindings. SeekerClaw runs Node 18 |
+| Vector embeddings | ❌ MISSING | Requires Node 22+ native bindings. shardclaw runs Node 18 |
 | Line citations | ❌ MISSING | Not implemented — search returns file path + snippet but no line citations |
 
 ## Cron / Scheduling
@@ -210,18 +210,18 @@
 | Web Search | 3 | 2 | 0 | **100%** (code complete) |
 | File Ops | 5 | 0 | 0 | **100%** |
 | Shell / JS Eval | 0 | 2 | 1 | **~67%** (no standalone node binary — impossible) |
-| Solana / DeFi | 0 | 12 | 0 | **N/A** (SeekerClaw-only, exceeds OpenClaw) |
+| Solana / DeFi | 0 | 12 | 0 | **N/A** (shardclaw-only, exceeds OpenClaw) |
 | MCP Client | 8 | 0 | 0 | **100%** |
 | Error Recovery | 8 | 0 | 0 | **100%** |
 | Telegram Features | 10 | 0 | 3 | **~77%** (no edit, stickers, reply keyboards) |
 
-**Overall: ~90% feature parity** with OpenClaw. The ❌ gaps are either impossible (Node 18 constraint), intentional (mobile-first design), or minor (message editing, stickers). SeekerClaw **exceeds** OpenClaw with 27 extra tools (Solana, Jupiter, Android bridge).
+**Overall: ~90% feature parity** with OpenClaw. The ❌ gaps are either impossible (Node 18 constraint), intentional (mobile-first design), or minor (message editing, stickers). shardclaw **exceeds** OpenClaw with 27 extra tools (Solana, Jupiter, Android bridge).
 
 ---
 
 ## Architectural Differences
 
-| Aspect | OpenClaw | SeekerClaw | Notes |
+| Aspect | OpenClaw | shardclaw | Notes |
 |--------|----------|-----------|-------|
 | Language | TypeScript / Node 22 | JavaScript / Node 18 | Mobile constraint |
 | Database | Native SQLite (`node:sqlite`) | SQL.js (WASM) | No native bindings needed |
@@ -239,7 +239,7 @@
 - ✅ Prompt injection defense (10 attack vector patterns)
 - ✅ Shell command allowlist (whitelist > blacklist)
 - ✅ Dangerous module blocks (child_process, vm, cluster)
-- ✅ Sensitive file protection (config.json, config.yaml, seekerclaw.db)
+- ✅ Sensitive file protection (config.json, config.yaml, shardclaw.db)
 - ✅ Environment variable filtering in child processes
 - ✅ Log redaction (API keys, tokens redacted)
 - ✅ Skill install validation (suspicious pattern detection + 1MB limit)

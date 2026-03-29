@@ -1,4 +1,4 @@
-// SeekerClaw — config.js
+// ShardClaw — config.js
 // Root module: configuration, constants, logging. Zero external dependencies.
 
 const fs = require('fs');
@@ -73,7 +73,7 @@ function log(msg, level = 'INFO') {
     try { fs.appendFileSync(debugLog, line); } catch (_) {}
 }
 
-log('Starting SeekerClaw AI Agent...', 'DEBUG');
+log('Starting ShardClaw AI Agent...', 'DEBUG');
 log(`Node.js ${process.version} on ${process.platform} ${process.arch}`, 'DEBUG');
 log(`Workspace: ${workDir}`, 'DEBUG');
 
@@ -114,9 +114,9 @@ const _defaultModel = PROVIDER === 'openai' ? 'gpt-5.2'
     : PROVIDER === 'openrouter' ? 'anthropic/claude-sonnet-4-6'
     : 'claude-opus-4-6';
 const MODEL = config.model || _defaultModel;
-const AGENT_NAME = config.agentName || 'SeekerClaw';
+const AGENT_NAME = config.agentName || 'ShardClaw';
 let BRIDGE_TOKEN = normalizeSecret(config.bridgeToken || '');
-const USER_AGENT = 'SeekerClaw/1.0 (Android; +https://seekerclaw.com)';
+const USER_AGENT = 'ShardClaw/1.0 (Android; +https://ShardClaw.com)';
 
 // BAT-244: API timeout config — config.json values > env vars > defaults
 // _safeInt: parse to int, return null on NaN so ?? default applies correctly (0 is preserved)
@@ -200,7 +200,7 @@ const HEARTBEAT_PATH = path.join(workDir, 'HEARTBEAT.md');
 const MEMORY_DIR = path.join(workDir, 'memory');
 const SKILLS_DIR = path.join(workDir, 'skills');
 const TASKS_DIR = path.join(workDir, 'tasks');  // P2.2: disk-backed task checkpoints
-const DB_PATH = path.join(workDir, 'seekerclaw.db');
+const DB_PATH = path.join(workDir, 'ShardClaw.db');
 
 // Ensure directories exist
 if (!fs.existsSync(MEMORY_DIR)) {
@@ -245,7 +245,7 @@ function truncateToolResult(text) {
 // SENSITIVE FILE BLOCKLIST (shared by read tool, js_eval, delete tool)
 // ============================================================================
 
-const SECRETS_BLOCKED = new Set(['config.js', 'config.json', 'config.yaml', 'seekerclaw.db']);
+const SECRETS_BLOCKED = new Set(['config.js', 'config.json', 'config.yaml', 'ShardClaw.db']);
 
 // ============================================================================
 // SHELL EXEC ALLOWLIST (shared by tools.js and skills.js requirements gating)

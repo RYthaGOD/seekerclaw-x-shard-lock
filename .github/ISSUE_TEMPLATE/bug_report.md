@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug to help us improve SeekerClaw
+about: Report a bug to help us improve shardclaw
 title: "[Bug] "
 labels: bug
 assignees: ''

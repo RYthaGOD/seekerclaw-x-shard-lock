@@ -1,4 +1,4 @@
-package com.seekerclaw.app.ui.settings
+package com.shardclaw.app.ui.settings
 
 /**
  * Centralized info/tooltip texts for all settings.
@@ -99,7 +99,7 @@ object SettingsHelpTexts {
         "Turn this on if you want your agent always available."
 
     const val ANALYTICS =
-        "Send anonymous usage data (service starts, model selection, feature usage) to help improve SeekerClaw. " +
+        "Send anonymous usage data (service starts, model selection, feature usage) to help improve shardclaw. " +
         "No personal data, messages, or API keys are ever collected. " +
         "You can turn this off at any time."
 

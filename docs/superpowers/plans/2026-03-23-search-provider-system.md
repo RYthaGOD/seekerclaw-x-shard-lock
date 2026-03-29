@@ -27,7 +27,7 @@
 | `tools/web.js` | **Modify** | Remove fallback chain. Replace with single-provider dispatch using `config.searchProvider`. Update imports (remove DDG, add new providers). |
 | `config.js` | **Modify** | Add `searchProvider`, `exaApiKey`, `tavilyApiKey`, `firecrawlApiKey` to config loading + `_knownKeyMap`. Keep `braveApiKey`, `perplexityApiKey`. |
 
-### Kotlin (Android) — `app/src/main/java/com/seekerclaw/app/`
+### Kotlin (Android) — `app/src/main/java/com/shardclaw/app/`
 
 | File | Action | Responsibility |
 |------|--------|----------------|

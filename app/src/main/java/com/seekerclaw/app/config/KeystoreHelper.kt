@@ -1,4 +1,4 @@
-package com.seekerclaw.app.config
+package com.shardclaw.app.config
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -9,7 +9,7 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
 object KeystoreHelper {
-    private const val KEY_ALIAS = "seekerclaw_config_key"
+    private const val KEY_ALIAS = "shardclaw_config_key"
     private const val ANDROID_KEYSTORE = "AndroidKeyStore"
     private const val TRANSFORMATION = "AES/GCM/NoPadding"
     private const val GCM_TAG_LENGTH = 128

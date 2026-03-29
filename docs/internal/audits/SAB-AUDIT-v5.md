@@ -1,4 +1,4 @@
-# SAB-AUDIT-v5 — SeekerClaw Agent Self-Knowledge Audit
+# SAB-AUDIT-v5 — shardclaw Agent Self-Knowledge Audit
 
 > **Date:** 2026-02-24
 > **Scope:** Re-audit after BAT-261 (app launch awareness, screencap, expanded shell allowlist)
@@ -27,7 +27,7 @@ Scoring: ✅ = 3 pts, ⚠️ = 1 pt, ❌ = 0 pts.
 | MAX_HISTORY | 35 (claude.js:174) | "35 messages per chat" (line 783) | ✅ |
 | max_tokens | 4096 (claude.js:1481) | "4096 tokens per response" (line 785) | ✅ |
 | SHELL_ALLOWLIST | **34 commands** (config.js:234-241) | **34 commands listed** (line 626) | ✅ |
-| SECRETS_BLOCKED | config.json, config.yaml, seekerclaw.db (config.js:225) | seekerclaw.db listed as BLOCKED (line 542) | ✅ |
+| SECRETS_BLOCKED | config.json, config.yaml, shardclaw.db (config.js:225) | shardclaw.db listed as BLOCKED (line 542) | ✅ |
 
 **SHELL_ALLOWLIST change:** 22 → 34 commands. Added: `touch`, `diff`, `sed`, `cut`, `base64`, `stat`, `file`, `sleep`, `getprop`, `md5sum`, `sha256sum`, `screencap`. Both code (config.js:234-241) and prompt (claude.js:626) list all 34.
 

@@ -33,10 +33,10 @@ Four layers work together to give AI agents on-chain identity, autonomous spendi
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### SeekerClaw Model C (Confirmed)
+### shardclaw Model C (Confirmed)
 
 ```
-User's Wallet (Phantom/Backpack)          SeekerClaw App
+User's Wallet (Phantom/Backpack)          shardclaw App
   │                                         │
   │ OWNS the Core NFT (agent identity)      │ GENERATES executive keypair
   │ Can revoke delegation anytime            │ Stores in Android Keystore
@@ -182,7 +182,7 @@ The `ExecutionDelegateRecordV1` stores only: executive profile, authority, agent
 
 **The only on-chain brake:** `FreezeExecute` plugin — binary (freeze ALL Execute or none). Someone must call it proactively.
 
-**All spending controls MUST be app-side.** This is how SeekerClaw handles it:
+**All spending controls MUST be app-side.** This is how shardclaw handles it:
 
 | Control | Default | Enforced by |
 |---------|---------|-------------|
@@ -214,21 +214,21 @@ The `agentRegistrationUri` points to a JSON document (ideally on Arweave) follow
 {
   "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
   "name": "SeekerBot",
-  "description": "A personal AI agent running 24/7 on Solana Seeker via SeekerClaw.",
+  "description": "A personal AI agent running 24/7 on Solana Seeker via shardclaw.",
   "image": "https://arweave.net/<tx-hash>",
   "services": [
     {
       "name": "web",
-      "endpoint": "https://my-agent.seekerclaw.xyz"
+      "endpoint": "https://my-agent.shardclaw.xyz"
     },
     {
       "name": "A2A",
-      "endpoint": "https://my-agent.seekerclaw.xyz/agent-card.json",
+      "endpoint": "https://my-agent.shardclaw.xyz/agent-card.json",
       "version": "0.3.0"
     },
     {
       "name": "MCP",
-      "endpoint": "https://my-agent.seekerclaw.xyz/mcp",
+      "endpoint": "https://my-agent.shardclaw.xyz/mcp",
       "version": "2025-06-18"
     }
   ],
@@ -276,22 +276,22 @@ The `agentRegistrationUri` points to a JSON document (ideally on Arweave) follow
 
 The Asset Signer PDA has no private key — it can't sign by itself. For an agent to spend autonomously (x402 payments at 3am while user sleeps), an off-chain executor must be delegated.
 
-### SeekerClaw Flow (Model C)
+### shardclaw Flow (Model C)
 
 ```
 Step 1: SETUP (one-time)
-  SeekerClaw generates Ed25519 keypair
+  shardclaw generates Ed25519 keypair
   Private key → Android Keystore (AES-256-GCM encrypted)
   Public key → displayed in Settings
 
 Step 2: REGISTER EXECUTIVE (one-time)
-  SeekerClaw builds RegisterExecutiveV1 tx for its keypair
+  shardclaw builds RegisterExecutiveV1 tx for its keypair
   User signs via MWA → broadcasts → executive profile created on-chain
 
 Step 3: DELEGATE (one-time)
-  SeekerClaw builds DelegateExecutionV1 tx
+  shardclaw builds DelegateExecutionV1 tx
   User signs via MWA → broadcasts → delegation record created
-  From now on: SeekerClaw can Execute autonomously
+  From now on: shardclaw can Execute autonomously
 
 Step 4: FUND (anytime)
   User sends SOL/USDC to Asset Signer PDA address
@@ -364,7 +364,7 @@ Agent                           API Server                    Facilitator
 | Adoption | 100M+ payments, 35M+ on Solana, 10K+ paid endpoints |
 | Facilitators | 22+ independent (Coinbase CDP, Corbits, PayAI, etc.) |
 
-### x402 on SeekerClaw (with Agent Passport)
+### x402 on shardclaw (with Agent Passport)
 
 ```
 Step 1: Agent calls external API
@@ -380,7 +380,7 @@ Step 2: Agent builds Execute transaction
     → Amount: as specified in 402 response
 
 Step 3: Executive signs (autonomous)
-  SeekerClaw signs with stored executive keypair
+  shardclaw signs with stored executive keypair
   No MWA prompt — app-side spending limits enforced
   Broadcasts transaction
 
@@ -444,7 +444,7 @@ A Solana port of the ERC-8004 "Trustless Agents" standard, built by **QuantuLabs
 
 ---
 
-## 8. SeekerClaw Integration Path
+## 8. shardclaw Integration Path
 
 ### What We Can Build Ourselves (No SDK, No Metaplex API)
 
@@ -597,12 +597,12 @@ skills/metaplex/
 | **Genesis** | Token launches (project 48h / memecoin 1h), bonding curves, Raydium graduation |
 | **Agent Registry** | On-chain AI identity, executive delegation, Asset Signer wallets |
 
-### SeekerClaw Adaptation
+### shardclaw Adaptation
 
 For our partner skill, we:
 - **Keep:** concepts, metadata-json, agent registry knowledge
 - **Remove:** all CLI commands (can't run mplx), SDK code blocks (can't npm install)
-- **Add:** DAS query patterns, SeekerClaw tool usage, mobile optimization
+- **Add:** DAS query patterns, shardclaw tool usage, mobile optimization
 
 ---
 

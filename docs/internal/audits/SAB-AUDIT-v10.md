@@ -1,4 +1,4 @@
-# SAB-AUDIT-v10 — SeekerClaw Agent Self-Knowledge Audit
+# SAB-AUDIT-v10 — shardclaw Agent Self-Knowledge Audit
 
 > **Date:** 2026-03-06
 > **Scope:** Re-audit after BAT-315 (multi-provider architecture — Claude/OpenAI adapter pattern, OpenAI Responses API streaming, Codex support, provider-agnostic DB logging) + 4 smoke-test bug fixes
@@ -27,7 +27,7 @@ Scoring: ✅ = 3 pts, ⚠️ = 1 pt, ❌ = 0 pts.
 | MAX_HISTORY | 35 (claude.js:172) | "35 messages per chat" (line 813) | ✅ |
 | max_tokens | 4096 (claude.js:1473) | "4096 tokens per response" (line 815) | ✅ |
 | SHELL_ALLOWLIST | 34 commands (config.js:241-248) | 34 commands listed (line 649) | ✅ |
-| SECRETS_BLOCKED | config.json, config.yaml, seekerclaw.db (config.js:232) | seekerclaw.db listed as BLOCKED (line 565) | ✅ |
+| SECRETS_BLOCKED | config.json, config.yaml, shardclaw.db (config.js:232) | shardclaw.db listed as BLOCKED (line 565) | ✅ |
 | BLOCKED_MODULES | 7 modules (tools.js) | Lists all 7 (line 422) | ✅ |
 | js_eval code limit | 10,000 chars (tools.js) | "10,000-character code limit" (line 650) | ✅ |
 
