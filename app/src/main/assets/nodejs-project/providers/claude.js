@@ -253,19 +253,20 @@ function classifyError(status, data) {
 
 function classifyNetworkError(err) {
     const raw = err.message || String(err);
-    if (err.code === 'SESSION_EXPIRED') {
-        return { type: 'session_expired', userMessage: 'Your session has expired. Please re-pair with Settings.' };
-    }
     if (err.timeoutSource === 'transport' || /timeout/i.test(raw)) {
-        return { type: 'timeout', userMessage: 'The AI took too long to respond. Please try again.' };
+        return { type: 'timeout', transient: true, userMessage: 'The AI took too long to respond. Please try again.' };
+    }
+    // SSL/Corrupt - common in emulator environments (God-tier retryable)
+    if (/decryption failed|bad record mac|SSL routines|TLS/i.test(raw)) {
+        return { type: 'corrupt', transient: true, userMessage: 'Network data corruption detected. Retrying...' };
     }
     if (/ENOTFOUND|EAI_AGAIN/i.test(raw)) {
-        return { type: 'dns', userMessage: 'Cannot reach the AI service — check your internet connection.' };
+        return { type: 'dns', transient: false, userMessage: 'Cannot reach Claude — check your internet connection.' };
     }
     if (/ECONNREFUSED|ECONNRESET|EPIPE/i.test(raw)) {
-        return { type: 'connection', userMessage: 'Connection to the AI service was lost. Please try again.' };
+        return { type: 'connection', transient: true, userMessage: 'Connection to Claude was lost. Please try again.' };
     }
-    return { type: 'network', userMessage: 'A network error occurred. Please try again.' };
+    return { type: 'network', transient: true, userMessage: 'A network error occurred. Please try again.' };
 }
 
 // ── Rate limit headers ──────────────────────────────────────────────────────

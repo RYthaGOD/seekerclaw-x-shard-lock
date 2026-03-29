@@ -1134,8 +1134,8 @@ async function claudeApiCall(body, chatId, traceCtx = {}) {
                 }, body);
             } catch (networkErr) {
                 const attemptEnd = Date.now();
-                timeoutSource = networkErr.timeoutSource || 'network_error';
-                const isTimeoutClass = timeoutSource === 'transport';
+                const netClass = classifyNetworkError(networkErr);
+                const isTransient = netClass.transient;
 
                 // BAT-243: Structured trace log for network/timeout failures
                 const totalAttempts = retries + timeoutRetries;
@@ -1149,9 +1149,11 @@ async function claudeApiCall(body, chatId, traceCtx = {}) {
                     })}`, 'WARN');
                 }
 
-                // BAT-245: Retry timeout-class transport failures with bounded backoff + jitter
-                // Uses separate counter from HTTP retries so budgets don't interfere
-                if (isTimeoutClass && timeoutRetries < API_TIMEOUT_RETRIES) {
+                // BAT-245: Retry transient failures (timeouts, SSL corruption, resets) with bounded backoff + jitter
+                // Uses separate counter from HTTP retries so budgets don't interfere.
+                // God-tier Resilience: increased budget to 5 for non-polling calls.
+                const MAX_NET_RETRIES = 5;
+                if (isTransient && timeoutRetries < MAX_NET_RETRIES) {
                     const baseBackoff = Math.min(
                         API_TIMEOUT_BACKOFF_MS * Math.pow(2, timeoutRetries),
                         API_TIMEOUT_MAX_BACKOFF_MS
@@ -1159,8 +1161,8 @@ async function claudeApiCall(body, chatId, traceCtx = {}) {
                     // Add jitter: ±25% to prevent thundering herd
                     const jitter = baseBackoff * (0.75 + Math.random() * 0.5);
                     const waitMs = Math.round(jitter);
-                    log(`[Retry] Transport timeout, retry ${timeoutRetries + 1}/${API_TIMEOUT_RETRIES}, backoff ${waitMs}ms`, 'WARN');
-                    if (!background) updateAgentHealth('degraded', { type: 'timeout', status: -1, message: 'Transport timeout — retrying' });
+                    log(`[Retry] Transient ${netClass.type}, retry ${timeoutRetries + 1}/${MAX_NET_RETRIES}, backoff ${waitMs}ms`, 'WARN');
+                    if (!background) updateAgentHealth('degraded', { type: netClass.type, status: -1, message: `${netClass.userMessage} (Retry ${timeoutRetries + 1}/${MAX_NET_RETRIES})` });
                     timeoutRetries++;
                     await new Promise(r => setTimeout(r, waitMs));
                     continue;
@@ -1178,7 +1180,7 @@ async function claudeApiCall(body, chatId, traceCtx = {}) {
                         );
                     } catch (e) { log(`[Claude] Failed to log network error to DB: ${e.message}`, 'WARN'); }
                 }
-                if (!background) updateAgentHealth('error', { type: isTimeoutClass ? 'timeout' : 'network', status: -1, message: networkErr.message });
+                if (!background) updateAgentHealth('error', { type: netClass.type, status: -1, message: networkErr.message });
                 throw networkErr;
             }
 

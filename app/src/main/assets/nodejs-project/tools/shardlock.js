@@ -161,7 +161,7 @@ const tools = [
  * Validates if a string is a valid SHA-256 Merkle root hex.
  */
 function isValidMerkleRoot(root) {
-    return /^[a-fA-F0-0-9]{64}$/.test(root);
+    return /^[a-fA-F0-9]{64}$/.test(root);
 }
 
 function upsertShard({ merkleRoot, shardCount, dataShards, parityShards, totalBytes, originalSize, label }) {
