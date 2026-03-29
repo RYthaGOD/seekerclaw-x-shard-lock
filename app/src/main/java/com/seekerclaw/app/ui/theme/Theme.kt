@@ -73,14 +73,14 @@ data class ThemeColors(
 )
 
 val DarkOpsThemeColors = ThemeColors(
-    background = Color(0xFF0A0A0F),
-    surface = Color(0xFF16161F),
-    surfaceHighlight = Color(0xFF1E1E2E),
-    cardBorder = Color(0x40374151),
+    background = Color(0xFF0B0B0B),     // Deep Matte Black
+    surface = Color(0xFF1A1A1A),        // Industrial Grey
+    surfaceHighlight = Color(0xFF262626),
+    cardBorder = Color(0xFF333333),
 
-    primary = Color(0xFFE41F28),       // SeekerClaw red
-    primaryDim = Color(0xFFB81820),
-    primaryGlow = Color(0x33E41F28),
+    primary = Color(0xFFFFDD44),       // SeekerClaw Neon Yellow
+    primaryDim = Color(0xFFD4B839),
+    primaryGlow = Color(0x33FFDD44),
 
     error = Color(0xFFF87171),         // Tailwind red-400
     errorDim = Color(0xFFCC3636),
@@ -89,7 +89,7 @@ val DarkOpsThemeColors = ThemeColors(
     warning = Color(0xFFFBBF24),       // Tailwind yellow-400
     accent = Color(0xFF4ADE80),        // Tailwind green-400 (status/online)
 
-    actionPrimary = Color(0xFF00C805), // Green — Deploy, Initialize, Connect
+    actionPrimary = Color(0xFFFFDD44), // Use Yellow for primary actions too
     actionDanger = Color(0xFF8B0000),  // Dark red bg — Reset, Wipe
     actionDangerText = Color(0xFFFF6B6B), // Lighter red text for danger buttons
 
@@ -98,10 +98,10 @@ val DarkOpsThemeColors = ThemeColors(
 
     textPrimary = Color(0xF0FFFFFF),   // White ~94%
     textSecondary = Color(0xFF9CA3AF), // Tailwind gray-400
-    textDim = Color(0xFF9CA3AF),       // Tailwind gray-400 for dim text
+    textDim = Color(0xFF6B7280),       // Dimmer gray
     textInteractive = Color(0xB3FFFFFF), // 70% white — Edit labels
 
-    borderSubtle = Color(0xFF374151), // Tailwind gray-700 — switch tracks, button borders
+    borderSubtle = Color(0xFF333333), // Subtle border
 
     scanline = Color(0x00000000),
     dotMatrix = Color(0x00000000),

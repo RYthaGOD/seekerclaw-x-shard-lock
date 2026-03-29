@@ -78,9 +78,11 @@ Java_com_seekerclaw_app_service_NodeBridge_startNodeWithArguments(
         current_args_position += strlen(current_args_position) + 1;
     }
 
+    /*
     if (start_redirecting_stdout_stderr() == -1) {
         __android_log_write(ANDROID_LOG_ERROR, ADBTAG, "Couldn't start redirecting stdout and stderr to logcat.");
     }
+    */
 
     // Log arguments before starting
     for (int i = 0; i < argument_count; i++) {

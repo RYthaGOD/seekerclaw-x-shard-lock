@@ -345,9 +345,9 @@ fun SetupScreen(onSetupComplete: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_seekerclaw_logo_horizontal),
+                    painter = painterResource(R.drawable.logo_seeker_claw_premium),
                     contentDescription = "SeekerClaw logo",
-                    modifier = Modifier.height(36.dp),
+                    modifier = Modifier.height(48.dp), // Increased height for the premium logo
                 )
                 Text(
                     text = "Set up later",

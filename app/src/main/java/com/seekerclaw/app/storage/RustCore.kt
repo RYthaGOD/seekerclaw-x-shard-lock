@@ -54,6 +54,16 @@ class RustCore {
     external fun generateHeartbeat(merkleRoot: ByteArray, shardCount: Int, privateKey: ByteArray): ByteArray
 
     /**
+     * Reconstructs original data from shards via Reed-Solomon.
+     *
+     * @param shards The 2D array of shards (some can be null for missing pieces).
+     * @param dataShards Number of original data pieces.
+     * @param parityShards Number of parity (recovery) pieces.
+     * @return The reconstructed original ByteArray.
+     */
+    external fun decode(shards: Array<ByteArray?>, dataShards: Int, parityShards: Int): ByteArray
+
+    /**
      * Ambient-Aware Thermal Throttling.
      * Delta Threshold: 15°C above ambient.
      *

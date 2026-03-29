@@ -152,6 +152,8 @@ class AndroidBridge(
                 "/shardlock/heartbeat" -> handleShardlockHeartbeat(params)
                 "/shardlock/status" -> handleShardlockStatus()
                 "/shardlock/clear" -> handleShardlockClear(params)
+                "/shardlock/decode" -> handleShardlockDecode(params)
+                "/shardlock/read-meta" -> handleShardlockReadMeta(params)
                 "/ping" -> jsonResponse(200, mapOf("status" to "ok", "bridge" to "AndroidBridge"))
                 else -> jsonResponse(404, mapOf("error" to "Unknown endpoint: $uri"))
             }
@@ -679,17 +681,22 @@ class AndroidBridge(
             return jsonResponse(400, mapOf("error" to "data is required"))
         }
 
+        val encoding = params.optString("encoding", "utf8")
         val dataShards = params.optInt("dataShards", 4)
         val parityShards = params.optInt("parityShards", 2)
 
         return try {
-            val dataBytes = data.toByteArray()
+            val dataBytes = if (encoding == "base64") {
+                android.util.Base64.decode(data, android.util.Base64.NO_WRAP)
+            } else {
+                data.toByteArray()
+            }
             val shards = rustCore.encode(dataBytes, dataShards, parityShards)
             val merkleRoot = rustCore.computeMerkleRoot(shards)
             val merkleRootHex = merkleRoot.joinToString("") { "%02x".format(it) }
 
-            // Save shards to local storage
-            storageManager.saveShards(merkleRootHex, shards)
+            // Save shards + metadata to local storage
+            storageManager.saveShards(merkleRootHex, shards, dataShards, parityShards, dataBytes.size)
 
             val totalBytes = shards.sumOf { it.size.toLong() }
             jsonResponse(200, mapOf(
@@ -725,7 +732,12 @@ class AndroidBridge(
         return try {
             // Decode hex root to bytes
             val rootBytes = targetRoot.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-            val shardCount = stats["shardCount"] as? Int ?: 0
+            
+            // Fix: Use the shard count specific to this root, not the directory total
+            val shardCount = storageManager.getShardCount(targetRoot)
+            if (shardCount == 0) {
+                return jsonResponse(404, mapOf("error" to "No shards found for root $targetRoot"))
+            }
 
             // Generate a deterministic key for demo (in production, use Seed Vault TEE key)
             val demoKey = ByteArray(32) { (it + 1).toByte() }
@@ -770,11 +782,83 @@ class AndroidBridge(
         }
 
         val deleted = storageManager.clearShards(merkleRoot)
+        
+        // Also clear the meta file if it exists
+        val metaFile = java.io.File(context.filesDir, "shardlock/$merkleRoot.meta")
+        if (metaFile.exists()) metaFile.delete()
+
         return jsonResponse(200, mapOf(
             "success" to true,
             "merkleRoot" to merkleRoot,
             "deletedCount" to deleted,
         ))
+    }
+
+    private fun handleShardlockDecode(params: JSONObject): Response {
+        if (!RustCore.isAvailable()) {
+            return jsonResponse(503, mapOf("error" to "Rust-Core not available"))
+        }
+
+        val merkleRootHex = params.optString("merkleRoot", "")
+        val dataShards = params.optInt("dataShards", 4)
+        val parityShards = params.optInt("parityShards", 2)
+
+        if (merkleRootHex.isBlank()) {
+            return jsonResponse(400, mapOf("error" to "merkleRoot is required"))
+        }
+
+        return try {
+            val totalShards = dataShards + parityShards
+            val shards = storageManager.retrieveShards(merkleRootHex, totalShards)
+            if (shards == null) {
+                return jsonResponse(404, mapOf("error" to "Shards not found or incomplete for root $merkleRootHex"))
+            }
+
+            // Convert Array<ByteArray> to Array<ByteArray?> for the decode signature
+            val shardsNullable = Array<ByteArray?>(shards.size) { shards[it] }
+            val decodedBytes = rustCore.decode(shardsNullable, dataShards, parityShards)
+            
+            // Return as Base64 for binary safety
+            val base64Data = android.util.Base64.encodeToString(decodedBytes, android.util.Base64.NO_WRAP)
+
+            jsonResponse(200, mapOf(
+                "merkleRoot" to merkleRootHex,
+                "data" to base64Data,
+                "encoding" to "base64",
+            ))
+        } catch (e: Exception) {
+            Log.e(TAG, "ShardLock decode error", e)
+            jsonResponse(500, mapOf("error" to "Decode failed: ${e.message}"))
+        }
+    }
+
+    private fun handleShardlockReadMeta(params: JSONObject): Response {
+        val merkleRoot = params.optString("merkleRoot", "")
+        if (merkleRoot.isBlank()) {
+            return jsonResponse(400, mapOf("error" to "merkleRoot is required"))
+        }
+
+        val metaFile = java.io.File(context.filesDir, "shardlock/$merkleRoot.meta")
+        return if (metaFile.exists()) {
+            try {
+                val meta = JSONObject(metaFile.readText())
+                jsonResponse(200, meta.toMap())
+            } catch (e: Exception) {
+                jsonResponse(500, mapOf("error" to "Failed to read meta: ${e.message}"))
+            }
+        } else {
+            jsonResponse(404, mapOf("error" to "Metadata not found for $merkleRoot"))
+        }
+    }
+
+    private fun JSONObject.toMap(): Map<String, Any> {
+        val map = mutableMapOf<String, Any>()
+        val keys = this.keys()
+        while (keys.hasNext()) {
+            val key = keys.next()
+            map[key] = this.get(key)
+        }
+        return map
     }
 
     // Proxy /stats/db-summary to Node.js internal stats server (BAT-31)

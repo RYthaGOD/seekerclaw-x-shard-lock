@@ -95,21 +95,93 @@ const tools = [
             required: [],
         },
     },
+    {
+        name: 'shardlock_retrieve',
+        description: 'Retrieve and reconstruct the original data from stored shards. Returns the reconstructed data string.',
+        input_schema: {
+            type: 'object',
+            properties: {
+                merkleRoot: {
+                    type: 'string',
+                    description: 'The Merkle root hex of the shard set to retrieve.',
+                },
+            },
+            required: ['merkleRoot'],
+        },
+    },
+    {
+        name: 'shardlock_verify',
+        description: 'Verify the local integrity of stored shards for a specific Merkle root.',
+        input_schema: {
+            type: 'object',
+            properties: {
+                merkleRoot: {
+                    type: 'string',
+                    description: 'The Merkle root hex to verify.',
+                },
+                deep: {
+                    type: 'boolean',
+                    description: 'Perform a cryptographic re-hash of all shards (Deep Verify). default: false',
+                },
+            },
+            required: ['merkleRoot'],
+        },
+    },
+    {
+        name: 'shardlock_reindex',
+        description: 'Scan the local filesystem for orphaned shards and rebuild the SQLite registry using on-disk metadata.',
+        input_schema: {
+            type: 'object',
+            properties: {},
+        },
+    },
+    {
+        name: 'shardlock_health',
+        description: 'Get a summary of the Shard-Lock node health, including storage utilization and overdue heartbeats.',
+        input_schema: {
+            type: 'object',
+            properties: {},
+        },
+    },
+    {
+        name: 'sentinel_snapshot',
+        description: 'Immediately trigger a "State-of-Mind" snapshot of the Aether Index (database) and secure it via Shard-Lock.',
+        input_schema: {
+            type: 'object',
+            properties: {},
+        },
+    },
 ];
 
 // ============================================================================
 // SQLite HELPERS
 // ============================================================================
 
-function upsertShard(merkleRoot, shardCount, dataShards, parityShards, totalBytes, originalSize, label) {
+/**
+ * Validates if a string is a valid SHA-256 Merkle root hex.
+ */
+function isValidMerkleRoot(root) {
+    return /^[a-fA-F0-0-9]{64}$/.test(root);
+}
+
+function upsertShard({ merkleRoot, shardCount, dataShards, parityShards, totalBytes, originalSize, label }) {
     const db = getDb();
     if (!db) return;
+    
+    if (!isValidMerkleRoot(merkleRoot)) {
+        log(`[ShardLock] Invalid Merkle root blocked: ${merkleRoot}`, 'WARN');
+        return;
+    }
+
     try {
         db.run(
             `INSERT OR REPLACE INTO shards (merkle_root, shard_count, data_shards, parity_shards, total_bytes, original_size, label, created_at)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [merkleRoot, shardCount, dataShards, parityShards, totalBytes, originalSize, label || null, localTimestamp()]
         );
+        // Explicitly trigger summary update (which triggers DB save eventually)
+        const { markDbSummaryDirty } = require('../database');
+        markDbSummaryDirty();
     } catch (e) {
         log(`[ShardLock] DB upsert error: ${e.message}`, 'WARN');
     }
@@ -175,13 +247,19 @@ function getShardRegistry() {
 
 async function handleShardlockStore(input) {
     const data = input.data;
-    if (!data || typeof data !== 'string' || data.trim().length === 0) {
-        return { error: 'data is required and must be a non-empty string.' };
-    }
-
+    const label = input.label;
     const dataShards = input.dataShards || 4;
     const parityShards = input.parityShards || 2;
 
+    if (!data || typeof data !== 'string') {
+        return { error: 'data is required and must be a string.' };
+    }
+
+    // IPC Safety: Limit data size to 5MB to avoid Android Binder/Memory issues
+    const MAX_DATA_SIZE = 5 * 1024 * 1024;
+    if (data.length > MAX_DATA_SIZE) {
+        return { error: `Data too large (${(data.length / 1024 / 1024).toFixed(2)}MB). Shard-Lock current IPC limit is 5MB.` };
+    }
     if (dataShards < 1 || dataShards > 255) {
         return { error: 'dataShards must be between 1 and 255.' };
     }
@@ -192,8 +270,12 @@ async function handleShardlockStore(input) {
     log(`[ShardLock] Encoding ${data.length} bytes into ${dataShards}+${parityShards} shards...`, 'INFO');
 
     try {
+        // Convert to Base64 for binary-safe transfer to bridge
+        const base64Data = Buffer.from(data).toString('base64');
+
         const result = await androidBridgeCall('/shardlock/encode', {
-            data,
+            data: base64Data,
+            encoding: 'base64',
             dataShards,
             parityShards,
         });
@@ -203,15 +285,15 @@ async function handleShardlockStore(input) {
         }
 
         // Persist to SQLite registry
-        upsertShard(
-            result.merkleRoot,
-            result.shardCount,
-            result.dataShards,
-            result.parityShards,
-            result.bytesStored,
-            data.length,
-            input.label || null
-        );
+        upsertShard({
+            merkleRoot: result.merkleRoot,
+            shardCount: result.shardCount,
+            dataShards: result.dataShards,
+            parityShards: result.parityShards,
+            totalBytes: result.bytesStored,
+            originalSize: data.length,
+            label: input.label || null
+        });
 
         log(`[ShardLock] Stored ${result.shardCount} shards, root: ${result.merkleRoot}`, 'INFO');
         return {
@@ -289,8 +371,8 @@ async function handleShardlockStatus() {
 
 async function handleShardlockClear(input) {
     const merkleRoot = input.merkleRoot;
-    if (!merkleRoot || typeof merkleRoot !== 'string' || merkleRoot.trim().length === 0) {
-        return { error: 'merkleRoot is required.' };
+    if (!merkleRoot || typeof merkleRoot !== 'string' || !isValidMerkleRoot(merkleRoot.trim())) {
+        return { error: 'A valid 64-character hex merkleRoot is required.' };
     }
 
     try {
@@ -318,11 +400,16 @@ async function handleShardlockClear(input) {
 }
 
 async function handleShardlockAnchor(input) {
+    const merkleRoot = input.merkleRoot || '';
+    if (merkleRoot && !isValidMerkleRoot(merkleRoot)) {
+        return { error: 'merkleRoot must be a valid 64-character hex string.' };
+    }
+
     // Step 1: Generate heartbeat (get signature + merkle root)
     let heartbeat;
     try {
         heartbeat = await androidBridgeCall('/shardlock/heartbeat', {
-            merkleRoot: input.merkleRoot || '',
+            merkleRoot: merkleRoot,
         });
         if (heartbeat.error) {
             return { error: `Heartbeat failed: ${heartbeat.error}` };
@@ -399,20 +486,275 @@ async function handleShardlockAnchor(input) {
     };
 }
 
-// ============================================================================
-// HANDLER MAP
-// ============================================================================
-
 const handlers = {
     shardlock_store: handleShardlockStore,
     shardlock_heartbeat: handleShardlockHeartbeat,
     shardlock_status: handleShardlockStatus,
     shardlock_clear: handleShardlockClear,
     shardlock_anchor: handleShardlockAnchor,
+    shardlock_retrieve: handleShardlockRetrieve,
+    shardlock_verify: handleShardlockVerify,
+    shardlock_reindex: handleShardlockReindex,
+    shardlock_health: handleShardlockHealth,
+    sentinel_snapshot: handleSentinelSnapshot,
 };
+
+async function handleShardlockRetrieve(input) {
+    const merkleRoot = input.merkleRoot;
+    if (!merkleRoot || typeof merkleRoot !== 'string' || !isValidMerkleRoot(merkleRoot.trim())) {
+        return { error: 'A valid 64-character hex merkleRoot is required.' };
+    }
+
+    // Step 1: Look up shard config in SQLite
+    const registry = getShardRegistry();
+    const entry = registry.find(r => r.merkleRoot === merkleRoot.trim());
+    if (!entry) {
+        return { error: `Shard root ${merkleRoot} not found in local registry.` };
+    }
+
+    log(`[ShardLock] Retrieving shards for root: ${entry.merkleRoot} (${entry.dataShards}+${entry.parityShards})...`, 'INFO');
+
+    try {
+        // Step 2: Call bridge to decode
+        const result = await androidBridgeCall('/shardlock/decode', {
+            merkleRoot: entry.merkleRoot,
+            dataShards: entry.dataShards,
+            parityShards: entry.parityShards,
+        });
+
+        if (result.error) {
+            return { error: `Retrieval failed: ${result.error}` };
+        }
+
+        // Decode Base64 response
+        let reconstructed = Buffer.from(result.data, 'base64');
+        
+        // Trim padding based on original size
+        if (entry.originalSize && reconstructed.length > entry.originalSize) {
+            reconstructed = reconstructed.slice(0, entry.originalSize);
+        }
+
+        const dataString = reconstructed.toString('utf8'); // Assuming UTF8 for now, can be adjusted for binary
+
+        log(`[ShardLock] Successfully reconstructed ${reconstructed.length} bytes for root: ${result.merkleRoot}`, 'INFO');
+        return {
+            success: true,
+            merkleRoot: result.merkleRoot,
+            data: dataString,
+            originalSize: entry.originalSize,
+            label: entry.label,
+        };
+    } catch (e) {
+        log(`[ShardLock] Retrieve error: ${e.message}`, 'ERROR');
+        return { error: `Retrieve failed: ${e.message}` };
+    }
+}
+
+async function handleShardlockVerify(input) {
+    const merkleRoot = input.merkleRoot;
+    if (!merkleRoot || typeof merkleRoot !== 'string' || !isValidMerkleRoot(merkleRoot.trim())) {
+        return { error: 'A valid 64-character hex merkleRoot is required.' };
+    }
+
+    const registry = getShardRegistry();
+    const entry = registry.find(r => r.merkleRoot === merkleRoot.trim());
+    if (!entry) {
+        return { error: `Shard root ${merkleRoot} not found in local registry.` };
+    }
+
+    try {
+        // 1. Basic Check: Existence on disk
+        const status = await androidBridgeCall('/shardlock/status', {});
+        const onDisk = (status.merkleRoots || []).includes(entry.merkleRoot);
+        
+        if (!onDisk) {
+            return { 
+                success: false, 
+                merkleRoot: entry.merkleRoot, 
+                status: 'MISSING',
+                message: 'Shards are missing from local storage.'
+            };
+        }
+
+        // 2. Deep Check: Cryptographic re-hash (if requested)
+        if (input.deep) {
+            log(`[ShardLock] Deep Verify: hashing all shards for ${entry.merkleRoot}...`, 'DEBUG');
+            // We use /shardlock/decode as the deep verify mechanism for now
+            const decodeResult = await androidBridgeCall('/shardlock/decode', {
+                merkleRoot: entry.merkleRoot,
+                dataShards: entry.dataShards,
+                parityShards: entry.parityShards,
+            });
+
+            if (decodeResult.error) {
+                return { 
+                    success: false, 
+                    merkleRoot: entry.merkleRoot, 
+                    status: 'CORRUPT',
+                    error: decodeResult.error 
+                };
+            }
+        }
+
+        return {
+            success: true,
+            merkleRoot: entry.merkleRoot,
+            status: input.deep ? 'VERIFIED_DEEP' : 'VERIFIED_LOCAL',
+            shardCount: entry.shardCount,
+            lastHeartbeat: entry.lastHeartbeat,
+            anchorTx: entry.anchorTx,
+        };
+    } catch (e) {
+        return { error: `Verification failed: ${e.message}` };
+    }
+}
+
+async function handleShardlockReindex() {
+    log('[ShardLock] Starting registry re-index...', 'INFO');
+    try {
+        const status = await androidBridgeCall('/shardlock/status', {});
+        const rootsOnDisk = status.merkleRoots || [];
+        const registry = getShardRegistry();
+        const registryRoots = new Set(registry.map(r => r.merkleRoot));
+
+        let reindexed = 0;
+        let errors = 0;
+
+        for (const root of rootsOnDisk) {
+            if (!registryRoots.has(root)) {
+                log(`[ShardLock] Orphaned root found: ${root}. Attempting recovery...`, 'DEBUG');
+                try {
+                    const meta = await androidBridgeCall('/shardlock/read-meta', { merkleRoot: root });
+                    if (meta.error) {
+                        log(`[ShardLock] Metadata recovery failed for ${root}: ${meta.error}`, 'WARN');
+                        errors++;
+                        continue;
+                    }
+
+                    upsertShard({
+                        merkleRoot: root,
+                        dataShards: meta.dataShards,
+                        parityShards: meta.parityShards,
+                        shardCount: meta.totalShards,
+                        originalSize: meta.originalSize,
+                        label: `recovered-${root.substring(0, 8)}`,
+                    });
+                    reindexed++;
+                } catch (e) {
+                    log(`[ShardLock] Error re-indexing ${root}: ${e.message}`, 'ERROR');
+                    errors++;
+                }
+            }
+        }
+
+        return {
+            success: true,
+            reindexedCount: reindexed,
+            errorCount: errors,
+            message: `Re-index complete. ${reindexed} roots recovered to registry.`,
+        };
+    } catch (e) {
+        return { error: `Re-indexing failed: ${e.message}` };
+    }
+}
+
+async function handleShardlockHealth() {
+    try {
+        const registry = getShardRegistry();
+        const status = await androidBridgeCall('/shardlock/status', {});
+        
+        const now = Date.now();
+        const DAY_MS = 24 * 60 * 60 * 1000;
+        const WEEK_MS = 7 * DAY_MS;
+
+        let totalShardsStored = status.shardCount || 0;
+        let healthyRoots = 0;
+        let missingRoots = 0;
+        let overdueHeartbeats = 0;
+        let pendingAnchors = 0;
+
+        // Get last sentinel run & aether snapshot from meta
+        const db = getDb();
+        const metaRowsRun = db ? db.exec(`SELECT value FROM meta WHERE key = 'last_sentinel_run'`) : [];
+        const lastSentinelRun = (metaRowsRun.length > 0 && metaRowsRun[0].values.length > 0) ? metaRowsRun[0].values[0][0] : null;
+
+        const metaRowsSnap = db ? db.exec(`SELECT value FROM meta WHERE key = 'last_aether_snapshot'`) : [];
+        const lastAetherSnapshot = (metaRowsSnap.length > 0 && metaRowsSnap[0].values.length > 0) ? metaRowsSnap[0].values[0][0] : null;
+
+        for (const entry of registry) {
+            const onDisk = (status.merkleRoots || []).includes(entry.merkleRoot);
+            if (!onDisk) {
+                missingRoots++;
+                continue;
+            }
+            healthyRoots++;
+
+            const lastHb = entry.lastHeartbeat ? new Date(entry.lastHeartbeat).getTime() : 0;
+            if (now - lastHb > DAY_MS) overdueHeartbeats++;
+            
+            if (!entry.anchorTx) {
+                const created = entry.createdAt ? new Date(entry.createdAt).getTime() : 0;
+                if (now - created > WEEK_MS) pendingAnchors++;
+            }
+        }
+
+        return {
+            nodeStatus: missingRoots > 0 ? 'WARNING' : 'HEALTHY',
+            storage: {
+                totalRootsStored: registry.length,
+                healthyRoots,
+                missingRoots,
+                totalShardsStored,
+                totalBytes: status.totalBytes,
+                totalFormatted: status.totalFormatted,
+            },
+            heartbeats: {
+                overdueCount: overdueHeartbeats,
+                pendingAnchorCount: pendingAnchors,
+            },
+            system: {
+                rustCoreAvailable: status.rustCoreAvailable,
+                thermalStatus: status.thermalStatus,
+                lastSentinelRun,
+                lastAetherSnapshot,
+            },
+            recommendation: missingRoots > 0 ? 'Restore missing shards from backup.' : 
+                           overdueHeartbeats > 0 ? 'Wait for Sentinel background heartbeat scan.' :
+                           pendingAnchors > 0 ? 'Run shardlock_anchor to anchor storage proofs on-chain.' :
+                           'Node is operating within optimal parameters.'
+        };
+    } catch (e) {
+        return { error: `Health summary failed: ${e.message}` };
+    }
+}
+
+async function handleSentinelSnapshot() {
+    log('[ShardLock] Manual Aether Snapshot triggered via tool', 'INFO');
+    try {
+        const sentinel = require('../sentinel');
+        // We call the internal function directly for the tool
+        await sentinel.snapshot(); 
+        
+        return {
+            success: true,
+            message: 'Aether Index State-of-Mind snapshot completed and secured.',
+            timestamp: new Date().toISOString()
+        };
+    } catch (e) {
+        return { error: `Snapshot failed: ${e.message}` };
+    }
+}
 
 // ============================================================================
 // EXPORTS
 // ============================================================================
 
-module.exports = { tools, handlers };
+module.exports = { 
+    tools, 
+    handlers,
+    upsertShard,
+    updateHeartbeat,
+    updateAnchorTx,
+    deleteShard,
+    getShardRegistry
+};

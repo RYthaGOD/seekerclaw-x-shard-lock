@@ -15,13 +15,36 @@ const { httpRequest } = require('./http');
 // ============================================================================
 
 async function telegram(method, body = null) {
-    const res = await httpRequest({
-        hostname: 'api.telegram.org',
-        path: `/bot${BOT_TOKEN}/${method}`,
-        method: body ? 'POST' : 'GET',
-        headers: body ? { 'Content-Type': 'application/json' } : {},
-    }, body);
-    return res.data;
+    const MAX_RETRIES = 3;
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+            const res = await httpRequest({
+                hostname: 'api.telegram.org',
+                path: `/bot${BOT_TOKEN}/${method}`,
+                method: body ? 'POST' : 'GET',
+                headers: body ? { 'Content-Type': 'application/json' } : {},
+            }, body);
+            
+            // If we got a response, return it (even if res.ok is false, that's a Telegram error, not a network error)
+            return res.data;
+        } catch (error) {
+            lastError = error;
+            const isTransient = /timeout|ETIMEDOUT|ESOCKETTIMEDOUT|socket hang up|ECONNRESET/i.test(error.message);
+            const isDns = error.code === 'ENOTFOUND' || error.code === 'EAI_AGAIN';
+
+            if (isTransient && !isDns && attempt < MAX_RETRIES) {
+                const delay = Math.min(1000 * Math.pow(2, attempt - 1), 10000);
+                log(`[Telegram] ${method} reset (${error.message}) — retry ${attempt}/${MAX_RETRIES} in ${delay}ms`, 'DEBUG');
+                await new Promise(r => setTimeout(r, delay));
+                continue;
+            }
+            // Non-transient or last attempt failed
+            throw error;
+        }
+    }
+    throw lastError;
 }
 
 /**

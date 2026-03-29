@@ -617,6 +617,21 @@ function startStatsServer() {
 }
 
 // ============================================================================
+/**
+ * Exports the current in-memory database as a Buffer for snapshotting.
+ * @returns {Buffer|null}
+ */
+function exportDatabase() {
+    if (!db) return null;
+    try {
+        const data = db.export();
+        return Buffer.from(data);
+    } catch (e) {
+        log(`[DB] Export failed: ${e.message}`, 'ERROR');
+        return null;
+    }
+}
+
 // EXPORTS
 // ============================================================================
 
@@ -632,4 +647,5 @@ module.exports = {
     markDbSummaryDirty,
     startDbSummaryInterval,
     startStatsServer,
+    exportDatabase,
 };

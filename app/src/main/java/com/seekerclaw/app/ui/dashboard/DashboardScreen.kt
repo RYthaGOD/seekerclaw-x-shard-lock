@@ -1,5 +1,8 @@
 package com.seekerclaw.app.ui.dashboard
 
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.seekerclaw.app.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -271,18 +274,11 @@ fun DashboardScreen(
             .verticalScroll(rememberScrollState())
             .padding(16.dp),
     ) {
-        // Header — two-tone logo
-        Text(
-            text = buildAnnotatedString {
-                withStyle(SpanStyle(color = SeekerClawColors.TextPrimary, fontWeight = FontWeight.ExtraBold)) {
-                    append("Seeker")
-                }
-                withStyle(SpanStyle(color = SeekerClawColors.Primary, fontWeight = FontWeight.ExtraBold)) {
-                    append("C/aw")
-                }
-            },
-            fontFamily = RethinkSans,
-            fontSize = 28.sp,
+        // Header — Premium Logo
+        Image(
+            painter = painterResource(R.drawable.logo_seeker_claw_premium),
+            contentDescription = "SeekerClaw Logo",
+            modifier = Modifier.height(42.dp)
         )
 
         Spacer(modifier = Modifier.height(2.dp))

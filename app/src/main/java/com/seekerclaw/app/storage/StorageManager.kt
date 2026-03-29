@@ -29,21 +29,28 @@ class StorageManager(private val context: Context) {
 
     /**
      * Saves a 2D array of encoded shards to internal storage.
-     * Each shard is named based on its root hash + index.
-     *
-     * @param merkleRootHex The hex string of the root to uniquely prefix this file batch.
-     * @param shards The 2D byte array of shards.
-     * @return true if all shards were saved successfully.
+     * Also saves a small .meta JSON file to allow registry re-indexing.
      */
-    fun saveShards(merkleRootHex: String, shards: Array<ByteArray>): Boolean {
+    fun saveShards(merkleRootHex: String, shards: Array<ByteArray>, dataShards: Int, parityShards: Int, originalSize: Int): Boolean {
         return try {
             for (i in shards.indices) {
                 val shardFile = File(shardDir, "${merkleRootHex}_shard_$i")
                 shardFile.writeBytes(shards[i])
             }
-            Log.d(TAG, "Saved ${shards.size} shards for root $merkleRootHex")
+            
+            // Save metadata for re-indexing
+            val metaFile = File(shardDir, "${merkleRootHex}.meta")
+            val meta = org.json.JSONObject()
+            meta.put("dataShards", dataShards)
+            meta.put("parityShards", parityShards)
+            meta.put("totalShards", shards.size)
+            meta.put("originalSize", originalSize)
+            meta.put("createdAt", System.currentTimeMillis())
+            metaFile.writeText(meta.toString())
+
+            Log.d(TAG, "Saved ${shards.size} shards + meta for root $merkleRootHex")
             true
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Log.e(TAG, "Failed to save shards: ${e.message}")
             false
         }
@@ -93,7 +100,8 @@ class StorageManager(private val context: Context) {
     fun getStats(): Map<String, Any> {
         val files = shardDir.listFiles() ?: emptyArray()
         val totalBytes = files.sumOf { it.length() }
-        val roots = files.map { it.name.substringBefore("_shard_") }.distinct()
+        val roots = files.filter { !it.name.endsWith(".meta") }
+            .map { it.name.substringBefore("_shard_") }.distinct()
         return mapOf(
             "shardCount" to files.size,
             "totalBytes" to totalBytes,
@@ -101,6 +109,14 @@ class StorageManager(private val context: Context) {
             "merkleRoots" to roots,
             "rootCount" to roots.size,
         )
+    }
+
+    /**
+     * Returns the number of shards stored for a specific Merkle root.
+     */
+    fun getShardCount(merkleRootHex: String): Int {
+        val files = shardDir.listFiles { _, name -> name.startsWith("${merkleRootHex}_shard_") }
+        return files?.size ?: 0
     }
 
     private fun formatBytes(bytes: Long): String {

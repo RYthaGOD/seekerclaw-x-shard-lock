@@ -31,6 +31,7 @@ fun signingProp(localKey: String, envKey: String): String? =
 android {
     namespace = "com.seekerclaw.app"
     compileSdk = 35
+    ndkVersion = "30.0.14904198"
 
     defaultConfig {
         applicationId = "com.seekerclaw.app"
@@ -50,7 +51,7 @@ android {
             }
         }
         ndk {
-            abiFilters.addAll(listOf("arm64-v8a"))
+            abiFilters.addAll(listOf("arm64-v8a", "x86_64"))
         }
     }
 

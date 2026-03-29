@@ -17,7 +17,10 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_encode<'local>(
     let total_shards = (data_shards + parity_shards) as usize;
 
     // 1. Setup Reed-Solomon (Standard stable API)
-    let rs = reed_solomon_erasure::galois_8::ReedSolomon::new(data_shards as usize, parity_shards as usize).unwrap();
+    let rs = match reed_solomon_erasure::galois_8::ReedSolomon::new(data_shards as usize, parity_shards as usize) {
+        Ok(r) => r,
+        Err(_) => return std::ptr::null_mut(),
+    };
     
     // 2. Pad data to be divisible by shard sizes
     let shard_size = (data_bytes.len() + (data_shards as usize - 1)) / (data_shards as usize);
@@ -34,16 +37,31 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_encode<'local>(
 
     // 4. Encode Parity
     let mut shard_refs: Vec<&mut [u8]> = shard_buffers.iter_mut().map(|v| v.as_mut_slice()).collect();
-    rs.encode(&mut shard_refs).unwrap();
+    if rs.encode(&mut shard_refs).is_err() {
+        return std::ptr::null_mut();
+    }
 
     // 5. Build Return Object Array (Array<ByteArray>)
-    let byte_array_class = env.find_class("[B").unwrap();
-    let result_array = env.new_object_array(total_shards as jint, &byte_array_class, env.new_byte_array(0).unwrap()).unwrap();
+    let byte_array_class = match env.find_class("[B") {
+        Ok(c) => c,
+        Err(_) => return std::ptr::null_mut(),
+    };
+    let result_array = match env.new_object_array(total_shards as jint, &byte_array_class, env.new_byte_array(0).unwrap()) {
+        Ok(a) => a,
+        Err(_) => return std::ptr::null_mut(),
+    };
 
     for (i, shard) in shard_buffers.iter().enumerate() {
-        let j_array = env.new_byte_array(shard.len() as jint).unwrap();
-        env.set_byte_array_region(&j_array, 0, bytemuck::cast_slice(shard)).unwrap();
-        env.set_object_array_element(&result_array, i as jint, &j_array).unwrap();
+        let j_array = match env.new_byte_array(shard.len() as jint) {
+            Ok(a) => a,
+            Err(_) => continue,
+        };
+        if let Err(_) = env.set_byte_array_region(&j_array, 0, bytemuck::cast_slice(shard)) {
+            continue;
+        }
+        if let Err(_) = env.set_object_array_element(&result_array, i as jint, &j_array) {
+            continue;
+        }
     }
 
     result_array.into_raw()
@@ -58,11 +76,17 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_computeMerkleRoo
     shards: jobjectArray,
 ) -> jbyteArray {
     let shards_array = unsafe { jni::objects::JObjectArray::from_raw(shards) };
-    let total_shards = env.get_array_length(&shards_array).unwrap();
+    let total_shards = match env.get_array_length(&shards_array) {
+        Ok(n) => n,
+        Err(_) => return std::ptr::null_mut(),
+    };
     let mut leaves: Vec<[u8; 32]> = Vec::with_capacity(total_shards as usize);
 
     for i in 0..total_shards {
-        let shard_obj = env.get_object_array_element(&shards_array, i).unwrap();
+        let shard_obj = match env.get_object_array_element(&shards_array, i) {
+            Ok(o) => o,
+            Err(_) => continue,
+        };
         // Cast jobject to jbyteArray
         let shard_array: jni::objects::JByteArray = shard_obj.into();
         let shard_bytes = env.convert_byte_array(&shard_array).unwrap_or_default();
@@ -82,8 +106,13 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_computeMerkleRoo
     let tree = rs_merkle::MerkleTree::<rs_merkle::algorithms::Sha256>::from_leaves(&leaves);
     let root = tree.root().unwrap_or_default();
 
-    let j_root = env.new_byte_array(32).unwrap();
-    env.set_byte_array_region(&j_root, 0, bytemuck::cast_slice(&root)).unwrap();
+    let j_root = match env.new_byte_array(32) {
+        Ok(a) => a,
+        Err(_) => return std::ptr::null_mut(),
+    };
+    if let Err(_) = env.set_byte_array_region(&j_root, 0, bytemuck::cast_slice(&root)) {
+        return std::ptr::null_mut();
+    }
 
     j_root.into_raw()
 }
@@ -122,8 +151,13 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_generateHeartbea
     let signature = signing_key.sign(&message);
     let sig_bytes = signature.to_bytes();
 
-    let j_sig = env.new_byte_array(64).unwrap();
-    env.set_byte_array_region(&j_sig, 0, bytemuck::cast_slice(&sig_bytes)).unwrap();
+    let j_sig = match env.new_byte_array(64) {
+        Ok(a) => a,
+        Err(_) => return std::ptr::null_mut(),
+    };
+    if env.set_byte_array_region(&j_sig, 0, bytemuck::cast_slice(&sig_bytes)).is_err() {
+        return std::ptr::null_mut();
+    }
 
     j_sig.into_raw()
 }
@@ -148,6 +182,66 @@ pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_getThermalStatus
     } else {
         0 // Safe: Continue execution
     }
+}
+
+/// JNI Function to Decode Shards into original Data
+/// Kotlin: `external fun decode(shards: Array<ByteArray>, dataShards: Int, parityShards: Int): ByteArray`
+#[unsafe(no_mangle)]
+pub extern "system" fn Java_com_seekerclaw_app_storage_RustCore_decode<'local>(
+    mut env: JNIEnv<'local>,
+    _class: JClass<'local>,
+    shards: jobjectArray,
+    data_shards: jint,
+    parity_shards: jint,
+) -> jbyteArray {
+    let shards_array = unsafe { jni::objects::JObjectArray::from_raw(shards) };
+    let total_shards = match env.get_array_length(&shards_array) {
+        Ok(n) => n as usize,
+        Err(_) => return std::ptr::null_mut(),
+    };
+    
+    // 1. Setup Reed-Solomon
+    let rs = match reed_solomon_erasure::galois_8::ReedSolomon::new(data_shards as usize, parity_shards as usize) {
+        Ok(r) => r,
+        Err(_) => return std::ptr::null_mut(),
+    };
+    
+    // 2. Extract shards from JNI array
+    let mut shard_buffers: Vec<Option<Vec<u8>>> = Vec::with_capacity(total_shards);
+    for i in 0..total_shards {
+        let shard_obj = env.get_object_array_element(&shards_array, i as jint).unwrap();
+        if shard_obj.is_null() {
+            shard_buffers.push(None);
+        } else {
+            let shard_array: jni::objects::JByteArray = shard_obj.into();
+            let shard_bytes = env.convert_byte_array(&shard_array).unwrap_or_default();
+            shard_buffers.push(Some(shard_bytes));
+        }
+    }
+
+    // 3. Reconstruct missing shards
+    if let Err(_) = rs.reconstruct(&mut shard_buffers) {
+        return env.new_byte_array(0).unwrap().into_raw(); 
+    }
+
+    // 4. Concatenate data shards (first data_shards are payload)
+    let mut result_data = Vec::new();
+    for i in 0..data_shards as usize {
+        if let Some(ref shard) = shard_buffers[i] {
+            result_data.extend_from_slice(shard);
+        }
+    }
+
+    // 5. Build Return ByteArray
+    let j_result = match env.new_byte_array(result_data.len() as jint) {
+        Ok(a) => a,
+        Err(_) => return std::ptr::null_mut(),
+    };
+    if let Err(_) = env.set_byte_array_region(&j_result, 0, bytemuck::cast_slice(&result_data)) {
+        return std::ptr::null_mut();
+    }
+
+    j_result.into_raw()
 }
 
 #[cfg(test)]

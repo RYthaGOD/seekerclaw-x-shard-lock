@@ -77,6 +77,12 @@ const {
 } = require('./database');
 
 // ============================================================================
+// SENTINEL (Shard-Lock Automated Heartbeats)
+// ============================================================================
+
+const sentinel = require('./sentinel');
+
+// ============================================================================
 // SOLANA (extracted to solana.js — BAT-201)
 // ============================================================================
 
@@ -1065,16 +1071,7 @@ async function poll() {
                 log(`[Telegram] getUpdates error: ${result.error_code} ${result.description || ''}`, 'WARN');
             }
         } catch (error) {
-            // Check for timeout BEFORE incrementing pollErrors
-            const isTimeout = /timeout|ETIMEDOUT|ESOCKETTIMEDOUT/i.test(error.message);
             const isDns = error.code === 'ENOTFOUND' || error.code === 'EAI_AGAIN';
-
-            if (isTimeout && !isDns) {
-                // Telegram long-polling timeouts are normal (~every 30s when idle)
-                // Don't increment pollErrors, don't backoff, just reconnect
-                log('Poll timeout — reconnecting', 'DEBUG');
-                continue;
-            }
 
             pollErrors++;
             if (pollErrors >= 20 && !_prolongedOutageLogged) {
@@ -1089,16 +1086,16 @@ async function poll() {
                     log('[Network] DNS resolution failing — check internet connection', 'WARN');
                     dnsWarnLogged = true;
                 }
-                // Backoff: 2s, 4s, 8s, ... capped at 30s (skip the 1s first step for DNS)
+                // Backoff: 2s, 4s, 8s, ... capped at 30s
                 const delay = Math.min(2000 * Math.pow(2, Math.min(dnsFailCount, 5) - 1), 30000);
                 await new Promise(r => setTimeout(r, delay));
             } else {
                 if (dnsFailCount > 0) {
-                    // Non-DNS error after DNS streak — network topology changed, log recovery
                     log(`[Network] DNS recovered after ${dnsFailCount} failures`, 'INFO');
                     dnsFailCount = 0;
                     dnsWarnLogged = false;
                 }
+                // Handle Telegram API errors or persistent network failures
                 log(`Poll error (${pollErrors}): ${error.message}`, 'ERROR');
                 const delay = Math.min(1000 * Math.pow(2, pollErrors - 1), 30000);
                 await new Promise(r => setTimeout(r, delay));
@@ -1181,6 +1178,9 @@ telegram('getMe')
 
             startDbSummaryInterval();
             startStatsServer();
+            
+            // Start the Shard-Lock Sentinel for automated storage proofs
+            sentinel.start();
 
             // Agent health heartbeat: write immediately on startup (prevents false "stale"
             // when Kotlin reads the old file before the first interval tick), then every 60s.
