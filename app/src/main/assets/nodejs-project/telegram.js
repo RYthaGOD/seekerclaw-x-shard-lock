@@ -14,11 +14,12 @@ const { httpRequest } = require('./http');
 // TELEGRAM API
 // ============================================================================
 
-async function telegram(method, body = null) {
-    const MAX_RETRIES = 3;
+async function telegram(method, body = null, retryConfig = {}) {
+    const MAX_RETRIES = retryConfig.maxRetries ?? 5;
+    const isPolling = method === 'getUpdates';
     let lastError = null;
 
-    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    for (let attempt = 1; attempt <= MAX_RETRIES || isPolling; attempt++) {
         try {
             const res = await httpRequest({
                 hostname: 'api.telegram.org',
@@ -27,21 +28,23 @@ async function telegram(method, body = null) {
                 headers: body ? { 'Content-Type': 'application/json' } : {},
             }, body);
             
-            // If we got a response, return it (even if res.ok is false, that's a Telegram error, not a network error)
             return res.data;
         } catch (error) {
             lastError = error;
-            const isTransient = /timeout|ETIMEDOUT|ESOCKETTIMEDOUT|socket hang up|ECONNRESET/i.test(error.message);
+            const isTransient = /timeout|ETIMEDOUT|ESOCKETTIMEDOUT|socket hang up|ECONNRESET|ECONNREFUSED/i.test(error.message);
             const isDns = error.code === 'ENOTFOUND' || error.code === 'EAI_AGAIN';
 
-            if (isTransient && !isDns && attempt < MAX_RETRIES) {
-                const delay = Math.min(1000 * Math.pow(2, attempt - 1), 10000);
-                log(`[Telegram] ${method} reset (${error.message}) — retry ${attempt}/${MAX_RETRIES} in ${delay}ms`, 'DEBUG');
+            // If polling, we retry indefinitely on transient resets without an ERROR log
+            if (isTransient && !isDns) {
+                const delay = isPolling ? 500 : Math.min(1000 * Math.pow(2, attempt - 1), 10000);
+                if (attempt % 5 === 0 || !isPolling) {
+                    log(`[Telegram] ${method} reset (${error.message}) — retry ${attempt}${isPolling ? '' : '/' + MAX_RETRIES} in ${delay}ms`, 'DEBUG');
+                }
                 await new Promise(r => setTimeout(r, delay));
                 continue;
             }
-            // Non-transient or last attempt failed
-            throw error;
+            // Non-transient or last attempt failed (for non-polling)
+            if (!isPolling || attempt >= MAX_RETRIES) throw error;
         }
     }
     throw lastError;
